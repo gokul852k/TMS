@@ -37,13 +37,37 @@ $(document).ready(function () {
                     console.log(response);
                     // let data = JSON.parse(response);
                     if (response.status === 'success') {
-                        window.location.href = response.redirect;
+                        // window.location.href = response.redirect;
+
+                        let userId = response.userId;
+                        let token = response.token;
+                        let postUrl = response.redirect;
+
+                        let form = document.createElement("form");
+                        form.setAttribute("method", "post");
+                        form.setAttribute("action", postUrl);
+
+                        let userIdInput = document.createElement("input");
+                        userIdInput.setAttribute("type", "hidden");
+                        userIdInput.setAttribute("name", "userid");
+                        userIdInput.setAttribute("value", userId);
+                        form.appendChild(userIdInput);
+
+                        let tokenInput = document.createElement("input");
+                        tokenInput.setAttribute("type", "hidden");
+                        tokenInput.setAttribute("name", "token");
+                        tokenInput.setAttribute("value", token);
+                        form.appendChild(tokenInput);
+                        
+                        document.body.appendChild(form);
+                        form.submit();
+
                     } else if (response.status == 'error') {
                         $('#username').addClass('input-error');
                         $('#password').addClass('input-error');
                         Swal.fire({
                             title: "Error",
-                            text: "Invalid username or password",
+                            text: response.message,
                             icon: "error"
                         });
                         refreshCaptcha();

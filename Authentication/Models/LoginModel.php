@@ -9,6 +9,7 @@ class LoginModel {
         $this->conn = $dbConnection;
     }
     public function getUserByUsername($username) {
+        
         $isActive = true;
         $stmt = $this->conn->prepare("SELECT `id`, `username`, `password`, `company_id`, `is_active` FROM `users` WHERE username=:username AND is_active=:isActive");
         $stmt->bindParam(":username", $username);
@@ -16,11 +17,8 @@ class LoginModel {
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($result) {
-            return $result;
-        } else {
-            return null;
-        } 
+        return $result ? $result : null;
+
     }
 
     public function getLoginAttempts($userId) {
@@ -32,11 +30,7 @@ class LoginModel {
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($result) {
-            return $result['count'];
-        } else {
-            return 0;
-        }
+        return $result ? $result['count'] : 0;
 
     }
 
@@ -67,6 +61,29 @@ class LoginModel {
                 'error' => $stmt->errorInfo()
             ];
         }
+
+    }
+
+    public function updateToken($userId, $token) {
+
+        $stmt = $this->conn->prepare("UPDATE `users` SET `token` = :token WHERE `id` = :userId");
+        $stmt->bindParam(":token", $token);
+        $stmt->bindParam(":userId", $userId);
+
+        return $stmt->execute() ? true : false;
+
+    }
+
+    public function getSystemIdAndRoleIdByUserId($userId) {
+        
+        $isActive = true;
+        $stmt = $this->conn->prepare("SELECT `role_id`, `system_id` FROM `user_roles` WHERE user_id=:userId AND is_active=:isActive");
+        $stmt->bindParam(":userId", $userId);
+        $stmt->bindParam(":isActive", $isActive);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
 
     }
 }
