@@ -2,8 +2,8 @@
 require_once './header.php';
 ?>
 
-<div class="wrapper">
-    <form id="login">
+<div class="wrapper wrapper-2">
+    <form id="login2">
         <div class="heading">
             <h2>Welcome!</h2>
             <p>Sign In to your account</p>
@@ -36,6 +36,9 @@ require_once './header.php';
         </div>
     </form>
 </div>
+
+<script src="./Js/main.js"></script>
+<script src="./Js/ajax.js"></script>
 
 <?php
 require_once './footer.php';

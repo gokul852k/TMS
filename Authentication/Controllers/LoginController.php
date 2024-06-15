@@ -31,6 +31,15 @@ class LoginController {
         echo json_encode($result, true);
     }
 
+    private function login2() {
+        $username = isset($_POST['username']) ? $_POST['username'] : '';
+        $password = isset($_POST['password']) ? $_POST['password'] : '';
+
+        $result = $this->service->loginUser2($username, $password);
+
+        echo json_encode($result, true);
+    }
+
     private function logout() {
         echo "this is logout";
     }

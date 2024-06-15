@@ -45,7 +45,6 @@ class LoginService
             $token = $this->generateToken($user['id']);
             if ($this->model->updateToken($user['id'], $token)) {
                 //Get the redirect URL (User want to go which system)
-                $redirectUrl = '../../Common/Common function/';
                 $redirectUrl = $this->systemURL($user['id']);
                 if (!$redirectUrl) {
                     return [
@@ -53,6 +52,88 @@ class LoginService
                         'message' => 'Something went wrong'
                     ];
                 } else {
+                    return [
+                        'status' => 'success',
+                        'message' => 'Login successful',
+                        'userId' => $user['id'],
+                        'token' => $token,
+                        'redirect' => $redirectUrl
+                    ];
+                }
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Something went wrong'
+                ];
+            }
+
+
+        } else {
+
+            //Security Check for avoid brute force attacks
+            $loginAttempts = $this->model->getLoginAttempts($user['id']);
+
+            if ($loginAttempts > 5) {
+                $ipAddress = $this->getUserIP();
+                $response = $this->model->setLoginAttempts($user['id'], $ipAddress, false);
+                return [
+                    'status' => 'warning',
+                    'message' => 'Due to security reasons, you were unable to log in. Please try again after 20 minutes.'
+                ];
+            } else {
+                $ipAddress = $this->getUserIP();
+                $response = $this->model->setLoginAttempts($user['id'], $ipAddress, false);
+            }
+            return [
+                'status' => 'error',
+                'message' => 'Invalid username or password'
+            ];
+        }
+    }
+
+    public function loginUser2($username, $password)
+    {
+
+        $user = $this->model->getUserByUsername($username);
+
+        if (!$user) {
+            return [
+                'status' => 'error',
+                'message' => 'User does not exist'
+            ];
+        }
+
+        if ($user && password_verify($password, $user['password'])) {
+
+            //Security Check for avoid brute force attacks
+            $loginAttempts = $this->model->getLoginAttempts($user['id']);
+
+            if ($loginAttempts > 5) {
+                $ipAddress = $this->getUserIP();
+                $response = $this->model->setLoginAttempts($user['id'], $ipAddress, false);
+                return [
+                    'status' => 'warning',
+                    'message' => 'Due to security reasons, you were unable to log in. Please try again after 20 minutes.'
+                ];
+            } else {
+                $ipAddress = $this->getUserIP();
+                $response = $this->model->setLoginAttempts($user['id'], $ipAddress, true);
+            }
+
+            //Update Token
+            $token = $this->generateToken($user['id']);
+            if ($this->model->updateToken($user['id'], $token)) {
+                //Get the redirect URL (User want to go which system)
+                $redirectUrl = $this->systemURL($user['id']);
+                if (!$redirectUrl) {
+                    return [
+                        'status' => 'error',
+                        'message' => 'Something went wrong'
+                    ];
+                } else {
+                    //Store token using cookie (Need to change localhost to domain name Eg: example.com)
+                    setcookie('remember_me_tms_user', $token, time() + (50 * 365 * 24 * 60 * 60), '/', 'localhost', false, true);
+
                     return [
                         'status' => 'success',
                         'message' => 'Login successful',

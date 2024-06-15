@@ -20,6 +20,10 @@ body {
     margin: 15px;
 }
 
+.wrapper-2 {
+    width: 350px;
+}
+
 .logo-card {
     display: flex;
     align-items: flex-start;
@@ -48,7 +52,29 @@ body {
 .login-left {
     width: 280px;
 }
-
+@media only screen and (max-width: 769px) {
+    .login-right {
+      display: none;
+    }
+    .login-left {
+        width: 100%;
+    }
+    .wrapper {
+        padding: 20px;
+        width: 360px;
+    }
+    .wrapper-2 {
+        width: 360px;
+    }
+    .logo-left {
+        width: 50px;
+    }
+    .logo-right {
+        font-size: 40px;
+        position: relative;
+        top: 3px;
+    }
+}
 .heading p {
     color: gray;
 }
