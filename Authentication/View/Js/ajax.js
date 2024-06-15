@@ -1,3 +1,4 @@
+// Admin Login Ajax
 $(document).ready(function () {
     $('#login').on('submit', function (event) {
         event.preventDefault();
@@ -97,6 +98,8 @@ $(document).ready(function () {
     })
 })
 
+
+//User login Ajax
 $(document).ready(function () {
     $('#login2').on('submit', function (event) {
         event.preventDefault();
@@ -174,4 +177,67 @@ $(document).ready(function () {
 
 
     })
-})
+});
+
+//Forgot password Ajax
+$(document).ready(function () {
+    $('#forgot-password').on('submit', function (event) {
+        event.preventDefault();
+        let mail = $('#mail').val();
+        if(mail!="") {
+            $('#mail').removeClass('input-error');
+            $('#mail-error').html('');
+        }else {
+            $('#mail').addClass('input-error');
+            $('#mail-error').html('Mail is required');
+            return false;
+        }
+        //Check captcha value
+        if (mail!="" && password_value!="") {
+            var formData = {
+                action: 'forgotPassword',
+                mail: mail
+            }
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/PasswordController.php',
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    // let data = JSON.parse(response);
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            title: "Success",
+                            text: response.message,
+                            icon: "success"
+                        });
+                    } else if (response.status == 'error') {
+                        $('#mail').addClass('input-error');
+                        Swal.fire({
+                            title: "Error",
+                            text: response.message,
+                            icon: "error"
+                        });
+                        refreshCaptcha();
+                        document.getElementById('captchavalue').value = "";
+                    } else if(response.status === 'warning') {
+                        Swal.fire({
+                            title: "warning",
+                            text: response.message,
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        title: "Error",
+                        text: "Something went wrong! Please try again.",
+                        icon: "error"
+                    });
+                }
+            })
+        }
+    })
+});

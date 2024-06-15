@@ -22,6 +22,7 @@ body {
 
 .wrapper-2 {
     width: 350px;
+    padding: 30px;
 }
 
 .logo-card {
@@ -159,6 +160,7 @@ input[type=checkbox]:checked~.custom-checkbox::before {
     }
 }
 
-
-
+.m-b-15 {
+    margin: 0 0 10px 0;
+}
 
