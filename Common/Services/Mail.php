@@ -3,7 +3,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require_once "../External/PHPMailer/autoload.php";
+require_once __DIR__ . '/../External/PHPMailer/autoload.php';
 class Mail
 {
     function sendMail($to, $subject, $body)
@@ -32,6 +32,6 @@ class Mail
             error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
 
-        return json_encode($response);
+        return $response;
     }
 }

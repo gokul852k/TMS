@@ -11,7 +11,7 @@ class LoginModel {
     public function getUserByUsername($username) {
         
         $isActive = true;
-        $stmt = $this->conn->prepare("SELECT `id`, `username`, `password`, `company_id`, `is_active` FROM `users` WHERE username=:username AND is_active=:isActive");
+        $stmt = $this->conn->prepare("SELECT `id`, `username`, `password`, `company_id`, `force_password_change`, `is_active` FROM `users` WHERE username=:username AND is_active=:isActive");
         $stmt->bindParam(":username", $username);
         $stmt->bindParam(":isActive", $isActive);
         $stmt->execute();

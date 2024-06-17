@@ -36,9 +36,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (response) {
                     console.log(response);
-                    // let data = JSON.parse(response);
                     if (response.status === 'success') {
-                        // window.location.href = response.redirect;
 
                         let userId = response.userId;
                         let token = response.token;
@@ -63,6 +61,8 @@ $(document).ready(function () {
                         document.body.appendChild(form);
                         form.submit();
 
+                    } else if (response.status == 'change password') {
+                        window.location.href = response.url;
                     } else if (response.status == 'error') {
                         $('#username').addClass('input-error');
                         $('#password').addClass('input-error');
@@ -146,6 +146,8 @@ $(document).ready(function () {
                         
                         window.location.href = postUrl;
 
+                    } else if (response.status == 'change password') {
+                        window.location.href = response.url;
                     } else if (response.status == 'error') {
                         $('#username').addClass('input-error');
                         $('#password').addClass('input-error');
@@ -193,7 +195,7 @@ $(document).ready(function () {
             return false;
         }
         //Check captcha value
-        if (mail!="" && password_value!="") {
+        if (mail!="") {
             var formData = {
                 action: 'forgotPassword',
                 mail: mail
@@ -211,6 +213,10 @@ $(document).ready(function () {
                             title: "Success",
                             text: response.message,
                             icon: "success"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
                         });
                     } else if (response.status == 'error') {
                         $('#mail').addClass('input-error');
@@ -227,7 +233,7 @@ $(document).ready(function () {
                             text: response.message,
                             icon: "error"
                         });
-                    }
+                    } 
                 },
                 error: function (xhr, status, error) {
                     console.error(xhr.responseText);
@@ -241,3 +247,84 @@ $(document).ready(function () {
         }
     })
 });
+
+//Change new Password
+
+$(document).ready(function () {
+    $('#change-password').on('submit', function (event) {
+        event.preventDefault();
+        let createPassword = $('#create-password').val();
+        let confirmPassword = $('#confirm-password').val();
+        let token = $('#token').val();
+        if (createPassword != "") {
+            if(createPassword.length < 5) {
+                $('#create-password').addClass('input-error');
+                $('#create-error').html('Minimum of 5 characters required.');
+                return false;
+            }
+            $('#create-password').removeClass('input-error');
+            $('#create-error').html('');
+        } else {
+            $('#create-password').addClass('input-error');
+            $('#create-error').html('Password is required.');
+            return false;
+        }
+
+        if (createPassword === confirmPassword) {
+            $('#confirm-password').removeClass('input-error');
+            $('#confirm-error').html('');
+        } else {
+            $('#confirm-password').addClass('input-error');
+            $('#confirm-error').html('Confirm password does not match.');
+            return false;
+        }
+        //Check captcha value
+        if (createPassword != "" && confirmPassword != "" && createPassword === confirmPassword) {
+            var formData = {
+                action: 'changePassword',
+                token: token,
+                create_password: createPassword,
+                confirm_password: confirmPassword
+            }
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/PasswordController.php',
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    if (response.status == 'success') {
+                        Swal.fire({
+                            title: "Success",
+                            text: response.message,
+                            icon: "success",
+                            confirmButtonText: "Login"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = response.redirectUrl;
+                            }
+                        });
+                    } else {
+                        $('#create-password').addClass('input-error');
+                        $('#confirm-password').addClass('input-error');
+                        Swal.fire({
+                            title: "Error",
+                            text: response.message,
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        title: "Error",
+                        text: "Something went wrong! Please try again.",
+                        icon: "error"
+                    });
+                }
+            })
+        }
+
+
+    })
+})

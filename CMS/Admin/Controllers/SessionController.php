@@ -15,7 +15,6 @@ class SessionController {
         // }
         
         if ($this->tokenValidation()) {
-            echo 'token success';
             $this->storeSessionValue();
         } else {
             die("Invalid request");

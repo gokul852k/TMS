@@ -1,15 +1,19 @@
 <?php
 require_once '../config.php';
 require_once '../Models/LoginModel.php';
+require_once '../Services/PasswordService.php';
 
 class LoginService
 {
     private $model;
+
+    private $passwordService;
     public function __construct()
     {
 
         global $conn;
         $this->model = new LoginModel($conn);
+        $this->passwordService = new PasswordService();
 
     }
     public function loginUser($username, $password)
@@ -52,6 +56,17 @@ class LoginService
                         'message' => 'Something went wrong'
                     ];
                 } else {
+                    //Check for force password change
+                    if ($user['force_password_change'] == true) {
+                        $response2 = $this->passwordService->forcePasswordChange($user['id']);
+                        if ($response2['status'] == 'success') {
+                            return [
+                                'status' => 'change password',
+                                'url' => $response2['url']
+                            ];
+                        }
+                    }
+
                     return [
                         'status' => 'success',
                         'message' => 'Login successful',
@@ -131,6 +146,16 @@ class LoginService
                         'message' => 'Something went wrong'
                     ];
                 } else {
+                    //Check for force password change
+                    if ($user['force_password_change'] == true) {
+                        $response2 = $this->passwordService->forcePasswordChange($user['id']);
+                        if ($response2['status'] == 'success') {
+                            return [
+                                'status' => 'change password',
+                                'url' => $response2['url']
+                            ];
+                        }
+                    }
                     //Store token using cookie (Need to change localhost to domain name Eg: example.com)
                     setcookie('remember_me_tms_user', $token, time() + (50 * 365 * 24 * 60 * 60), '/', 'localhost', false, true);
 

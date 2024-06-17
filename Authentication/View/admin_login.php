@@ -5,7 +5,7 @@ require_once './header.php';
 <div class="wrapper">
     <form id="login">
         <div class="logo-card">
-            <img src="../Assets/Developer/Svg/logo-3.svg" alt="logo" class="logo-left">
+            <img src="../Assets/Developer/Svg/logo.svg" alt="logo" class="logo-left">
             <span class="logo-right">stronu<span>X</span></span>
         </div>
         <div class="login-card">
@@ -47,7 +47,7 @@ require_once './header.php';
                 <div class="input-group row">
 
                     <div class="row">
-                        <a href="#">Forgot password?</a>
+                        <a href="./forgot_password.php">Forgot password?</a>
                     </div>
                 </div>
 

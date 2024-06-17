@@ -3,6 +3,10 @@ require_once './header.php';
 ?>
 
 <div class="wrapper wrapper-2">
+    <div class="logo-card">
+        <img src="../Assets/Developer/Svg/logo.svg" alt="logo" class="logo-left user-logo-left">
+        <span class="logo-right user-logo-right">stronu<span>X</span></span>
+    </div>
     <form id="login2">
         <div class="heading">
             <h2>Welcome!</h2>
@@ -26,7 +30,7 @@ require_once './header.php';
         <div class="input-group row">
 
             <div class="row">
-                <a href="#">Forgot password?</a>
+                <a href="./forgot_password.php">Forgot password?</a>
             </div>
         </div>
 

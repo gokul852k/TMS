@@ -34,10 +34,19 @@ body {
 .logo-left {
     width: 60px;
 }
+.user-logo-left {
+    width: 50px;
+}
 
 .logo-right {
     font-size: 50px;
     font-weight: bold;
+}
+
+.user-logo-right {
+    font-size: 40px;
+    position: relative;
+    top: 3px;
 }
 
 .logo-right span {
@@ -164,3 +173,15 @@ input[type=checkbox]:checked~.custom-checkbox::before {
     margin: 0 0 10px 0;
 }
 
+.time-limit-exit-div {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.time-limit-exit-img {
+    width: 100%;
+}
+
+.time-limit-exit-text {
+    color: gray;
+}

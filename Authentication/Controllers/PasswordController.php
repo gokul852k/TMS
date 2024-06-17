@@ -28,6 +28,10 @@ class PasswordController {
         echo json_encode($this->service->forgotPassword($_POST['mail']));
     }
 
+    private function changePassword() {
+        echo json_encode($this->service->changePassword($_POST['token'], $_POST['create_password'], $_POST['confirm_password']));
+    }
+
 }
 
 new PasswordController();
