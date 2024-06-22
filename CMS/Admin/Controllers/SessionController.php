@@ -27,7 +27,8 @@ class SessionController {
     }
 
     private function storeSessionValue() {
-        $this->service->storeSessionValue($_POST['userid']);
+        $response = $this->service->storeSessionValue($_POST['userid']);
+        echo $response['message'];
     }
     
 }

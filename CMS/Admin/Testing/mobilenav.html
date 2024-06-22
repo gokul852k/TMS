@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 12px;
+  background: linear-gradient(195deg, #ae6be0, #ddd);
+} */
+
+        /* .wrapper {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 53.3807829181px 16px;
+  background: #222;
+  border-radius: 20px;
+  box-shadow: 0 7px 0 0 #555;
+}
+.wrapper:before {
+  content: "";
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: #777;
+  z-index: 1;
+  top: 6%;
+  left: 50%;
+  width: 30%;
+  height: 1%;
+  border-radius: 500px;
+}
+.wrapper:after {
+  content: "";
+  position: absolute;
+  transform: translate(-50%, 50%);
+  bottom: 6%;
+  left: 50%;
+  width: 10%;
+  height: 5%;
+  border-radius: 500px;
+  border: 4px solid #666;
+} */
+
+        .app {
+            /* position: relative;
+  background: #fff;
+  flex: 0 0 auto;
+  width: 200px;
+  height: 355.871886121px;
+  margin: 5px;
+  overflow: hidden; */
+            /* position: fixed;
+  background: #fff;
+  flex: 0 0 auto;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  overflow: hidden; */
+        }
+
+        .mobile-nav {
+            .nav .nav-bar {
+                display: flex;
+                flex-flow: row;
+                /* position: relative; */
+                z-index: 1000;
+                position: fixed;
+                width: 100vw;
+                background-color: #ff9900;
+            }
+
+            .nav .logo {
+                flex: 1 1 100%;
+            }
+
+            .nav .nav-btn {
+                display: flex;
+                flex-flow: column;
+                align-items: center;
+                position: relative;
+                cursor: pointer;
+                flex: 0;
+                padding: 5px;
+            }
+
+            .nav .nav-btn .btn-bar {
+                position: relative;
+                width: 1.1em;
+                height: 3px;
+                border-radius: 5px;
+                background: #444;
+                margin: 2px;
+            }
+
+            .nav .nav-btn .btn-bar.menu:not(:first-child) {
+                margin-top: 3px;
+            }
+
+            .nav .nav-btn .btn-bar.close {
+                transform-origin: center center;
+                position: absolute;
+                margin-top: -1.5px;
+                opacity: 0;
+                top: 50%;
+            }
+
+            .nav .nav-content {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: -1;
+            }
+
+            .nav .nav-content .background {
+                position: absolute;
+                display: flex;
+                flex-flow: column;
+                align-items: stretch;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: -2px;
+            }
+
+            .nav .nav-content .portion {
+                background: #ff9900;
+            }
+
+            .nav .nav-content .portion:not(:first-child) {
+                margin-top: -1px;
+            }
+
+            .nav.open .nav-bar .nav-btn .btn-bar.menu {
+                opacity: 0;
+            }
+
+            .nav.open .nav-bar .nav-btn .btn-bar.close {
+                opacity: 1;
+            }
+
+            .wrapper:nth-child(1) .app .nav {
+                /*///////////////////////////////////
+  // Region: Nav Animations 
+  ///////////////////////////////////*/
+                /*///////////////////////////////////
+  // Region: Initial (Closed) States 
+  ///////////////////////////////////*/
+                /*///////////////////////////////////
+  // Region: Expanded (Open) States 
+  ///////////////////////////////////*/
+                /*///////////////////////////////////
+  // Region: Transition -> Menu Opening   
+  ///////////////////////////////////*/
+                /*///////////////////////////////////
+  // Region: Transition -> Menu Closing   
+  ///////////////////////////////////*/
+            }
+
+            .wrapper:nth-child(1) .app .nav .btn-bar.menu:nth-child(even) {
+                width: 1.7em;
+            }
+
+            .wrapper:nth-child(1) .app .nav .btn-bar.close:not(:last-child) {
+                transform: rotate(45deg) translateX(-250%);
+            }
+
+            .wrapper:nth-child(1) .app .nav .btn-bar.close:last-child {
+                transform: rotate(-45deg) translateX(250%);
+            }
+
+            .wrapper:nth-child(1) .app .nav .nav-content .background .portion {
+                flex: 1 1 100%;
+            }
+
+            .wrapper:nth-child(1) .app .nav .nav-content .background .portion:nth-child(odd) {
+                transform: translateX(-100%);
+            }
+
+            .wrapper:nth-child(1) .app .nav .nav-content .background .portion:nth-child(even) {
+                transform: translateX(100%);
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .nav-btn .btn-bar.menu:nth-child(odd) {
+                transform: translateX(-400%);
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .nav-btn .btn-bar.menu:nth-child(even) {
+                transform: translateX(200%);
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .nav-btn .btn-bar.close:not(:last-child) {
+                transform: rotate(45deg);
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .nav-btn .btn-bar.close:last-child {
+                transform: rotate(-45deg);
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .nav-content {
+                z-index: 1;
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .nav-content .background .portion {
+                transform: translateX(0%);
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .btn-bar.menu {
+                transition: transform 0.3s ease-in-out, opacity 0.15s ease-in-out 0.15s;
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .btn-bar.close {
+                transition: transform 0.2s ease-in-out 0.3s, opacity 0.05s ease-in-out 0.3s;
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .nav-content {
+                transition: z-index 0.01s ease-in-out 0.3s;
+            }
+
+            .wrapper:nth-child(1) .app .nav.open .nav-content .background .portion {
+                transition: transform 0.2s ease-in-out 0.3s;
+            }
+
+            .wrapper:nth-child(1) .app .nav .btn-bar.menu {
+                transition: transform 0.3s ease-in-out 0.2s, opacity 0.15s ease-in-out 0.2s;
+            }
+
+            .wrapper:nth-child(1) .app .nav .btn-bar.close {
+                transition: transform 0.2s ease-in-out, opacity 0.05s ease-in-out 0.2s;
+            }
+
+            .wrapper:nth-child(1) .app .nav .nav-content {
+                transition: z-index 0.01s ease-in-out 0.2s;
+            }
+
+            .wrapper:nth-child(1) .app .nav .nav-content .background .portion {
+                transition: transform 0.2s ease-in-out;
+            }
+
+            .wrapper:nth-child(2) .app .nav .nav-btn {
+                align-items: flex-end;
+            }
+
+            .wrapper:nth-child(2) .app .nav .btn-bar.menu:nth-child(1) {
+                transform-origin: top right;
+                transform: rotate(-45deg);
+                width: 1.8em;
+            }
+
+            .wrapper:nth-child(2) .app .nav .btn-bar.menu:nth-child(2) {
+                transform: rotate(-45deg) translate(0, -4px);
+            }
+
+            .wrapper:nth-child(2) .app .nav .btn-bar.menu:nth-child(3) {
+                transform: rotate(-45deg) translate(0, 1px);
+                width: 0.8em;
+            }
+
+            .wrapper:nth-child(2) .app .nav .btn-bar.close:not(:last-child) {
+                transform: rotate(45deg) translateX(-250%);
+            }
+
+            .wrapper:nth-child(2) .app .nav .btn-bar.close:last-child {
+                transform: rotate(-45deg) translateX(250%);
+            }
+
+            .wrapper:nth-child(2) .app .nav .nav-content .background {
+                transform-origin: center;
+                transform: rotate(-45deg) scale(2, 1.2);
+            }
+
+            .wrapper:nth-child(2) .app .nav .nav-content .background .portion {
+                flex: 1 1 100%;
+            }
+
+            .wrapper:nth-child(2) .app .nav .nav-content .background .portion:nth-child(odd) {
+                transform: translateX(-100%);
+            }
+
+            .wrapper:nth-child(2) .app .nav .nav-content .background .portion:nth-child(even) {
+                transform: translateX(100%);
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .nav-btn .btn-bar:nth-child(1) {
+                transform: rotate(-45deg) translateX(-400%);
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .nav-btn .btn-bar:nth-child(2) {
+                transform: rotate(-45deg) translate(0, -4px) translateX(200%);
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .nav-btn .btn-bar:nth-child(3) {
+                transform: rotate(-45deg) translate(0, 1px) translateX(200%);
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .nav-btn .btn-bar.close:not(:last-child) {
+                transform: rotate(45deg);
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .nav-btn .btn-bar.close:last-child {
+                transform: rotate(-45deg);
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .nav-content {
+                z-index: 1;
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .nav-content .background .portion {
+                transform: translateX(0%);
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .btn-bar.menu {
+                transition: transform 0.3s ease-in-out, opacity 0.15s ease-in-out 0.15s;
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .btn-bar.close {
+                transition: transform 0.5s ease-in-out 0.3s, opacity 0.125s ease-in-out 0.3s;
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .nav-content {
+                transition: z-index 0.01s ease-in-out 0.3s;
+            }
+
+            .wrapper:nth-child(2) .app .nav.open .nav-content .background .portion {
+                transition: transform 0.5s ease-in-out 0.3s;
+            }
+
+            .wrapper:nth-child(2) .app .nav .btn-bar.menu {
+                transition: transform 0.3s ease-in-out 0.5s, opacity 0.15s ease-in-out 0.5s;
+            }
+
+            .wrapper:nth-child(2) .app .nav .btn-bar.close {
+                transition: transform 0.5s ease-in-out, opacity 0.125s ease-in-out 0.5s;
+            }
+
+            .wrapper:nth-child(2) .app .nav .nav-content {
+                transition: z-index 0.01s ease-in-out 0.5s;
+            }
+
+            .wrapper:nth-child(2) .app .nav .nav-content .background .portion {
+                transition: transform 0.5s ease-in-out;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mobile-nav">
+        <div class='wrapper'>
+            <div class='app'>
+                <div class='nav'>
+                    <div class='nav-bar'>
+                        <div class='logo'></div>
+                        <div class='nav-btn'>
+                            <div class='btn-bar menu'></div>
+                            <div class='btn-bar menu'></div>
+                            <div class='btn-bar menu'></div>
+                            <div class='btn-bar close'></div>
+                            <div class='btn-bar close'></div>
+                        </div>
+                    </div>
+                    <div class='nav-content' style="display: none;">
+                        <div class="nav-list" style="display: none; position: relative; z-index: 10;">
+                            <p>Home</p>
+                            <p>Visit</p>
+                            <p>Helpe</p>
+                        </div>
+
+                        <div class='background'>
+                            <div class='portion'></div>
+                            <div class='portion'></div>
+                            <div class='portion'></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="./home.php">hello gokul</a>
+        Paragraphs & Topic Sentences
+        A paragraph is a series of sentences that are organized and coherent, and are all related to a single topic.
+        Almost every piece of writing you do that is longer than a few sentences should be organized into paragraphs.
+        This is because paragraphs show a reader where the subdivisions of an essay begin and end, and thus help the
+        reader see the organization of the essay and grasp its main points.
+
+        Paragraphs can contain many different kinds of information. A paragraph could contain a series of brief examples
+        or a single long illustration of a general point. It might describe a place, character, or process; narrate a
+        series of events; compare or contrast two or more things; classify items into categories; or describe causes and
+        effects. Regardless of the kind of information they contain, all paragraphs share certain characteristics. One
+        of the most important of these is a topic sentence.
+
+        TOPIC SENTENCES
+        A well-organized paragraph supports or develops a single controlling idea, which is expressed in a sentence
+        called the topic sentence. A topic sentence has several important functions: it substantiates or supports an
+        essay’s thesis statement; it unifies the content of a paragraph and directs the order of the sentences; and it
+        advises the reader of the subject to be discussed and how the paragraph will discuss it. Readers generally look
+        to the first few sentences in a paragraph to determine the subject and perspective of the paragraph. That’s why
+        it’s often best to put the topic sentence at the very beginning of the paragraph. In some cases, however, it’s
+        more effective to place another sentence before the topic sentence—for example, a sentence linking the current
+        paragraph to the previous one, or one providing background information.
+
+        Although most paragraphs should have a topic sentence, there are a few situations when a paragraph might not
+        need a topic sentence. For example, you might be able to omit a topic sentence in a paragraph that narrates a
+        series of events, if a paragraph continues developing an idea that you introduced (with a topic sentence) in the
+        previous paragraph, or if all the sentences and details in a paragraph clearly refer—perhaps indirectly—to a
+        main point. The vast majority of your paragraphs, however, should have a topic sentence.
+
+        PARAGRAPH STRUCTURE
+        Most paragraphs in an essay have a three-part structure—introduction, body, and conclusion. You can see this
+        structure in paragraphs whether they are narrating, describing, comparing, contrasting, or analyzing
+        information. Each part of the paragraph plays an important role in communicating your meaning to your reader.
+
+        Introduction: the first section of a paragraph; should include the topic sentence and any other sentences at the
+        beginning of the paragraph that give background information or provide a transition.
+
+        Body: follows the introduction; discusses the controlling idea, using facts, arguments, analysis, examples, and
+        other information.
+
+        Conclusion: the final section; summarizes the connections between the information discussed in the body of the
+        paragraph and the paragraph’s controlling idea.
+
+        The following paragraph illustrates this pattern of organization. In this paragraph the topic sentence and
+        concluding sentence (CAPITALIZED) both help the reader keep the paragraph’s main point in mind.
+
+        SCIENTISTS HAVE LEARNED TO SUPPLEMENT THE SENSE OF SIGHT IN NUMEROUS WAYS. In front of the tiny pupil of the eye
+        they put, on Mount Palomar, a great monocle 200 inches in diameter, and with it see 2000 times farther into the
+        depths of space. Or they look through a small pair of lenses arranged as a microscope into a drop of water or
+        blood, and magnify by as much as 2000 diameters the living creatures there, many of which are among man’s most
+        dangerous enemies. Or, if we want to see distant happenings on earth, they use some of the previously wasted
+        electromagnetic waves to carry television images which they re-create as light by whipping tiny crystals on a
+        screen with electrons in a vacuum. Or they can bring happenings of long ago and far away as colored motion
+        pictures, by arranging silver atoms and color-absorbing molecules to force light waves into the patterns of
+        original reality. Or if we want to see into the center of a steel casting or the chest of an injured child, they
+        send the information on a beam of penetrating short-wave X rays, and then convert it back into images we can see
+        on a screen or photograph. THUS ALMOST EVERY TYPE OF ELECTROMAGNETIC RADIATION YET DISCOVERED HAS BEEN USED TO
+        EXTEND OUR SENSE OF SIGHT IN SOME WAY.
+
+        George Harrison, “Faith and the Scientist”
+    </div>
+    <!-- <div class='wrapper'>
+        <div class='app'>
+          <div class='nav'>
+            <div class='nav-bar'>
+              <div class='logo'></div>
+              <div class='nav-btn'>
+                <div class='btn-bar menu'></div>
+                <div class='btn-bar menu'></div>
+                <div class='btn-bar menu'></div>
+                <div class='btn-bar close'></div>
+                <div class='btn-bar close'></div>
+              </div>
+            </div>
+            <div class='nav-content'>
+              <div class='background'>
+                <div class='portion'></div>
+                <div class='portion'></div>
+                <div class='portion'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+    <script>
+        (function (cb) {
+            // browser event has already occurred.
+            if (document.readyState === "complete") {
+                return setTimeout(cb);
+            }
+
+            // Mozilla, Opera and webkit style
+            if (window.addEventListener) {
+                return window.addEventListener("load", cb, false);
+            }
+
+            // If IE event model is used
+            if (window.attachEvent) {
+                return window.attachEvent("onload", cb);
+            }
+        })(function () {
+            document.querySelectorAll(".nav-btn").forEach(function (el) {
+                el.addEventListener("click", function () {
+                    var nav = this.parentElement.parentElement,
+                        _class = "open";
+
+                    if (nav.classList.contains(_class)) {
+                        nav.classList.remove(_class);
+                        document.getElementsByClassName("nav-list")[0].style.display = "none";
+                        setTimeout(() => {
+                            document.getElementsByClassName("nav-content")[0].style.display = "none";
+                        }, 500);
+                    } else {
+                        document.getElementsByClassName("nav-content")[0].style.display = "block";
+                        setTimeout(() => {
+                            nav.classList.add(_class);
+                        }, 1);
+                        setTimeout(() => {
+                            document.getElementsByClassName("nav-list")[0].style.display = "block";
+                        }, 500);
+
+                    }
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>

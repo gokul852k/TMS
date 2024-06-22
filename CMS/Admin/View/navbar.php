@@ -1,100 +1,62 @@
-<link rel="stylesheet" href="../../../Common/Common file/admin_navbar.css">
+<?php
+require_once '../Services/NavbarServices.php';
 
-<nav class="sidebar labtop-nav">
-    <header>
-        <div class="image-text">
-            <span class="image">
-                <img src="../../../Common/Assets/Developer/svg/logo.svg" alt="">
-                <!-- <i class="fa-solid fa-diamond"></i> -->
-            </span>
+$navbarServices = new NavbarServices();
 
-            <div class="text logo-text">
-                <span class="name">stronu<span class="first-color">X</span></span>
-                <span class="profession"></span>
+$navbarResponse = $navbarServices->adminNavbar();
+
+if ($navbarResponse && !empty($navbarResponse)) {
+    ?>
+
+    <link rel="stylesheet" href="../../../Common/Common file/admin_navbar.css">
+
+    <nav class="sidebar labtop-nav">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="../../../Common/Assets/Developer/svg/logo.svg" alt="">
+                    <!-- <i class="fa-solid fa-diamond"></i> -->
+                </span>
+
+                <div class="text logo-text">
+                    <span class="name">stronu<span class="first-color">X</span></span>
+                    <span class="profession"></span>
+                </div>
             </div>
-        </div>
 
-        <i class='bx bx-chevron-right toggle'></i>
-    </header>
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
 
-    <div class="menu-bar">
-        <div class="menu">
+        <div class="menu-bar">
+            <div class="menu">
 
-            <!-- <li class="search-box">
-                    <i class='bx bx-search icon'></i>
-                    <input type="text" placeholder="Search Ganes...">
-                </li> -->
+                <ul class="menu-links">
+                    <?php
+                    foreach ($navbarResponse as $navbarData) {
+                        ?>
+                        <li class="nav-link">
+                            <a href="<?=$navbarData['url']?>">
+                                <?=$navbarData['icon']?>
+                                <span class="text nav-text"><?=$navbarData['label']?></span>
+                            </a>
+                        </li>
+                        <?php
+                    }
+                    ?>
 
-            <ul class="menu-links">
-                <li class="nav-link">
-                    <a href="./home.php">
-                        <i class='bx bxs-dashboard icon'></i>
-                        <span class="text nav-text">Dashboard</span>
+                </ul>
+            </div>
+
+            <div class="bottom-content">
+                <li class="">
+                    <a href="./logout.php">
+                        <!-- <i class='bx bx-log-out icon'></i> -->
+                        <i class="fa-duotone fa-arrow-right-from-bracket icon"></i>
+                        <span class="text nav-text">Logout</span>
                     </a>
                 </li>
 
-                <li class="nav-link">
-                    <a href="daily_report.php">
-                        <i class="fa-duotone fa-chart-simple icon"></i>
-                        <span class="text nav-text">Daily Report</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="fuel_report.php">
-                        <i class="fa-duotone fa-chart-pyramid icon"></i>
-                        <span class="text nav-text">Fuel Report</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="maintenance_report.php">
-                        <i class="fa-duotone fa-wrench-simple icon"></i>
-                        <span class="text nav-text">Maintenance Report</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="register_company.php">
-                        <i class="fa-duotone fa-hexagon-plus icon"></i>
-                        <span class="text nav-text">Register Company</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="./register_driver.php">
-                        <i class="fa-duotone fa-user-plus icon"></i>
-                        <span class="text nav-text">Register Driver</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="./driver_details.php">
-                        <i class="fa-duotone fa-id-card icon"></i>
-                        <span class="text nav-text">Driver Details</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="./addvehicle.php">
-                        <i class="fa-duotone fa-car icon"></i>
-                        <span class="text nav-text">Add Vehicle</span>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-        <div class="bottom-content">
-            <li class="">
-                <a href="./logout.php">
-                    <!-- <i class='bx bx-log-out icon'></i> -->
-                    <i class="fa-duotone fa-arrow-right-from-bracket icon"></i>
-                    <span class="text nav-text">Logout</span>
-                </a>
-            </li>
-
-            <!-- <li class="mode">
+                <!-- <li class="mode">
                     <div class="sun-moon">
                         <i class='bx bx-moon icon moon'></i>
                         <i class='bx bx-sun icon sun'></i>
@@ -106,14 +68,58 @@
                     </div>
                 </li> -->
 
+            </div>
+        </div>
+
+    </nav>
+
+    <div class="mobile-nav">
+        <div class='wrapper'>
+            <div class='app'>
+                <div class='nav'>
+                    <div class='nav-bar'>
+                        <div class='logo'>AstronuX</div>
+                        <div class='nav-btn'>
+                            <div class='btn-bar menu'></div>
+                            <div class='btn-bar menu'></div>
+                            <div class='btn-bar menu'></div>
+                            <div class='btn-bar close'></div>
+                            <div class='btn-bar close'></div>
+                        </div>
+                    </div>
+                    <div class='nav-content' style="display: none;">
+                        <ul class="nav-list" style="display: none; position: relative; z-index: 10;">
+                            <?php
+                            foreach ($navbarResponse as $navbarData) {
+                                ?>
+                                <li>
+                                    <a href="<?=$navbarData['url']?>">
+                                        <?=$navbarData['icon']?>
+                                        <span class="nav-text"><?=$navbarData['label']?></span>
+                                    </a>
+                                </li>
+                                <?php
+                            }
+
+                            ?>
+                        </ul>
+
+                        <div class='background'>
+                            <div class='portion'></div>
+                            <div class='portion'></div>
+                            <div class='portion'></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-</nav>
+    <script src="../../../Common/Common file/navbar.js"></script>
+    <script src="../../../Common/Common file/mobile_navbar.js"></script>
 
-<nav id="nav" class="nav mobile-nav" role="navigation">
-
-</nav>
-
-
-<script src="../../../Common/Common file/navbar.js"></script>
+    <?php
+} else {
+    echo "fuck you";
+}
+?>
