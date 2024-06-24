@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once '../../config.php';
 require_once '../Models/SessionModel.php';
 
 class SessionServices {
