@@ -198,6 +198,27 @@ class LoginService
         }
     }
 
+    public function checkLoginUser2() {
+        if (isset($_COOKIE['remember_me_tms_user'])) {
+            $response = $this->model->getUserIdByToken($_COOKIE['remember_me_tms_user']);
+            if ($response) {
+                $userid = $response['id'];
+                return [
+                    "status" => "logged in",
+                    "url" => $this->systemURL($userid)
+                ];
+            }
+
+            return [
+                "status" => "error",
+                "message" => "User ID error. We're looking into it."
+            ];
+        }
+        return [
+            "status" => "error",
+            "message" => "User ID enot found"
+        ];
+    }
     public function getUserIP()
     {
         if (isset($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)) {

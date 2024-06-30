@@ -128,7 +128,7 @@ input:focus {
   border: none;
   color: #FFFFFF;
   background-color: var(--primary-color);
-  border-radius: 5px;
+  border-radius: 6px 3px 6px 3px;
   font-size: 17px;
   font-weight: 500;
   cursor: pointer;
@@ -145,6 +145,13 @@ input:focus {
   box-shadow: var(--first-shadow);
   padding: 30px !important;
   margin: 10px;
+}
+
+.box-container-2 {
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  box-shadow: var(--first-shadow);
+  padding: 30px !important;
 }
 
 .password-div {
@@ -313,6 +320,7 @@ tr {
   background-color: var(--primary-color) !important;
   color: white !important;
   font-weight: 600 !important;
+  text-align: center !important;
 
 }
 
@@ -378,11 +386,21 @@ div.dt-container .dt-input {
   padding: 7px 10px;
   font-size: 14px;
   font-family: inherit;
-  border-radius: 0 0 6px 0;
+  border-radius: 6px 0 6px 0;
   color: var(--input-color);
   border: 1px solid var(--input-border);
   background: var(--input-background);
   transition: border 0.3s ease;
+}
+
+div.dt-container .dt-paging .dt-paging-button.current, div.dt-container .dt-paging .dt-paging-button.current:hover {
+  border: 1px solid var(--primary-color) !important;
+  background-color: var(--group-background);
+  border-radius: 6px 0 6px 0;
+}
+
+div.dt-container .dt-length, div.dt-container .dt-search, div.dt-container .dt-info, div.dt-container .dt-processing, div.dt-container .dt-paging {
+  color: var(--text-color);
 }
 
 /* Card Style */

@@ -1,6 +1,6 @@
 <?php
 session_start();
-// print_r($_SESSION);
+print_r($_SESSION);
 require_once './header.php';
 require_once './navbar.php';
 

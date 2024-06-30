@@ -1,0 +1,133 @@
+.avatar-upload {
+    position: relative;
+    max-width: 205px;
+    margin: 0px auto 20px auto;
+}
+
+.avatar-upload .avatar-edit {
+    position: absolute;
+    right: 12px;
+    z-index: 1;
+    top: 10px;
+}
+
+.avatar-upload .avatar-edit input {
+    display: none;
+}
+
+.avatar-upload .avatar-edit input+label {
+    display: inline-block;
+    position: absolute;
+    top: -5px;
+    right: 5px;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
+    border-radius: 100%;
+    background: #ffffff;
+    border: 1px solid transparent;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    font-weight: normal;
+    transition: all 0.2s ease-in-out;
+}
+
+.avatar-upload .avatar-edit input+label:hover {
+    background: #f1f1f1;
+    border-color: #d6d6d6;
+}
+
+.avatar-upload .avatar-edit input+label:after {
+    content: "\f055";
+    font-family: "FontAwesome";
+    color: var(--primary-color);
+    position: absolute;
+    top: 2px;
+    font-size: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: auto;
+}
+
+.avatar-upload .avatar-preview {
+    width: 192px;
+    height: 192px;
+    position: relative;
+    border-radius: 10px;
+    border: 6px solid #f8f8f8;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-upload .avatar-preview>div {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Driver view style */
+
+.info-profile-image-div {
+    display: flex;
+    justify-content: center;
+}
+
+.info-profile-image {
+    width: 100%;
+    border-radius: 5px;
+    max-height: 240px;
+    max-width: 240px;
+
+}
+
+.info-title {
+    margin: 10px 0;
+    color: var(--primary-color);
+}
+
+.info-content {
+    color: var(--text-color);
+    margin: 6px 0;
+    font-size: .9rem;
+}
+
+.info-heading {
+    margin: 6px 0;
+}
+
+.info-content {
+    color: var(--text-color);
+    margin: 0 0 10px 0;
+    font-size: .9rem;
+}
+
+.p-r-0 {
+    padding-right: 0;
+}
+
+.m-b-10 {
+    margin-bottom: 10px;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.document-view i {
+    font-size: 3rem;
+}
+
+.d-v-1 {
+    color: #6078ea;
+}
+
+.d-v-2 {
+    color: #00b09b;
+}
+
+.d-v-3 {
+    color: #f54ea2;
+}

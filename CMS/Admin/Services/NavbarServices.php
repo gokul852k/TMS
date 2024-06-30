@@ -14,7 +14,8 @@ class NavbarServices {
 
         if (!$this->sesion->isLoggedIn()) {
             // Handle the case where the user is not logged in
-            header('Location: login.php');
+            $redirctUrl = '../../../Authentication/View/admin_login.php';
+            header('Location: '.$redirctUrl);
             exit();
         }
         global $cmsDB;

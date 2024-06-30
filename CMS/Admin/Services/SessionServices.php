@@ -2,13 +2,15 @@
 require_once '../../config.php';
 require_once '../Models/SessionModel.php';
 
-class SessionServices {
+class SessionServices
+{
 
     private $modelMA;
     private $modelA;
 
     private $modelCMS;
-    public function __construct() {
+    public function __construct()
+    {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
@@ -20,16 +22,18 @@ class SessionServices {
         $this->modelCMS = new SessionModel($cmsDB);
     }
 
-    public function tokenValidation($userId, $token) {
+    public function tokenValidation($userId, $token)
+    {
         $response = $this->modelA->getToken($userId);
-        if($response['token'] == $token) {
-            return true; 
+        if ($response['token'] == $token) {
+            return true;
         } else {
             return false;
         }
     }
 
-    public function storeSessionValue($userId) {
+    public function storeSessionValue($userId)
+    {
 
         //Get company ID
         $response1 = $this->modelA->getToken($userId);
@@ -53,7 +57,7 @@ class SessionServices {
             $_SESSION['companyLogo'] = $response2['company_logo'];
             $_SESSION['languageCode'] = $response2['language_code'];
             $_SESSION['userRoleId'] = $response4['id'];
-            
+
             $redirectUrl = '../View/index.php';
             header('Location: ' . $redirectUrl);
             exit;
@@ -65,7 +69,17 @@ class SessionServices {
         }
     }
 
-    public function isLoggedIn() {
+    public function isLoggedIn()
+    {
         return isset($_SESSION['userId']);
+    }
+
+    public function logout()
+    {
+        session_unset();
+        session_destroy();
+        return [
+            "status" => "success"
+        ];
     }
 }

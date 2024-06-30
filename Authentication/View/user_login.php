@@ -1,5 +1,14 @@
 <?php
 require_once './header.php';
+require_once '../Services/LoginService.php';
+
+$LoginServices = new LoginService();
+$response1 = $LoginServices->checkLoginUser2();
+if ($response1['status'] === 'logged in') {
+    $redirectUrl = $response1['url'];
+    header('Location: ' . $redirectUrl);
+    exit;
+}
 ?>
 
 <div class="wrapper wrapper-2">

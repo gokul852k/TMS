@@ -35,3 +35,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- jQuery end -->
+
+<!-- DataTable start -->
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
+
+<script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
+
+<!-- DataTable end -->

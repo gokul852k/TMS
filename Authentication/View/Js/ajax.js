@@ -43,7 +43,7 @@ $(document).ready(function () {
                         let postUrl = response.redirect;
 
                         let form = document.createElement("form");
-                        form.setAttribute("method", "post");
+                        form.setAttribute("method", "POST");
                         form.setAttribute("action", postUrl);
 
                         let userIdInput = document.createElement("input");

@@ -4,7 +4,6 @@ require_once '../Services/NavbarServices.php';
 $navbarServices = new NavbarServices();
 
 $navbarResponse = $navbarServices->adminNavbar();
-
 if ($navbarResponse && !empty($navbarResponse)) {
     ?>
 
@@ -40,6 +39,13 @@ if ($navbarResponse && !empty($navbarResponse)) {
                             }
 
                             ?>
+                            <li class="">
+                                <a href="#" class="logout">
+                                    <!-- <i class='bx bx-log-out icon'></i> -->
+                                    <i class="fa-duotone fa-arrow-right-from-bracket icon"></i>
+                                    <span class="nav-text">Logout</span>
+                                </a>
+                            </li>
                         </ul>
 
                         <div class='background'>
@@ -55,9 +61,10 @@ if ($navbarResponse && !empty($navbarResponse)) {
 
     <script src="../../../Common/Common file/navbar.js"></script>
     <script src="../../../Common/Common file/mobile_navbar.js"></script>
+    <script src="./Js/ajax.js"></script>
 
     <?php
 } else {
-    echo "fuck you";
+    echo "Navigation bar unavailable. We'll be back soon.";
 }
 ?>
