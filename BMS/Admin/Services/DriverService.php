@@ -62,7 +62,7 @@ class DriverService
 
         $drivingLicence_filename = $uploadService->uploadFile($drivingLicence, $drivingLicence_dir);
 
-        $drivingLicence_path = $drivingLicence_filename['status'] === 'success' ? 'Driver image/' . $drivingLicence_filename['fileName'] : '';
+        $drivingLicence_path = $drivingLicence_filename['status'] === 'success' ? 'Driving licence/' . $drivingLicence_filename['fileName'] : '';
 
         //Upload Aadhar Card
 
@@ -70,7 +70,7 @@ class DriverService
 
         $aadharCard_filename = $uploadService->uploadFile($aadharCard, $aadharCard_dir);
 
-        $aadharCard_path = $aadharCard_filename['status'] === 'success' ? 'Driver image/' . $aadharCard_filename['fileName'] : '';
+        $aadharCard_path = $aadharCard_filename['status'] === 'success' ? 'Driver aadharcard/' . $aadharCard_filename['fileName'] : '';
 
         //Upload PAN Card
 
@@ -78,7 +78,7 @@ class DriverService
 
         $panCard_filename = $uploadService->uploadFile($panCard, $panCard_dir);
 
-        $panCard_path = $panCard_filename['status'] === 'success' ? 'Driver image/' . $panCard_filename['fileName'] : '';
+        $panCard_path = $panCard_filename['status'] === 'success' ? 'Driver pancard//' . $panCard_filename['fileName'] : '';
 
         //Password Hasing
 
@@ -163,6 +163,22 @@ class DriverService
                 'message' => 'Mail ID verified'
             ];
         }
+    }
+
+    public function getDriver($driverId) {
+        $response = $this->modelBMS->getDriverDetails($driverId);
+        
+        if(!$response) {
+            return [
+                'status' => 'error',
+                'message' => 'No data found'
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'data' => $response
+        ];
     }
 
     public function mailContent($language, $name, $username, $password, $companyName, $url)

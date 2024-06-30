@@ -18,6 +18,17 @@ class DriverModel {
         return $result ? $result : null;
     }
 
+    public function getDriverDetails($driverId) {
+        $isActive = true;
+        $stmt = $this->db->prepare("SELECT * FROM `bms_drivers` WHERE `id` = :driverId AND `is_active` = :isActive");
+        $stmt->bindParam(":driverId", $driverId);
+        $stmt->bindParam(":isActive", $isActive);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    }
+
     public function setDriversinUsers($username, $password, $companyId) {
         $stmt = $this->db->prepare("INSERT INTO `users`(`username`, `password`, `company_id`) VALUES (:username, :password, :companyId)");
         $stmt->bindParam("username", $username);
@@ -78,7 +89,7 @@ class DriverModel {
     }
 
     public function setDriver($userId, $companyId, $name, $mobile, $mail, $address, $state, $district, $pincode, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path) {
-        $stmt = $this->db->prepare("INSERT INTO `bms_drivers` (`user_id`, `company_id`, `fullname`, `mail`, `mobile`, `address`, `state`, `district`, `pincode`, `driver_image_path`, `license_no`, `licence_expiry`, `licence_path`, `aadhar_no`, `aadhar_path`, `pan_no`, `pan_path`) VALUES (:userId, :companyId, :name, :mail, :mobile, :address, :state, :district, :pincode, :driverImage_path, :licenceNo, :licenceExpiry, :drivingLicence_path, :aadharNo, :aadharCard_path, :panNo, :panCard_path)");
+        $stmt = $this->db->prepare("INSERT INTO `bms_drivers` (`user_id`, `company_id`, `fullname`, `mail`, `mobile`, `address`, `state`, `district`, `pincode`, `driver_image_path`, `licence_no`, `licence_expiry`, `licence_path`, `aadhar_no`, `aadhar_path`, `pan_no`, `pan_path`) VALUES (:userId, :companyId, :name, :mail, :mobile, :address, :state, :district, :pincode, :driverImage_path, :licenceNo, :licenceExpiry, :drivingLicence_path, :aadharNo, :aadharCard_path, :panNo, :panCard_path)");
         $stmt->bindParam("userId", $userId);
         $stmt->bindParam("companyId", $companyId);
         $stmt->bindParam("name", $name);

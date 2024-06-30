@@ -15,7 +15,7 @@ class FileUpload {
         $imageFileType = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION)); // Get file extension
         $targetFile = $targetDir . $currentDateTime . "_" . $randomString . "." . $imageFileType; // Construct target file path
 
-        $fileName = $currentDateTime . "_" . $randomString;
+        $fileName = $currentDateTime . "_" . $randomString . "." . $imageFileType;
 
         // Check if the file type is allowed
         if (!in_array($imageFileType, $allowedTypes)) {

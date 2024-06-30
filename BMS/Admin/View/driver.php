@@ -153,7 +153,7 @@ require_once './navbar.php';
                                         I8782r8v
                                     </td>
                                     <td class="th-btn">
-                                        <button class="table-btn view" onclick="popupOpen('driver-view')"><i
+                                        <button class="table-btn view" onclick="popupOpen('driver-view'); getDriverDetails(1);"><i
                                                 class="fa-duotone fa-eye"></i></button>
                                         <button class="table-btn edit"><i
                                                 class="fa-duotone fa-pen-to-square"></i></button>
@@ -904,13 +904,17 @@ require_once './navbar.php';
                     </div>
                 </div>
             </div>
-            <div class="container driver-info">
+            <div class="loader-div" style="display: none">
+                <div class="loader"></div>
+                <p class="loader-text">Loading</p>
+            </div>
+            <div class="container driver-info" style="display: none">
                 <div class="row">
                     <div class="col-sm-3 p-r-0 m-b-10">
                         <div class="driver-info-left box-container-2 h-100">
                             <div class="row">
                                 <div class="col-sm-12 info-profile-image-div">
-                                    <img src="../../Assets/User/Driver image/20240629110906_EFCafuyWOTNb8q27.png"
+                                    <img id="d-v-profile-img" src="../../Assets/Developer/image/manager.png"
                                         alt="profile image" class="info-profile-image">
                                 </div>
                                 <div class="col-sm-12">
@@ -918,15 +922,15 @@ require_once './navbar.php';
                                         <p class="info-title">Personal information</p>
                                         <div class="infos">
                                             <p class="info-heading">Name</p>
-                                            <p class="info-content">Gokulraj</p>
+                                            <p class="info-content" id="d-v-name"></p>
                                         </div>
                                         <div class="infos">
                                             <p class="info-heading">Email</p>
-                                            <p class="info-content">gokul952k@gmail.com</p>
+                                            <p class="info-content" id="d-v-mail"></p>
                                         </div>
                                         <div class="infos">
                                             <p class="info-heading">Mobile Number</p>
-                                            <p class="info-content">9628974940</p>
+                                            <p class="info-content" id="d-v-mobile"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -1006,25 +1010,25 @@ require_once './navbar.php';
                                 <div class="col-sm-3">
                                     <div class="infos">
                                         <p class="info-heading">Licence Number</p>
-                                        <p class="info-content">DX3480G334</p>
+                                        <p class="info-content" id="d-v-licence-no"></p>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="infos">
                                         <p class="info-heading">Licence Expiry Date</p>
-                                        <p class="info-content">08-05-2100</p>
+                                        <p class="info-content" id="d-v-licence-ex"></p>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="infos">
                                         <p class="info-heading">Aadhar Number</p>
-                                        <p class="info-content">8523582564528</p>
+                                        <p class="info-content" id="d-v-aadhar-no"></p>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="infos">
                                         <p class="info-heading">PAN Number</p>
-                                        <p class="info-content">PMF52800</p>
+                                        <p class="info-content" id="d-v-pan-no"></p>
                                     </div>
                                 </div>
                             </div>
@@ -1035,7 +1039,7 @@ require_once './navbar.php';
                                 <div class="col-sm-3">
                                     <div class="infos">
                                         <p class="info-heading">Licence</p>
-                                        <a href="" class="document-view d-v-1">
+                                        <a href="" id="d-v-licence-path" class="document-view d-v-1" target="_blank">
                                             <i class="fa-duotone fa-file-invoice"></i>
                                         </a>
                                     </div>
@@ -1043,7 +1047,7 @@ require_once './navbar.php';
                                 <div class="col-sm-3">
                                     <div class="infos">
                                         <p class="info-heading">Aadhar card</p>
-                                        <a href="" class="document-view d-v-2">
+                                        <a href="" id="d-v-aadhar-path" class="document-view d-v-2" target="_blank">
                                             <i class="fa-duotone fa-file-invoice"></i>
                                         </a>
                                     </div>
@@ -1051,7 +1055,7 @@ require_once './navbar.php';
                                 <div class="col-sm-3">
                                     <div class="infos">
                                         <p class="info-heading">PAN card</p>
-                                        <a href="" class="document-view  d-v-3">
+                                        <a href="" id="d-v-pan-path" class="document-view  d-v-3" target="_blank">
                                             <i class="fa-duotone fa-file-invoice"></i>
                                         </a>
                                     </div>

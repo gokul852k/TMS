@@ -51,6 +51,10 @@ class DriverController {
 
         echo json_encode($this->service->createDriver($driverImage, $name, $mobile, $mail, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
     }
+
+    private function getDriver() {
+        echo json_encode($this->service->getDriver($_POST['driverId']));
+    }
 }
 
 new DriverController();
