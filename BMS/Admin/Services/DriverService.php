@@ -181,6 +181,21 @@ class DriverService
         ];
     }
 
+    public function getDrivers() {
+        $response = $this->modelBMS->getDriversDetails();
+        if(!$response) {
+            return [
+                'status' => 'error',
+                'message' => 'No data found'
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'data' => $response
+        ];
+    }
+
     public function mailContent($language, $name, $username, $password, $companyName, $url)
     {
         $english_subject = 'Welcome to AstronuX - Your Login Credentials';

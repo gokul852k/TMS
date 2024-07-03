@@ -29,6 +29,16 @@ class DriverModel {
         return $result ? $result : null;
     }
 
+    public function getDriversDetails() {
+        $isActive = true;
+        $stmt = $this->db->prepare("SELECT * FROM `bms_drivers` WHERE `is_active` = :isActive");
+        $stmt->bindParam(":isActive", $isActive);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    }
+
     public function setDriversinUsers($username, $password, $companyId) {
         $stmt = $this->db->prepare("INSERT INTO `users`(`username`, `password`, `company_id`) VALUES (:username, :password, :companyId)");
         $stmt->bindParam("username", $username);

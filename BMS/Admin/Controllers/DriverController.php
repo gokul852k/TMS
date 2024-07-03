@@ -44,16 +44,15 @@ class DriverController {
         $panCard = $_FILES['pan-card'];
         $panNo = $_POST['pan-no'];
 
-        // echo json_encode([
-        //     'status' => 'error',
-        //     'message' => 'Sorry, only PDF, JPG, JPEG, PNG & GIF files are allowed.'
-        // ]);
-
         echo json_encode($this->service->createDriver($driverImage, $name, $mobile, $mail, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
     }
 
     private function getDriver() {
         echo json_encode($this->service->getDriver($_POST['driverId']));
+    }
+
+    private function getDrivers() {
+        echo json_encode($this->service->getDrivers());
     }
 }
 
