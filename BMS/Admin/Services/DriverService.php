@@ -392,6 +392,21 @@ class DriverService
         ];
     }
 
+    public function getDriversCardDetails() {
+        $response = $this->modelBMS->getDriversCardDetails();
+        if (!$response) {
+            return [
+                'status' => 'no data',
+                'message' => 'No data found'
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'data' => $response
+        ];
+    }
+
     public function getDrivers()
     {
         $response = $this->modelBMS->getDriversDetails();

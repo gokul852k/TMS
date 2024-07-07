@@ -39,7 +39,7 @@ require_once './navbar.php';
                                         <div class="d-flex align-items-center">
                                             <div>
                                                 <p class="mb-0 text-secondary">Total Drivers</p>
-                                                <h4 class="my-1 text-info">20</h4>
+                                                <h4 class="my-1 text-info" id="total_drivers">-</h4>
                                             </div>
                                             <div
                                                 class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
@@ -57,7 +57,7 @@ require_once './navbar.php';
                                         <div class="d-flex align-items-center">
                                             <div>
                                                 <p class="mb-0 text-secondary">Active Drivers</p>
-                                                <h4 class="my-1 text-info t-c-2">15</h4>
+                                                <h4 class="my-1 text-info t-c-2" id="active_drivers">-</h4>
                                             </div>
                                             <div
                                                 class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
@@ -75,7 +75,7 @@ require_once './navbar.php';
                                         <div class="d-flex align-items-center">
                                             <div>
                                                 <p class="mb-0 text-secondary">Expired Licenses</p>
-                                                <h4 class="my-1 text-info t-c-5">0</h4>
+                                                <h4 class="my-1 text-info t-c-5" id="expired_licenses">-</h4>
                                             </div>
                                             <div
                                                 class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto">
@@ -93,7 +93,7 @@ require_once './navbar.php';
                                         <div class="d-flex align-items-center">
                                             <div>
                                                 <p class="mb-0 text-secondary">Upcoming Expirations</p>
-                                                <h4 class="my-1 text-info t-c-3">3</h4>
+                                                <h4 class="my-1 text-info t-c-3" id="upcoming_expitations">-</h4>
                                             </div>
                                             <div
                                                 class="widgets-icons-2 rounded-circle  bg-gradient-blooker text-white ms-auto">
@@ -130,6 +130,7 @@ require_once './navbar.php';
                                     <th class="th">district</th>
                                     <th class="th">License No</th>
                                     <th class="th">License Expiry</th>
+                                    <th class="th">License Status</th>
                                     <th class="th">Action</th>
                                 </tr>
                             </thead>

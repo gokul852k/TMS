@@ -29,6 +29,20 @@ class DriverModel {
         return $result ? $result : null;
     }
 
+    public function getDriversCardDetails() {
+        $isActive = true;
+        $stmt = $this->db->prepare("SELECT
+                                    (SELECT COUNT(*) FROM bms_drivers) AS 'total_drivers',
+                                    (SELECT COUNT(*) FROM bms_drivers WHERE is_active=:isActive) AS 'active_drivers',
+                                    (SELECT COUNT(*) FROM bms_drivers WHERE licence_expiry<CURRENT_DATE()) AS 'expired_licenses',
+                                    (SELECT COUNT(*) FROM bms_drivers WHERE licence_expiry<DATE_ADD(CURDATE(), INTERVAL 3 MONTH) AND licence_expiry>CURRENT_DATE()) AS 'upcoming_expirations'
+                                    FROM `bms_drivers`");
+        $stmt->bindParam(":isActive", $isActive);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    }
     public function getDriversDetails() {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT `id`, `fullname`, `mail`, `mobile`, `district`, `licence_no`, `licence_expiry` FROM `bms_drivers` WHERE `is_active` = :isActive");

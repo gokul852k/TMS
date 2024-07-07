@@ -51,6 +51,10 @@ class DriverController {
         echo json_encode($this->service->getDriver($_POST['driverId']));
     }
 
+    private function getDriversCardDetails() {
+        echo json_encode($this->service->getDriversCardDetails());
+    }
+
     private function getDrivers() {
         echo json_encode($this->service->getDrivers());
     }

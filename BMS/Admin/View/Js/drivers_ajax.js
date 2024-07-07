@@ -5,14 +5,44 @@ $(document).ready(function () {
     });
 });
 
+
+
 function getDrivers() {
-    let formData = {
+    let formData1 = {
+        action: 'getDriversCardDetails'
+    }
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/DriverController.php',
+        data: formData1,
+        dataType: 'json',
+        success: function (response) {
+            console.log(response);
+            if (response.status === 'success') {
+                let cardDetails = response.data;
+                document.getElementById("total_drivers").innerHTML = cardDetails.total_drivers;
+                document.getElementById("active_drivers").innerHTML = cardDetails.active_drivers;
+                document.getElementById("expired_licenses").innerHTML = cardDetails.expired_licenses;
+                document.getElementById("upcoming_expitations").innerHTML = cardDetails.upcoming_expirations;
+            }
+        },
+        error: function (response) {
+            popupClose('driver-view');
+            console.error(xhr.responseText);
+            // Swal.fire({
+            //     title: "Error",
+            //     text: "Something went wrong! Please try again.",
+            //     icon: "error"
+            // });
+        }
+    });
+    let formData2 = {
         action: 'getDrivers'
     }
     $.ajax({
         type: 'POST',
         url: '../Controllers/DriverController.php',
-        data: formData,
+        data: formData2,
         dataType: 'json',
         success: function (response) {
             console.log(response);
@@ -24,6 +54,7 @@ function getDrivers() {
                 tableBody.empty();
 
                 $.each(driverDetails, function (index, item) {
+                    let licence_status = licenceStatus(item.licence_expiry);
                     let row = '<tr>' +
                         '<td>' + (index + 1) + '</td>' +
                         '<td>' + item.fullname + '</td>' +
@@ -32,6 +63,7 @@ function getDrivers() {
                         '<td>' + item.district + '</td>' +
                         '<td>' + item.licence_no + '</td>' +
                         '<td>' + convertDateFormat(item.licence_expiry) + '</td>' +
+                        '<td><div class="btn-td"><span class="'+ licence_status +'">' + licence_status + '</span></div></td>' +
                         `<td class="th-btn">
                                         <button class="table-btn view" onclick="popupOpen('driver-view'); getDriverDetails(`+ item.id + `);"><i
                                                 class="fa-duotone fa-eye"></i></button>

@@ -175,6 +175,29 @@
     height: 16px;
     margin-right: 4px;
 }
+.btn-td {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-td span {
+    background-color: var(--primary-color);
+    padding: 1px 7px;
+    border-radius: 3px;
+    color: white;
+    text-transform: capitalize;
+}
+.expired {
+    background-color: #FF0000 !important;
+}
+.expires {
+    background-color: #FFA500 !important;
+}
+
+.active {
+    background-color: #008000 !important;
+}
+/*Table style*/
 
 /* Progress loader */
 .progress-loader {

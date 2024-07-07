@@ -12,3 +12,20 @@ function readURL(input) {
 $("#imageUpload").change(function () {
     readURL(this);
 });
+
+function licenceStatus(licenceExpiry) {
+    let currentDate = new Date();
+    let futureDate = new Date(currentDate);
+    futureDate.setMonth(currentDate.getMonth() + 3);
+    
+    // Ensure licenceExpiry is a Date object
+    licenceExpiry = new Date(licenceExpiry);
+    
+    if (licenceExpiry < currentDate) {
+        return 'expired';
+    } else if (licenceExpiry <= futureDate) {
+        return 'expires';
+    } else {
+        return 'active';
+    }
+}
