@@ -80,7 +80,13 @@
     border-radius: 5px;
     max-height: 240px;
     max-width: 240px;
+}
 
+.info-profile-image-re-upload {
+    width: 100%;
+    border-radius: 5px;
+    max-height: 150px;
+    max-width: 150px;
 }
 
 .info-title {
@@ -132,45 +138,93 @@
     color: #f54ea2;
 }
 
-/* Loader */
-.loader-div {
+
+
+.reupload-file-input__input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
     position: absolute;
+    z-index: -1;
+}
+
+.reupload-file-input__label {
+    cursor: pointer;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    gap: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 14px;
+    padding: 10px 12px;
+    /* background-color: #4245a8; */
+    border: 2px dashed var(--primary-color);
+    /* box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25); */
+    transition: background .2s ease-in-out;
+}
+
+.reupload-file-input__label:hover {
+    background: var(--group-background);
+}
+
+.reupload-file-input__label svg {
+    height: 16px;
+    margin-right: 4px;
+}
+
+/* Progress loader */
+.progress-loader {
+    z-index: 10001;
+    background-color: white;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: var(--body-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    min-width: 300px;
+    min-height: 200px;
 }
-.loader {
-    width: 40px;
-    aspect-ratio: 1.154;
-    position: relative;
-    background: conic-gradient(from 120deg at 50% 64%,#0000, #ff9900 1deg 120deg,#0000 121deg);
-    animation: l27-0 1.5s infinite cubic-bezier(0.3,1,0,1);
-  }
-  .loader:before,
-  .loader:after {
-    content:'';
-    position: absolute;
-    inset:0;
-    background:inherit;
-    transform-origin: 50% 66%;
-    animation: l27-1 1.5s infinite;
-  }
-  .loader:after {
-    --s:-1;
-  }
-  @keyframes l27-0 {
-     0%,30%      {transform: rotate(0)}
-     70%         {transform: rotate(120deg)}
-     70.01%,100% {transform: rotate(360deg)}
-  }
-  @keyframes l27-1 {
-     0%      {transform: rotate(calc(var(--s,1)*120deg)) translate(0)}
-     30%,70% {transform: rotate(calc(var(--s,1)*120deg)) translate(calc(var(--s,1)*-5px),10px)}
-     100%    {transform: rotate(calc(var(--s,1)*120deg)) translate(0)}
-  }
+.progress-text {
+    font-weight: 500;
+    color: gray;
+    animation: progress-text 4s infinite ease-in-out;
+    -webkit-animation: progress-text 3s infinite ease-in-out;
+}
 
-  .loader-text {
-    position: relative;
-    left: -25px;
-    margin: 15px;
-  }
+@keyframes progress-text {
+    0% {
+        color: gray;
+    }
+    50% {
+        color: black;
+    }
+    100% {
+        color: gray;
+    }
+}
+
+@-webkit-keyframes progress-text {
+    0% {
+        color: #00b09b;
+    }
+    33% {
+        color: #f54ea2;
+    }
+    66% {
+        color: black;
+    }
+    100% {
+        color: #00b09b;
+    }
+}

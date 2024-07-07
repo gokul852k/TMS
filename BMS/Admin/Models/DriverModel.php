@@ -31,7 +31,7 @@ class DriverModel {
 
     public function getDriversDetails() {
         $isActive = true;
-        $stmt = $this->db->prepare("SELECT * FROM `bms_drivers` WHERE `is_active` = :isActive");
+        $stmt = $this->db->prepare("SELECT `id`, `fullname`, `mail`, `mobile`, `district`, `licence_no`, `licence_expiry` FROM `bms_drivers` WHERE `is_active` = :isActive");
         $stmt->bindParam(":isActive", $isActive);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -143,6 +143,23 @@ class DriverModel {
     function deleteUser($userId) {
         $stmt = $this->db->prepare("DELETE FROM `users` WHERE `id`=:userId");
         $stmt->bindParam("userId", $userId);
+        return $stmt->execute();
+    }
+
+    function updateDriver($update_fields, $update_values) {
+        $sql = "UPDATE bms_drivers SET ". implode(", ", $update_fields) . " WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        
+        if ($stmt->execute($update_values)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function deleteDriver($driverId) {
+        $stmt = $this->db->prepare("DELETE FROM `bms_drivers` WHERE `id`=:driverId");
+        $stmt->bindParam("driverId", $driverId);
         return $stmt->execute();
     }
 }

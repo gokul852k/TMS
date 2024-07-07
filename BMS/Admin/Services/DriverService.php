@@ -78,7 +78,7 @@ class DriverService
 
         $panCard_filename = $uploadService->uploadFile($panCard, $panCard_dir);
 
-        $panCard_path = $panCard_filename['status'] === 'success' ? 'Driver pancard//' . $panCard_filename['fileName'] : '';
+        $panCard_path = $panCard_filename['status'] === 'success' ? 'Driver pancard/' . $panCard_filename['fileName'] : '';
 
         //Password Hasing
 
@@ -127,13 +127,13 @@ class DriverService
 
         //Sent Mail to driver
 
-        $mailContent = $this->mailContent('en', $name, $mail, $password, $_SESSION['companyName'], 'http://localhost/TMS/BMS/Admin/View/driver.php'); 
+        $mailContent = $this->mailContent('en', $name, $mail, $password, $_SESSION['companyName'], 'http://localhost/TMS/BMS/Admin/View/driver.php');
 
         $subject = $mailContent['subject'];
         $body = $mailContent['body'];
         $response4 = $this->mail->sendMail($mail, $subject, $body);
 
-        if($response4['status'] == 'error') {
+        if ($response4['status'] == 'error') {
             return [
                 "status" => "success",
                 "message" => "The driver has created a username and password, but the email has not been sent."
@@ -147,6 +147,216 @@ class DriverService
 
     }
 
+    public function updateDriver($driverId, $driverImage, $name, $mobile, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo)
+    {
+        $driverInfo = [
+            "fullname" => $name,
+            "mobile" => $mobile,
+            "address" => $address,
+            "state" => $state,
+            "district" => $district,
+            "pincode" => $pincode,
+            "licence_no" => $licenceNo,
+            "licence_expiry" => $licenceExpiry,
+            "aadhar_no" => $aadharNo,
+            "pan_no" => $panNo
+        ];
+
+        $currentData = $this->modelBMS->getDriverDetails($driverId);
+
+        if (!$currentData) {
+            return [
+                'status' => 'error',
+                'message' => 'Something went wrong while updating the driver',
+                'error' => 'Error while select driver data from driver table.'
+            ];
+        }
+
+        //Check for changes
+        $changes = [];
+        $fields = ['fullname', 'mobile', 'address', 'state', 'district', 'pincode', 'licence_no', 'licence_expiry', 'aadhar_no', 'pan_no'];
+
+        //check & upload file changes
+        $fileChanges = false;
+
+        $uploadService = new FileUpload();
+
+        //Upload Driver image
+        if (isset($driverImage) && $driverImage['error'] === UPLOAD_ERR_OK) {
+            $driverImage_dir = "../../Assets/User/Driver image/";
+
+            $driverImage_filename = $uploadService->uploadFile($driverImage, $driverImage_dir);
+
+            $driverImage_path = $driverImage_filename['status'] === 'success' ? 'Driver image/' . $driverImage_filename['fileName'] : '';
+
+            $fields[] = 'driver_image_path';
+            $driverInfo['driver_image_path'] = $driverImage_path;
+            $fileChanges = true;
+            //Delete old file
+            $oldDriverImage = "../../Assets/User/" . $currentData['driver_image_path'];
+            if (file_exists($oldDriverImage) && is_file($oldDriverImage)) {
+                unlink($oldDriverImage);
+            }
+        }
+
+        
+        //Upload Driving Licence
+        if (isset($drivingLicence) && $drivingLicence['error'] === UPLOAD_ERR_OK) {
+            $drivingLicence_dir = "../../Assets/User/Driving licence/";
+
+            $drivingLicence_filename = $uploadService->uploadFile($drivingLicence, $drivingLicence_dir);
+
+            $drivingLicence_path = $drivingLicence_filename['status'] === 'success' ? 'Driving licence/' . $drivingLicence_filename['fileName'] : '';
+
+            $fields[] = 'licence_path';
+            $driverInfo['licence_path'] = $drivingLicence_path;
+            $fileChanges = true;
+            //Delete old file
+            $oldDrivingLicence = "../../Assets/User/" . $currentData['licence_path'];
+            if (file_exists($oldDrivingLicence) && is_file($oldDrivingLicence)) {
+                unlink($oldDrivingLicence);
+            }
+        }
+
+        //Upload Aadhar Card
+        if (isset($aadharCard) && $aadharCard['error'] === UPLOAD_ERR_OK) {
+            $aadharCard_dir = "../../Assets/User/Driver aadharcard/";
+
+            $aadharCard_filename = $uploadService->uploadFile($aadharCard, $aadharCard_dir);
+
+            $aadharCard_path = $aadharCard_filename['status'] === 'success' ? 'Driver aadharcard/' . $aadharCard_filename['fileName'] : '';
+
+            $fields[] = 'aadhar_path';
+            $driverInfo['aadhar_path'] = $aadharCard_path;
+            $fileChanges = true;
+            //Delete old file
+            $oldAadharCard = "../../Assets/User/" . $currentData['aadhar_path'];
+            if (file_exists($oldAadharCard) && is_file($oldAadharCard)) {
+                unlink($oldAadharCard);
+            }
+        }
+
+        //Upload PAN Card
+        if (isset($panCard) && $panCard['error'] === UPLOAD_ERR_OK) {
+            $panCard_dir = "../../Assets/User/Driver pancard/";
+
+            $panCard_filename = $uploadService->uploadFile($panCard, $panCard_dir);
+
+            $panCard_path = $panCard_filename['status'] === 'success' ? 'Driver pancard/' . $panCard_filename['fileName'] : '';
+
+            $fields[] = 'pan_path';
+            $driverInfo['pan_path'] = $panCard_path;
+            $fileChanges = true;
+            //Delete old file
+            $oldPanCard = "../../Assets/User/" . $currentData['pan_path'];
+            if (file_exists($oldPanCard) && is_file($oldPanCard)) {
+                unlink($oldPanCard);
+            }
+        }
+
+        foreach ($fields as $field) {
+            if ($driverInfo[$field] != $currentData[$field]) {
+                $changes[$field] = $driverInfo[$field];
+            }
+        }
+
+        // Construct and execute dynamic SQL query if there are changes
+        if (!empty($changes) || $fileChanges) {
+            $update_fields = [];
+            $update_values = [];
+
+            foreach ($changes as $field => $new_value) {
+                $update_fields[] = "$field = :$field";
+                $update_values[":$field"] = $new_value;
+            }
+
+            $update_values['id'] = $driverId;
+
+            $final_response = $this->modelBMS->updateDriver($update_fields, $update_values);
+
+            if ($final_response) {
+                return [
+                    'status' => 'success',
+                    'message' => 'Driver details updated successfully'
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Something went wrong while updating the driver',
+                    'error' => 'Error while update driver data in driver table.'
+                ];
+            }
+
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'There are no changes in driver details.',
+                'error' => 'All values as in driver table'
+            ];
+        }
+    }
+
+    public function deleteDriver($driverId) {
+        $currentData = $this->modelBMS->getDriverDetails($driverId);
+
+        if (!$currentData) {
+            return [
+                'status' => 'error',
+                'message' => 'Something went wrong while deleting the driver',
+                'error' => 'Error while select driver data in driver table.'
+            ];
+        }
+        //Delete old file
+        $oldDriverImage = "../../Assets/User/" . $currentData['driver_image_path'];
+        if (file_exists($oldDriverImage) && is_file($oldDriverImage)) {
+            unlink($oldDriverImage);
+        }
+
+        //Delete old file
+        $oldDrivingLicence = "../../Assets/User/" . $currentData['licence_path'];
+        if (file_exists($oldDrivingLicence) && is_file($oldDrivingLicence)) {
+            unlink($oldDrivingLicence);
+        }
+
+        //Delete old file
+        $oldAadharCard = "../../Assets/User/" . $currentData['aadhar_path'];
+        if (file_exists($oldAadharCard) && is_file($oldAadharCard)) {
+            unlink($oldAadharCard);
+        }
+
+        //Delete old file
+        $oldPanCard = "../../Assets/User/" . $currentData['pan_path'];
+        if (file_exists($oldPanCard) && is_file($oldPanCard)) {
+            unlink($oldPanCard);
+        }
+        
+
+        //Delete drive from users table in Authentication DB
+        $response1 = $this->modelA->deleteUser($currentData['user_id']);
+
+        if (!$response1) {
+            return [
+                'status' => 'error',
+                'message' => 'Something went wrong while deleting the driver',
+                'error' => 'Error while delete driver data in users table in Authentication DB.'
+            ];
+        }
+
+        $response2 = $this->modelBMS->deleteDriver($driverId);
+
+        if ($response2) {
+            return [
+                'status' => 'success',
+                'message' => 'Driver deleted successfully.'
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Something went wrong while deleting the driver',
+                'error' => 'Error while delete driver data in driver table in bms DB.'
+            ];
+        }
+    }
     public function checkMail($mail)
     {
         //Check mail ID is already exit
@@ -165,10 +375,11 @@ class DriverService
         }
     }
 
-    public function getDriver($driverId) {
+    public function getDriver($driverId)
+    {
         $response = $this->modelBMS->getDriverDetails($driverId);
-        
-        if(!$response) {
+
+        if (!$response) {
             return [
                 'status' => 'error',
                 'message' => 'No data found'
@@ -181,11 +392,12 @@ class DriverService
         ];
     }
 
-    public function getDrivers() {
+    public function getDrivers()
+    {
         $response = $this->modelBMS->getDriversDetails();
-        if(!$response) {
+        if (!$response) {
             return [
-                'status' => 'error',
+                'status' => 'no data',
                 'message' => 'No data found'
             ];
         }
@@ -240,17 +452,17 @@ class DriverService
                                                         <img src="../Assets/Developer/Svg/forgot-password.svg" alt="" style="width: 100%;">
                                                     </div>
                                                     <div class="f-fallback p-div" style="padding: 60px 20px;">
-                                                        <h1 style="color: #ff9900 !important; text-align: center; margin-top: 0; font-size: 23px; font-weight: 600;">Hello '.$name.', Welcome to AstronuX</h1>
-                                                        <p style="margin: .4em 0 1.1875em; font-size: 16px; line-height: 1.625; color: #c38426; text-align: center;">Your account has been created by <span style="font-weight: 600;">'.$companyName.'</span><br>
+                                                        <h1 style="color: #ff9900 !important; text-align: center; margin-top: 0; font-size: 23px; font-weight: 600;">Hello ' . $name . ', Welcome to AstronuX</h1>
+                                                        <p style="margin: .4em 0 1.1875em; font-size: 16px; line-height: 1.625; color: #c38426; text-align: center;">Your account has been created by <span style="font-weight: 600;">' . $companyName . '</span><br>
                                                             Below are your system login credentials,<br>
                                                             <span style="font-weight: 600;">Please change your password immediately after logging in.</span></p>
                                                             <table class="body-sub" role="presentation" style="margin-top: 25px; padding-top: 25px; border-top: 1px solid #EAEAEC; width: 100%;">
                                                                 <tr>
                                                                     <td>
                                                                         <p class="f-fallback sub" style="margin: .4em 0 .4em; font-size: 14px; line-height: 1.625; color: #c38426; text-align: center;">Username</p>
-                                                                        <p class="f-fallback sub" style="margin: .4em 0 1.1875em; font-size: 14px; font-weight: bold; line-height: 1.625; color: #c38426; text-align: center;">'.$username.'</p>
+                                                                        <p class="f-fallback sub" style="margin: .4em 0 1.1875em; font-size: 14px; font-weight: bold; line-height: 1.625; color: #c38426; text-align: center;">' . $username . '</p>
                                                                         <p class="f-fallback sub" style="margin: .4em 0 .4em; font-size: 14px; line-height: 1.625; color: #c38426; text-align: center;">Password</p>
-                                                                        <p class="f-fallback sub" style="margin: .4em 0 1.1875em; font-size: 14px; font-weight: bold; line-height: 1.625; color: #c38426; text-align: center;">'.$password.'</p>
+                                                                        <p class="f-fallback sub" style="margin: .4em 0 1.1875em; font-size: 14px; font-weight: bold; line-height: 1.625; color: #c38426; text-align: center;">' . $password . '</p>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -260,7 +472,7 @@ class DriverService
                                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                                                         <tr>
                                                                             <td align="center">
-                                                                                <a href="'.$url.'" class="f-fallback button button--green" target="_blank" style="background-color: #ff9900; border-top: 10px solid #ff9900; border-right: 18px solid #ff9900; border-bottom: 10px solid #ff9900; border-left: 18px solid #ff9900; display: inline-block; color: #FFF; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); box-sizing: border-box;">Login</a>
+                                                                                <a href="' . $url . '" class="f-fallback button button--green" target="_blank" style="background-color: #ff9900; border-top: 10px solid #ff9900; border-right: 18px solid #ff9900; border-bottom: 10px solid #ff9900; border-left: 18px solid #ff9900; display: inline-block; color: #FFF; text-decoration: none; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); box-sizing: border-box;">Login</a>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -339,16 +551,16 @@ class DriverService
                                                     </div>
                                                     <div class="f-fallback p-div" style="padding: 60px;">
                                                         <h1 style="color: #ff9900 !important; text-align: center; margin-top: 0; font-size: 23px; font-weight: 600;">AstronuX-க்கு வரவேற்கிறோம்!</h1>
-                                                        <p style="margin: .4em 0 1.1875em; font-size: 16px; line-height: 1.625; color: #c38426; text-align: center;">உங்கள் கணக்கை <span style="font-weight: 600;">'.$companyName.'/span> உருவாக்கியுள்ளார்.<br>
+                                                        <p style="margin: .4em 0 1.1875em; font-size: 16px; line-height: 1.625; color: #c38426; text-align: center;">உங்கள் கணக்கை <span style="font-weight: 600;">' . $companyName . '/span> உருவாக்கியுள்ளார்.<br>
                                                             உங்கள் கணக்கிற்கான நுழைவு விவரங்கள் கீழே கொடுக்கப்பட்டுள்ளன.<br>
                                                             <span style="font-weight: 600;">தயவுசெய்து நுழைந்தவுடன் உங்கள் கடவுச்சொல்லை உடனடியாக மாற்றுங்கள்.</span></p>
                                                             <table class="body-sub" role="presentation" style="margin-top: 25px; padding-top: 25px; border-top: 1px solid #EAEAEC; width: 100%;">
                                                                 <tr>
                                                                     <td>
                                                                         <p class="f-fallback sub" style="margin: .4em 0 .4em; font-size: 14px; line-height: 1.625; color: #c38426; text-align: center;">பயனர் பெயர்</p>
-                                                                        <p class="f-fallback sub" style="margin: .4em 0 1.1875em; font-size: 14px; font-weight: bold; line-height: 1.625; color: #c38426; text-align: center;">'.$username.'</p>
+                                                                        <p class="f-fallback sub" style="margin: .4em 0 1.1875em; font-size: 14px; font-weight: bold; line-height: 1.625; color: #c38426; text-align: center;">' . $username . '</p>
                                                                         <p class="f-fallback sub" style="margin: .4em 0 .4em; font-size: 14px; line-height: 1.625; color: #c38426; text-align: center;">கடவுச்சொல்</p>
-                                                                        <p class="f-fallback sub" style="margin: .4em 0 1.1875em; font-size: 14px; font-weight: bold; line-height: 1.625; color: #c38426; text-align: center;">'.$password.'</p>
+                                                                        <p class="f-fallback sub" style="margin: .4em 0 1.1875em; font-size: 14px; font-weight: bold; line-height: 1.625; color: #c38426; text-align: center;">' . $password . '</p>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -392,16 +604,16 @@ class DriverService
             </html>
             ';
 
-            if ($language == 'en') {
-                return [
-                    'subject' => $english_subject,
-                    'body' => $english_body
-                ];
-            } elseif ($language == 'ta') {
-                return [
-                    'subject' => $tamil_subject,
-                    'body' => $tamil_subject
-                ];
-            }
+        if ($language == 'en') {
+            return [
+                'subject' => $english_subject,
+                'body' => $english_body
+            ];
+        } elseif ($language == 'ta') {
+            return [
+                'subject' => $tamil_subject,
+                'body' => $tamil_subject
+            ];
+        }
     }
 }
