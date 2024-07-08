@@ -64,13 +64,15 @@ function getDrivers() {
                         '<td>' + item.licence_no + '</td>' +
                         '<td>' + convertDateFormat(item.licence_expiry) + '</td>' +
                         '<td><div class="btn-td"><span class="' + licence_status + '">' + licence_status + '</span></div></td>' +
-                        `<td class="th-btn">
-                                        <button class="table-btn view" onclick="popupOpen('driver-view'); getDriverDetails(`+ item.id + `);"><i
+                        `<td>
+                            <div class="th-btn">
+                                <button class="table-btn view" onclick="popupOpen('driver-view'); getDriverDetails(`+ item.id + `);"><i
                                                 class="fa-duotone fa-eye"></i></button>
-                                        <button class="table-btn edit" onclick="popupOpen('driver-edit'); getDriverDetailsForEdit(`+ item.id + `);"><i
+                                <button class="table-btn edit" onclick="popupOpen('driver-edit'); getDriverDetailsForEdit(`+ item.id + `);"><i
                                                 class="fa-duotone fa-pen-to-square"></i></button>
-                                        <button class="table-btn delete" onclick="deleteDriver(`+ item.id + `, '` + item.fullname + `')"><i class="fa-duotone fa-trash"></i></button>
-                                    </td>`
+                                <button class="table-btn delete" onclick="deleteDriver(`+ item.id + `, '` + item.fullname + `')"><i class="fa-duotone fa-trash"></i></button>
+                            </div>
+                        </td>`      
                     '</tr>';
                     tableBody.append(row);
                 })

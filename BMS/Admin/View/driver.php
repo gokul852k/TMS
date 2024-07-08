@@ -255,7 +255,7 @@ require_once './navbar.php';
                         </div>
                     </div>
 
-                    <div class="pop-up-button-div box-container m-b-10">
+                    <div class="pop-up-button-div box-container box-head m-b-10">
                         <button type="submit" name="submit" class="button-2 box-shadow">Create Driver</button>
                         <button type="reset" name="submit" class="button-3 box-shadow"
                             onclick="popupClose('driver-add')">cancel</button>
@@ -697,7 +697,7 @@ require_once './navbar.php';
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="pop-up-button-div box-container-2  m-b-10">
+                            <div class="pop-up-button-div box-container-sm m-b-10">
                                 <button type="submit" name="submit" class="button-2 box-shadow"
                                     onclick="popupClose('driver-edit')">Update Driver</button>
                                 <button type="button" class="button-3 box-shadow"

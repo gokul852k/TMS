@@ -164,7 +164,7 @@ input:focus {
   border: none;
   color: #FFFFFF;
   background-color: var(--primary-color);
-  border-radius: 6px 3px 6px 3px;
+  border-radius: 6px 2px 6px 2px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -187,7 +187,7 @@ input:focus {
   border: none;
   color: #FFFFFF;
   background-color: var(--secondary-color);
-  border-radius: 3px 6px 3px 6px;
+  border-radius: 2px 6px 2px 6px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -203,7 +203,12 @@ input:focus {
   padding: 30px !important;
   margin: 10px;
 }
-
+.box-container-sm {
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  box-shadow: var(--first-shadow);
+  padding: 15px 20px !important;
+}
 .box-container-2 {
   background-color: #FFFFFF;
   border-radius: 5px;
@@ -369,7 +374,7 @@ th {
 
 td {
   border: none;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-color) !important;
 }
 
@@ -502,6 +507,9 @@ div.dt-container .dt-length, div.dt-container .dt-search, div.dt-container .dt-i
 
 
 /*common*/
+.m-t-0 {
+  margin-top: 0;
+}
 .m-t-10 {
   margin-top: 10px;
 }
@@ -513,7 +521,18 @@ div.dt-container .dt-length, div.dt-container .dt-search, div.dt-container .dt-i
 .m-t-30 {
   margin-top: 30px;
 }
-
+.h-center-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.h-center-div-c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 /* Loader */
 .loader-div {
   position: absolute;
@@ -580,4 +599,187 @@ div.dt-container .dt-length, div.dt-container .dt-search, div.dt-container .dt-i
   position: relative;
   left: -25px;
   margin: 15px;
+}
+
+/* Progress loader */
+.progress-loader {
+  z-index: 10001;
+  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: var(--body-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  min-width: 300px;
+  min-height: 200px;
+}
+.progress-text {
+  font-weight: 500;
+  color: gray;
+  animation: progress-text 4s infinite ease-in-out;
+  -webkit-animation: progress-text 3s infinite ease-in-out;
+}
+
+@keyframes progress-text {
+  0% {
+      color: gray;
+  }
+  50% {
+      color: black;
+  }
+  100% {
+      color: gray;
+  }
+}
+
+@-webkit-keyframes progress-text {
+  0% {
+      color: #00b09b;
+  }
+  33% {
+      color: #f54ea2;
+  }
+  66% {
+      color: black;
+  }
+  100% {
+      color: #00b09b;
+  }
+}
+
+/* view style */
+
+.info-profile-image-div {
+  display: flex;
+  justify-content: center;
+}
+
+.info-profile-image {
+  width: 100%;
+  border-radius: 5px;
+  max-height: 240px;
+  max-width: 240px;
+}
+
+.info-profile-image-re-upload {
+  width: 100%;
+  border-radius: 5px;
+  max-height: 150px;
+  max-width: 150px;
+}
+
+.info-title {
+  margin: 10px 0;
+  color: var(--primary-color);
+}
+
+.info-content {
+  color: var(--text-color);
+  margin: 6px 0;
+  font-size: .9rem;
+}
+
+.info-heading {
+  margin: 6px 0;
+}
+
+.info-content {
+  color: var(--text-color);
+  margin: 0 0 10px 0;
+  font-size: .9rem;
+}
+
+.p-r-0 {
+  padding-right: 0;
+}
+
+.m-b-10 {
+  margin-bottom: 10px;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.document-view i {
+  font-size: 3rem;
+}
+
+.d-v-1 {
+  color: #6078ea;
+}
+
+.d-v-2 {
+  color: #00b09b;
+}
+
+.d-v-3 {
+  color: #f54ea2;
+}
+
+
+
+.reupload-file-input__input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.reupload-file-input__label {
+  cursor: pointer;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  gap: 5px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 14px;
+  padding: 10px 12px;
+  /* background-color: #4245a8; */
+  border: 2px dashed var(--primary-color);
+  /* box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25); */
+  transition: background .2s ease-in-out;
+}
+
+.reupload-file-input__label:hover {
+  background: var(--group-background);
+}
+
+.reupload-file-input__label svg {
+  height: 16px;
+  margin-right: 4px;
+}
+.btn-td {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-td span {
+  background-color: var(--primary-color);
+  padding: 1px 7px;
+  border-radius: 3px;
+  color: white;
+  text-transform: capitalize;
+}
+.expired {
+  background-color: #FF0000 !important;
+}
+.expires {
+  background-color: #FFA500 !important;
+}
+
+.active {
+  background-color: #008000 !important;
 }
