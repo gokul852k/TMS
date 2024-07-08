@@ -63,18 +63,18 @@ function getDrivers() {
                         '<td>' + item.district + '</td>' +
                         '<td>' + item.licence_no + '</td>' +
                         '<td>' + convertDateFormat(item.licence_expiry) + '</td>' +
-                        '<td><div class="btn-td"><span class="'+ licence_status +'">' + licence_status + '</span></div></td>' +
+                        '<td><div class="btn-td"><span class="' + licence_status + '">' + licence_status + '</span></div></td>' +
                         `<td class="th-btn">
                                         <button class="table-btn view" onclick="popupOpen('driver-view'); getDriverDetails(`+ item.id + `);"><i
                                                 class="fa-duotone fa-eye"></i></button>
                                         <button class="table-btn edit" onclick="popupOpen('driver-edit'); getDriverDetailsForEdit(`+ item.id + `);"><i
                                                 class="fa-duotone fa-pen-to-square"></i></button>
-                                        <button class="table-btn delete" onclick="deleteDriver(`+ item.id + `, '`+ item.fullname +`')"><i class="fa-duotone fa-trash"></i></button>
+                                        <button class="table-btn delete" onclick="deleteDriver(`+ item.id + `, '` + item.fullname + `')"><i class="fa-duotone fa-trash"></i></button>
                                     </td>`
                     '</tr>';
                     tableBody.append(row);
                 })
-
+                DataTable();
             }
         },
         error: function (response) {
@@ -345,7 +345,7 @@ $(document).ready(function () {
 function deleteDriver(driverId, driverName) {
     Swal.fire({
         title: "Are you sure?",
-        text: "You want to delete "+driverName  ,
+        text: "You want to delete " + driverName,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

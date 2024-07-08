@@ -18,11 +18,10 @@ require_once './navbar.php';
     <div class="container box-container box-head w3-animate-top">
         <div class="row row-head">
             <div class="">
-                <h4 class="heading">Driver Details</h4>
+                <h4 class="heading">Bus Details</h4>
             </div>
             <div class="row-head-div-2">
-                <button class="button-1 head-button3" onclick="popupOpen('driver-add')"><i
-                        class="fa-solid fa-user-plus"></i>Add Driver</button>
+                <button class="button-1 head-button3" onclick="popupOpen('driver-add')"><i class="fa-solid fa-bus"></i>Add Bus</button>
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
             </div>
         </div>
@@ -38,12 +37,12 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Total Drivers</p>
-                                                <h4 class="my-1 text-info" id="total_drivers">-</h4>
+                                                <p class="mb-0 text-secondary">Total Bus</p>
+                                                <h4 class="my-1 text-info t-c-6" id="total_drivers">-</h4>
                                             </div>
                                             <div
-                                                class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
-                                                <i class="fa-solid fa-user-pilot"></i>
+                                                class="widgets-icons-2 rounded-circle bg-g-6 text-white ms-auto">
+                                                <i class="fa-solid fa-bus"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -56,12 +55,12 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Active Drivers</p>
-                                                <h4 class="my-1 text-info t-c-2" id="active_drivers">-</h4>
+                                                <p class="mb-0 text-secondary">Active Bus</p>
+                                                <h4 class="my-1 text-info t-c-5" id="active_drivers">-</h4>
                                             </div>
                                             <div
-                                                class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
-                                                <i class="fa-solid fa-user-check"></i>
+                                                class="widgets-icons-2 rounded-circle bg-g-5 text-white ms-auto">
+                                                <i class="fa-sharp fa-solid fa-bus"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -74,12 +73,12 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Expired Licenses</p>
+                                                <p class="mb-0 text-secondary">Total KM</p>
                                                 <h4 class="my-1 text-info t-c-4" id="expired_licenses">-</h4>
                                             </div>
                                             <div
                                                 class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto">
-                                                <i class="fa-solid fa-file-xmark"></i>
+                                                <i class="fa-solid fa-gauge-max"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -92,12 +91,12 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Upcoming Expirations</p>
+                                                <p class="mb-0 text-secondary">Expired Insurance</p>
                                                 <h4 class="my-1 text-info t-c-3" id="upcoming_expitations">-</h4>
                                             </div>
                                             <div
                                                 class="widgets-icons-2 rounded-circle  bg-gradient-blooker text-white ms-auto">
-                                                <i class="fa-solid fa-memo-circle-info"></i>
+                                                <i class="fa-solid fa-file-xmark"></i>
                                             </div>
                                         </div>
                                     </div>
