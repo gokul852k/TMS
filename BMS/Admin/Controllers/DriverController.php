@@ -1,9 +1,6 @@
 <?php
 
-require_once '../Services//DriverService.php';
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require_once '../Services/DriverService.php';
 
 class DriverController {
     private $service;

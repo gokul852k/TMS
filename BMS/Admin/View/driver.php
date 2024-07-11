@@ -116,7 +116,7 @@ require_once './navbar.php';
         <div class="row">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-sm-12 table-responsive">
                         <table
                             summary="This table shows how to create responsive tables using Datatables' extended functionality"
                             class="table table-bordered table-hover dt-responsive" id="drivers-table">

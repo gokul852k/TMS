@@ -1,17 +1,9 @@
 <?php
 
-
 require_once '../../config.php';
 require_once '../Models/DriverModel.php';
 require_once '../Services/FileUpload.php';
 require_once '../../../Common/Services/Mail2.php';
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
-// require_once '../../Assets/User/Driver licence/';
 
 class DriverService
 {
@@ -259,7 +251,6 @@ class DriverService
                 $changes[$field] = $driverInfo[$field];
             }
         }
-
         // Construct and execute dynamic SQL query if there are changes
         if (!empty($changes) || $fileChanges) {
             $update_fields = [];
