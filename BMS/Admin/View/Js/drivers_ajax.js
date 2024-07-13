@@ -26,7 +26,7 @@ function getDrivers() {
                 document.getElementById("upcoming_expitations").innerHTML = cardDetails.upcoming_expirations;
             }
         },
-        error: function (response) {
+        error: function (xhr, status, error) {
             popupClose('driver-view');
             console.error(xhr.responseText);
             // Swal.fire({
@@ -54,7 +54,6 @@ function getDrivers() {
                 tableBody.empty();
 
                 $.each(driverDetails, function (index, item) {
-                    let licence_status = licenceStatus(item.licence_expiry);
                     let row = '<tr>' +
                         '<td>' + (index + 1) + '</td>' +
                         '<td>' + item.fullname + '</td>' +
@@ -63,7 +62,7 @@ function getDrivers() {
                         '<td>' + item.district + '</td>' +
                         '<td>' + item.licence_no + '</td>' +
                         '<td>' + convertDateFormat(item.licence_expiry) + '</td>' +
-                        '<td><div class="btn-td"><span class="' + licence_status + '">' + licence_status + '</span></div></td>' +
+                        '<td><div class="btn-td"><span class="' + item.license_status + '">' + item.license_status + '</span></div></td>' +
                         `<td>
                             <div class="th-btn">
                                 <button class="table-btn view" onclick="popupOpen('driver-view'); getDriverDetails(`+ item.id + `);"><i
@@ -79,7 +78,7 @@ function getDrivers() {
                 DataTable();
             }
         },
-        error: function (response) {
+        error: function (xhr, status, error) {
             popupClose('driver-view');
             console.error(xhr.responseText);
             // Swal.fire({
@@ -130,13 +129,13 @@ $(document).ready(function () {
                 }
                 else if (data.status === 'error') {
                     Swal.fire({
-                        title: "Error",
+                        title: "Oops!",
                         text: data.message,
                         icon: "error"
                     });
                 } else {
                     Swal.fire({
-                        title: "Error",
+                        title: "Oops!",
                         text: data.message,
                         icon: "error"
                     });
@@ -145,7 +144,7 @@ $(document).ready(function () {
             error: function (response) {
                 console.error(xhr.responseText);
                 Swal.fire({
-                    title: "Error",
+                    title: "Oops!",
                     text: "Something went wrong! Please try again.",
                     icon: "error"
                 });
@@ -194,24 +193,24 @@ function getDriverDetails(driverId) {
             else if (response.status === 'error') {
                 popupClose('driver-view');
                 Swal.fire({
-                    title: "Error",
+                    title: "Oops!",
                     text: response.message,
                     icon: "error"
                 });
             } else {
                 popupClose('driver-view');
                 Swal.fire({
-                    title: "Error",
+                    title: "Oops!",
                     text: "Something went wrong! Please try again.",
                     icon: "error"
                 });
             }
         },
-        error: function (response) {
+        error: function (xhr, status, error) {
             popupClose('driver-view');
             console.error(xhr.responseText);
             Swal.fire({
-                title: "Error",
+                title: "Oops!",
                 text: "Something went wrong! Please try again.",
                 icon: "error"
             });
@@ -243,7 +242,7 @@ function getDriverDetailsForEdit(driverId) {
                 driverDetails.fullname != "" ? document.getElementById("d-e-name").value = driverDetails.fullname : document.getElementById("d-e-name").value = "";
                 driverDetails.mail != "" ? document.getElementById("d-e-mail").value = driverDetails.mail : document.getElementById("d-e-mail").value = "";
                 driverDetails.mobile != "" ? document.getElementById("d-e-mobile").value = driverDetails.mobile : document.getElementById("d-e-mobile").value = "";
-                driverDetails.licence_no != "" ? document.getElementById("d-e-licence-no").value = driverDetails.licence_no : document.getElementById("d-e-licence-no").innerHTML = "";
+                driverDetails.licence_no != "" ? document.getElementById("d-e-licence-no").value = driverDetails.licence_no : document.getElementById("d-e-licence-no").value = "";
                 driverDetails.licence_expiry != "" ? document.getElementById("d-e-licence-ex").value = driverDetails.licence_expiry : document.getElementById("d-e-licence-ex").value = "";
                 driverDetails.aadhar_no != "" ? document.getElementById("d-e-aadhar-no").value = driverDetails.aadhar_no : document.getElementById("d-e-aadhar-no").value = "";
                 driverDetails.pan_no != "" ? document.getElementById("d-e-pan-no").value = driverDetails.pan_no : document.getElementById("d-e-pan-no").value = "";
@@ -259,26 +258,26 @@ function getDriverDetailsForEdit(driverId) {
                 driverDetails.pincode != "" ? document.getElementById("d-e-pincode").value = driverDetails.pincode : document.getElementById("d-e-pincode").value = "";
             }
             else if (response.status === 'error') {
-                popupClose('driver-view');
+                popupClose('driver-edit');
                 Swal.fire({
-                    title: "Error",
+                    title: "Oops!",
                     text: response.message,
                     icon: "error"
                 });
             } else {
-                popupClose('driver-view');
+                popupClose('driver-edit');
                 Swal.fire({
-                    title: "Error",
+                    title: "Oops!",
                     text: "Something went wrong! Please try again.",
                     icon: "error"
                 });
             }
         },
-        error: function (response) {
-            popupClose('driver-view');
+        error: function (xhr, status, error) {
+            popupClose('driver-edit');
             console.error(xhr.responseText);
             Swal.fire({
-                title: "Error",
+                title: "Oops!",
                 text: "Something went wrong! Please try again.",
                 icon: "error"
             });
@@ -318,13 +317,13 @@ $(document).ready(function () {
                 }
                 else if (data.status === 'error') {
                     Swal.fire({
-                        title: "Error",
+                        title: "Oops!",
                         text: data.message,
                         icon: "error"
                     });
                 } else {
                     Swal.fire({
-                        title: "Error",
+                        title: "Oops!",
                         text: data.message,
                         icon: "error"
                     });
@@ -333,7 +332,7 @@ $(document).ready(function () {
             error: function (response) {
                 console.error(xhr.responseText);
                 Swal.fire({
-                    title: "Error",
+                    title: "Oops!",
                     text: "Something went wrong! Please try again.",
                     icon: "error"
                 });
@@ -394,7 +393,7 @@ function deleteDriver(driverId, driverName) {
                         });
                     }
                 },
-                error: function (response) {
+                error: function (xhr, status, error) {
                     console.error(xhr.responseText);
                     Swal.fire({
                         title: "Oops!",

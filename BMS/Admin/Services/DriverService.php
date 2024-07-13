@@ -384,7 +384,7 @@ class DriverService
     }
 
     public function getDriversCardDetails() {
-        $response = $this->modelBMS->getDriversCardDetails();
+        $response = $this->modelBMS->getDriversCardDetails($_SESSION['companyId']);
         if (!$response) {
             return [
                 'status' => 'no data',
@@ -400,7 +400,7 @@ class DriverService
 
     public function getDrivers()
     {
-        $response = $this->modelBMS->getDriversDetails();
+        $response = $this->modelBMS->getDriversDetails($_SESSION['companyId']);
         if (!$response) {
             return [
                 'status' => 'no data',

@@ -61,20 +61,194 @@ class BusService {
 
         //Insert Driver details in drivers table in bms DB
 
-        $response = $this->modelBMS->setBus($_SESSION['companyId'], $busNumber, $busModel, $seatingCapacity, $fuelType, $busStatus, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook_path, $insurance_path);
+        $response1 = $this->modelBMS->setBus($_SESSION['companyId'], $busNumber, $busModel, $seatingCapacity, $fuelType, $busStatus, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook_path, $insurance_path);
 
-        if (!$response) {
+        $response2 = $this->modelBMS->setBusSummary($_SESSION['companyId'], $response1['busId']);
+        if ($response1['status'] == 'success' && $response2['status'] == 'success') {
+            return [
+                "status" => "success",
+                "message" => "The bus has created successfully."
+            ];
+        } else {
             return [
                 'status' => 'error',
                 'message' => 'Something went wrong while creating the bus',
                 'error' => 'Error while insert data in bus table.'
             ];
         }
+    }
 
-        return [
-            "status" => "success",
-            "message" => "The bus has created successfully."
+    public function updateBus($busId, $busNumber, $busModel, $seatingCapacity, $fuelTypeId, $busStatus, $rcbookNo, $insuranceNo, $rcbookExpiry, $insuranceExpiry, $rcBook, $insurance) {
+        $busInfo = [
+            "bus_number" => $busNumber,
+            "bus_model" => $busModel,
+            "seating_capacity" => $seatingCapacity,
+            "fuel_type_id" => $fuelTypeId,
+            "rcbook_no" => $rcbookNo,
+            "rcbook_expiry" => $rcbookExpiry,
+            "insurance_no" => $insuranceNo,
+            "insurance_expiry" => $insuranceExpiry,
+            "bus_status" => $busStatus
         ];
 
+        $currentData = $this->modelBMS->getBus($busId);
+
+        if (!$currentData) {
+            return [
+                'status' => 'error',
+                'message' => 'Something went wrong while updating the bus',
+                'error' => 'Error while select driver data from bus table.'
+            ];
+        }
+
+        //Check for changes
+        $changes = [];
+        $fields = ['bus_number', 'bus_model', 'seating_capacity', 'fuel_type_id', 'rcbook_no', 'rcbook_expiry', 'insurance_no', 'insurance_expiry', 'bus_status'];
+
+        //check & upload file changes
+        $fileChanges = false;
+
+        $uploadService = new FileUpload();
+
+        //Upload RC Book
+        if (isset($rcBook) && $rcBook['error'] === UPLOAD_ERR_OK) {
+            $rcBook_dir = "../../Assets/User/Driver image/";
+
+            $rcBook_filename = $uploadService->uploadFile($rcBook, $rcBook_dir);
+
+            $rcBook_path = $rcBook_filename['status'] === 'success' ? 'RC book/' . $rcBook_filename['fileName'] : '';
+
+            $fields[] = 'rcbook_path';
+            $busInfo['rcbook_path'] = $rcBook_path;
+            $fileChanges = true;
+            //Delete old file
+            $old1 = "../../Assets/User/" . $currentData['rcbook_path'];
+            if (file_exists($old1) && is_file($old1)) {
+                unlink($old1);
+            }
+        }
+
+        
+        //Upload Insurance
+        if (isset($insurance) && $insurance['error'] === UPLOAD_ERR_OK) {
+            $insurance_dir = "../../Assets/User/Driving licence/";
+
+            $insurance_filename = $uploadService->uploadFile($insurance, $insurance_dir);
+
+            $insurance_path = $insurance_filename['status'] === 'success' ? 'Driving licence/' . $insurance_filename['fileName'] : '';
+
+            $fields[] = 'insurance_path';
+            $busInfo['insurance_path'] = $insurance_path;
+            $fileChanges = true;
+            //Delete old file
+            $old2 = "../../Assets/User/" . $currentData['insurance_path'];
+            if (file_exists($old2) && is_file($old2)) {
+                unlink($old2);
+            }
+        }
+
+
+        foreach ($fields as $field) {
+            if ($busInfo[$field] != $currentData[$field]) {
+                $changes[$field] = $busInfo[$field];
+            }
+        }
+
+        // Construct and execute dynamic SQL query if there are changes
+        if (!empty($changes) || $fileChanges) {
+            $update_fields = [];
+            $update_values = [];
+
+            foreach ($changes as $field => $new_value) {
+                $update_fields[] = "$field = :$field";
+                $update_values[":$field"] = $new_value;
+            }
+
+            $update_values['id'] = $busId;
+
+            $final_response = $this->modelBMS->updateBus($update_fields, $update_values);
+
+            if ($final_response) {
+                return [
+                    'status' => 'success',
+                    'message' => 'Bus details updated successfully'
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Something went wrong while updating the bus',
+                    'error' => 'Error while update bus data in driver table.'
+                ];
+            }
+
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'There are no changes in bus details.',
+                'error' => 'All values as in bus table'
+            ];
+        }
+    }
+
+    public function getBusCardDetails() {
+        $response = $this->modelBMS->getBusCardDetails($_SESSION['companyId']);
+        if (!$response) {
+            return [
+                'status' => 'no data',
+                'message' => 'No data found'
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'data' => $response
+        ];
+    }
+
+    public function getBuses()
+    {
+        $response = $this->modelBMS->getBuses($_SESSION['companyId']);
+        if (!$response) {
+            return [
+                'status' => 'no data',
+                'message' => 'No data found'
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'data' => $response
+        ];
+    }
+
+    public function getBusEdit($busId)
+    {
+        $response = $this->modelBMS->getBus($busId);
+        if (!$response) {
+            return [
+                'status' => 'no data',
+                'message' => 'No data found'
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'data' => $response
+        ];
+    }
+
+    public function getBusView($busId) {
+        $response = $this->modelBMS->getBusView($busId);
+        if (!$response) {
+            return [
+                'status' => 'no data',
+                'message' => 'No data found'
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'data' => $response
+        ];
     }
 }

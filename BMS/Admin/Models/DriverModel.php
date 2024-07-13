@@ -29,23 +29,33 @@ class DriverModel {
         return $result ? $result : null;
     }
 
-    public function getDriversCardDetails() {
+    public function getDriversCardDetails($companyId) {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT
-                                    (SELECT COUNT(*) FROM bms_drivers) AS 'total_drivers',
-                                    (SELECT COUNT(*) FROM bms_drivers WHERE is_active=:isActive) AS 'active_drivers',
-                                    (SELECT COUNT(*) FROM bms_drivers WHERE licence_expiry<CURRENT_DATE()) AS 'expired_licenses',
-                                    (SELECT COUNT(*) FROM bms_drivers WHERE licence_expiry<DATE_ADD(CURDATE(), INTERVAL 3 MONTH) AND licence_expiry>CURRENT_DATE()) AS 'upcoming_expirations'
-                                    FROM `bms_drivers`");
+                                    (SELECT COUNT(*) FROM bms_drivers WHERE company_id=:companyId AND is_active=:isActive) AS 'total_drivers',
+                                    (SELECT COUNT(*) FROM bms_drivers WHERE company_id=:companyId AND is_active=:isActive) AS 'active_drivers',
+                                    (SELECT COUNT(*) FROM bms_drivers WHERE licence_expiry<CURRENT_DATE() AND company_id=:companyId AND is_active=:isActive) AS 'expired_licenses',
+                                    (SELECT COUNT(*) FROM bms_drivers WHERE licence_expiry<DATE_ADD(CURDATE(), INTERVAL 3 MONTH) AND licence_expiry>CURRENT_DATE() AND company_id=:companyId AND is_active=:isActive) AS 'upcoming_expirations'
+                                    ");
+        $stmt->bindParam(":companyId", $companyId);
         $stmt->bindParam(":isActive", $isActive);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $result ? $result : null;
     }
-    public function getDriversDetails() {
+    public function getDriversDetails($companyId) {
         $isActive = true;
-        $stmt = $this->db->prepare("SELECT `id`, `fullname`, `mail`, `mobile`, `district`, `licence_no`, `licence_expiry` FROM `bms_drivers` WHERE `is_active` = :isActive");
+        $stmt = $this->db->prepare("SELECT 
+                                        id, fullname, mail, mobile, district, licence_no, licence_expiry,
+                                        CASE
+                                            WHEN licence_expiry < CURRENT_DATE() THEN 'expired'
+                                            WHEN licence_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) THEN 'expires'
+                                            ELSE 'active'
+                                    END AS 'license_status'
+                                    FROM bms_drivers 
+                                    WHERE company_id=:companyId AND is_active = :isActive");
+        $stmt->bindParam(":companyId", $companyId);
         $stmt->bindParam(":isActive", $isActive);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

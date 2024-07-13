@@ -42,6 +42,41 @@ class BusController {
 
         echo json_encode($this->busService->createBus($busNumber, $busModel, $seatingCapacity, $fuelType, $busStatus, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook, $insurance));
     }
+
+    private function getBusCardDetails() {
+        echo json_encode($this->busService->getBusCardDetails());
+    }
+
+    private function getBuses() {
+        echo json_encode($this->busService->getBuses());
+    }
+
+    private function getBusEdit() {
+        echo json_encode($this->busService->getBusEdit($_POST['busId']));
+    }
+
+    private function updateBus() {
+        $busId = $_POST['bus_id'];
+        $busNumber = $_POST['bus_number'];
+        $busModel = $_POST['bus_model'];
+        $seatingCapacity = $_POST['seating_capacity'];
+        $fuelTypeId = $_POST['fuel_type_id'];
+        $busStatus = $_POST['bus_status'];
+        $rcbookNo = $_POST['rcbook_no'];
+        $insuranceNo = $_POST['insurance_no'];
+        $rcbookExpiry = $_POST['rcbook_expiry'];
+        $insuranceExpiry = $_POST['insurance_expiry'];
+
+        $rcBook = $_FILES['rcbook_path'];
+        $insurance = $_FILES['insurance_path'];
+
+        echo json_encode($this->busService->updateBus($busId, $busNumber, $busModel, $seatingCapacity, $fuelTypeId, $busStatus, $rcbookNo, $insuranceNo, $rcbookExpiry, $insuranceExpiry, $rcBook, $insurance));
+    
+    }
+
+    private function getBusView() {
+        echo json_encode($this->busService->getBusView($_POST['busId']));
+    }
 }
 
 new BusController();
