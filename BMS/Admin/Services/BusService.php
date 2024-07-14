@@ -112,7 +112,7 @@ class BusService {
 
         //Upload RC Book
         if (isset($rcBook) && $rcBook['error'] === UPLOAD_ERR_OK) {
-            $rcBook_dir = "../../Assets/User/Driver image/";
+            $rcBook_dir = "../../Assets/User/RC book/";
 
             $rcBook_filename = $uploadService->uploadFile($rcBook, $rcBook_dir);
 
@@ -131,11 +131,11 @@ class BusService {
         
         //Upload Insurance
         if (isset($insurance) && $insurance['error'] === UPLOAD_ERR_OK) {
-            $insurance_dir = "../../Assets/User/Driving licence/";
+            $insurance_dir = "../../Assets/User/Bus insurance/";
 
             $insurance_filename = $uploadService->uploadFile($insurance, $insurance_dir);
 
-            $insurance_path = $insurance_filename['status'] === 'success' ? 'Driving licence/' . $insurance_filename['fileName'] : '';
+            $insurance_path = $insurance_filename['status'] === 'success' ? 'Bus insurance/' . $insurance_filename['fileName'] : '';
 
             $fields[] = 'insurance_path';
             $busInfo['insurance_path'] = $insurance_path;
@@ -250,5 +250,43 @@ class BusService {
             'status' => 'success',
             'data' => $response
         ];
+    }
+
+    public function deleteBus($busId) {
+        $currentData = $this->modelBMS->getBus($busId);
+
+        if (!$currentData) {
+            return [
+                'status' => 'error',
+                'message' => 'Something went wrong while deleting the driver',
+                'error' => 'Error while select driver data in driver table.'
+            ];
+        }
+        //Delete old file
+        $oldRC = "../../Assets/User/" . $currentData['rcbook_path'];
+        if (file_exists($oldRC) && is_file($oldRC)) {
+            unlink($oldRC);
+        }
+
+        //Delete old file
+        $oldInsurance = "../../Assets/User/" . $currentData['insurance_path'];
+        if (file_exists($oldInsurance) && is_file($oldInsurance)) {
+            unlink($oldInsurance);
+        }
+
+        $response = $this->modelBMS->deleteBus($busId);
+
+        if ($response) {
+            return [
+                'status' => 'success',
+                'message' => 'Bus deleted successfully.'
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Something went wrong while deleting the bus',
+                'error' => 'Error while delete bus data in bus table in bms DB.'
+            ];
+        }
     }
 }

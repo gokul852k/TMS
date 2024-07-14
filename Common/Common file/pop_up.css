@@ -42,10 +42,37 @@
         padding: 20px 10px 20px 10px;
         box-shadow: var(--first-shadow);
     }
+    .pop-up-card-3 {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10001;
+        width: 30%;
+        max-height: 80%;
+        background-color: var(--body-color);
+        border-radius: 5px;
+        padding: 20px 10px 20px 10px;
+        box-shadow: var(--first-shadow);
+        overflow-y: scroll;
+    }
 
     .pop-up-card-content {
         height: -webkit-fill-available;
         overflow-y: scroll;
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .pop-up-card-3::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .pop-up-card-3 {
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
     }
 
     /* Hide scrollbar for Chrome, Safari and Opera */

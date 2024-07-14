@@ -72,7 +72,7 @@ function getBuses() {
                                                 class="fa-duotone fa-eye"></i></button>
                                 <button class="table-btn edit" onclick="popupOpen('bus-edit'); getBusDetailsForEdit(`+ item.bus_id + `);"><i
                                                 class="fa-duotone fa-pen-to-square"></i></button>
-                                <button class="table-btn delete" onclick="deleteDriver(`+ item.bus_id + `, '` + item.bus_number + `')"><i class="fa-duotone fa-trash"></i></button>
+                                <button class="table-btn delete" onclick="deleteBus(`+ item.bus_id + `, '` + item.bus_number + `')"><i class="fa-duotone fa-trash"></i></button>
                             </div>
                         </td>`      
                     '</tr>';
@@ -477,3 +477,68 @@ $(document).ready(function () {
         });
     });
 });
+
+//Delete Driver
+
+function deleteBus(busId, busName) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want to delete " + busName,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //Calling progress bar
+            popupOpen("progress-loader");
+            let array = [["Deleting bus. Please wait..", 4000], ["Deleting bus documents..", 4000], ["Please wait a moment..", 4000]];
+            progressLoader(array);
+            let formData = {
+                busId: busId,
+                action: 'deleteBus'
+            }
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/BusController.php',
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    popupClose("progress-loader");
+                    // let data = JSON.parse(response);
+                    if (data.status === 'success') {
+                        getBuses();
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: data.message,
+                            icon: "success"
+                        });
+                    }
+                    else if (data.status === 'error') {
+                        Swal.fire({
+                            title: "Oops!",
+                            text: data.message,
+                            icon: "error"
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Oops!",
+                            text: data.message,
+                            icon: "error"
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        title: "Oops!",
+                        text: "Something went wrong! Please try again.",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+    });
+}

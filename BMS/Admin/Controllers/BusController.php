@@ -77,6 +77,10 @@ class BusController {
     private function getBusView() {
         echo json_encode($this->busService->getBusView($_POST['busId']));
     }
+
+    private function deleteBus() {
+        echo json_encode($this->busService->deleteBus($_POST['busId']));
+    }
 }
 
 new BusController();

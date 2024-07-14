@@ -182,4 +182,10 @@ class BusModel {
 
         return $result ? $result : null;
     }
+
+    function deleteBus($busId) {
+        $stmt = $this->db->prepare("DELETE FROM `bms_bus` WHERE `id`=:busId");
+        $stmt->bindParam("busId", $busId);
+        return $stmt->execute();
+    }
 }

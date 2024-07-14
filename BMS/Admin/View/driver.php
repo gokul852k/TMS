@@ -7,12 +7,6 @@ require_once './navbar.php';
 <link rel="stylesheet" href="../../../Common/Common file/header.css">
 <link rel="stylesheet" href="../../../Common/Common file/pop_up.css">
 <link rel="stylesheet" href="./Style/driver.css">
-<style>
-    h2 {
-        text-align: center;
-        padding: 20px 0;
-    }
-</style>
 
 <div class="register-driver">
     <div class="container box-container box-head w3-animate-top">

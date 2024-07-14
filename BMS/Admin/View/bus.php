@@ -7,12 +7,6 @@ require_once './navbar.php';
 <link rel="stylesheet" href="../../../Common/Common file/header.css">
 <link rel="stylesheet" href="../../../Common/Common file/pop_up.css">
 <link rel="stylesheet" href="./Style/driver.css">
-<style>
-    h2 {
-        text-align: center;
-        padding: 20px 0;
-    }
-</style>
 
 <div class="register-driver">
     <div class="container box-container box-head w3-animate-top">
@@ -657,9 +651,7 @@ require_once './navbar.php';
 <script src="../../../Common/Common file/pop_up.js"></script>
 <script src="../../../Common/Common file/data_table.js"></script>
 <script src="../../../Common/Common file/main.js"></script>
-<script src="./js/driver.js"></script>
 <script src="./js/bus_ajax.js"></script>
-<script src="./js/drivers_ajax.js"></script>
 <?php
 require_once './footer.php';
 ?>
