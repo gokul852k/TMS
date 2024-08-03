@@ -22,11 +22,11 @@ class NavbarServices {
         $this->model = new NavbarModel($bmsDB);
     }
 
-    public function adminNavbar() {
+    public function userNavbar() {
 
         $roleId = $_SESSION['userRoleId'];
         $languageCode = $_SESSION['languageCode'];
-        $response = $this->model->getAdminNavbar($roleId, $languageCode);
+        $response = $this->model->getUserNavbar($roleId, $languageCode);
 
         if ($response) {
             return $response;

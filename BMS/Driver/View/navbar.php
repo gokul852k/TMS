@@ -3,7 +3,8 @@ require_once '../Services/NavbarServices.php';
 
 $navbarServices = new NavbarServices();
 
-$navbarResponse = $navbarServices->adminNavbar();
+$navbarResponse = $navbarServices->userNavbar();
+
 if ($navbarResponse && !empty($navbarResponse)) {
     ?>
 

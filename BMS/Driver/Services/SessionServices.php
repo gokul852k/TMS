@@ -21,22 +21,23 @@ class SessionServices {
 
     public function storeSessionValue($token) {
         $response1 = $this->modelA->getUser($token);
-        $userId = $response1['company_id'];
-        // $response2 = $this->modelMA->getUserDetails($userId);
+        $userId = $response1['id'];
+        $companyId = $response1['company_id'];
+        $response2 = $this->modelBMS->getUserDetails($userId);
 
         //Get user role from Authentication Database
         $response3 = $this->modelA->getUserRoleFromAuthentication($response1['id']);
 
         //Get User role ID from BMS Database
 
-        $response4 = $this->modelBMS->getUserIdFromBMS($response3['role_name']);
+        $response4 = $this->modelBMS->getUserRoleIdFromBMS($response3['role_name']);
+
 
         //Storing value in session
         if($response1) {
             $_SESSION['userId'] = $userId;
-            // $_SESSION['companyId'] = $response2['id'];
-            // $_SESSION['companyName'] = $response2['company_name'];
-            // $_SESSION['companyLogo'] = $response2['company_logo'];
+            $_SESSION['companyId'] = $companyId;
+            $_SESSION['userName'] = $response2['fullname'];
             $_SESSION['languageCode'] = 'ta';
             $_SESSION['userRoleId'] = $response4['id'];
 

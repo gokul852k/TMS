@@ -8,7 +8,7 @@ class NavbarModel {
         $this->db = $db;
     }
 
-    public function getAdminNavbar($roleId, $languageCode) {
+    public function getUserNavbar($roleId, $languageCode) {
         $isVisible = true;
         $stmt = $this->db->prepare("SELECT n.url, n.icon, t.label
                                     FROM bms_navbar_roles AS r
