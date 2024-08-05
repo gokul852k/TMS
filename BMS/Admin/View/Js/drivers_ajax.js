@@ -1,9 +1,5 @@
 //Get driver Table data 
-$(document).ready(function () {
-    $(window).on('load', function (event) {
-        getDrivers();
-    });
-});
+getDrivers();
 
 
 
@@ -188,7 +184,7 @@ function getDriverDetails(driverId) {
                 driverDetails.address != "" ? document.getElementById("d-v-address").innerHTML = driverDetails.address : document.getElementById("d-v-address").innerHTML = "-";
                 driverDetails.district != "" ? document.getElementById("d-v-district").innerHTML = driverDetails.district : document.getElementById("d-v-district").innerHTML = "-";
                 driverDetails.state != "" ? document.getElementById("d-v-state").innerHTML = driverDetails.state : document.getElementById("d-v-state").innerHTML = "-";
-                driverDetails.pan_no != "" ? document.getElementById("d-v-pincode").innerHTML = driverDetails.pan_no : document.getElementById("d-v-pincode").innerHTML = "-";
+                driverDetails.pan_no != "" ? document.getElementById("d-v-pincode").innerHTML = driverDetails.pincode : document.getElementById("d-v-pincode").innerHTML = "-";
             }
             else if (response.status === 'error') {
                 popupClose('driver-view');

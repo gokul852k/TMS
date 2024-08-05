@@ -65,6 +65,7 @@ body.dark {
   color: var(--primary-color);
   margin-bottom: 25px;
   font-weight: 500;
+  line-height: normal;
 }
 
 .admin-logo {
@@ -209,7 +210,7 @@ input:focus {
   border-radius: 5px;
   box-shadow: var(--first-shadow);
   padding: 30px !important;
-  /* margin: 10px; */
+  margin: 10px;
 }
 .box-container-sm {
   background-color: #FFFFFF;
@@ -226,6 +227,7 @@ input:focus {
 
 .para {
   margin-bottom: 10px;
+  line-height: normal;
 }
 .box-shadow {
   box-shadow: var(--first-shadow);
@@ -518,8 +520,15 @@ div.dt-container .dt-length, div.dt-container .dt-search, div.dt-container .dt-i
 
 
 /*common*/
+.p-0 {
+  padding: 0; 
+}
 .p-10 {
   padding: 10px;
+}
+.p-r-l-15 {
+  padding-right: 15px;
+  padding-left: 15px;
 }
 .m-t-0 {
   margin-top: 0;

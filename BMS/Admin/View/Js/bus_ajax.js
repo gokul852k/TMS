@@ -2,11 +2,7 @@
 let fuelTypes;
 
 //Get driver Table data 
-$(document).ready(function () {
-    $(window).on('load', function (event) {
-        getBuses();
-    });
-});
+getBuses();
 
 
 
@@ -172,7 +168,7 @@ $(document).ready(function () {
                 popupClose("progress-loader");
                 let data = JSON.parse(response);
                 if (data.status === 'success') {
-                    getDrivers();
+                    getBuses();
                     Swal.fire({
                         title: "Success",
                         text: data.message,

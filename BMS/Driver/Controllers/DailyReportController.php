@@ -4,7 +4,7 @@ require_once '../Services/DailyReportService.php';
 class DailyReportController {
     private $serviceDR;
     public function __construct() {
-        $this->serviceDR = new DriverService();
+        $this->serviceDR = new DailyReportService();
 
         // Check if the request is an AJAX request
         if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
@@ -24,6 +24,10 @@ class DailyReportController {
 
     private function createDailyReport() {
         echo json_encode($this->serviceDR->createDailyReport($_POST['bus-id']));
+    }
+
+    private function createTrip() {
+        echo json_encode($this->serviceDR->createTrip($_POST['start-route'], $_POST['end-route'], $_POST['start-km']));
     }
 }
 

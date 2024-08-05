@@ -1,9 +1,6 @@
 //Get driver Table data 
-$(document).ready(function () {
-    $(window).on('load', function (event) {
-        getRoutes();
-    });
-});
+getRoutes();
+
 
 
 

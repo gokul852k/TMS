@@ -32,14 +32,19 @@ class SessionServices {
 
         $response4 = $this->modelBMS->getUserRoleIdFromBMS($response3['role_name']);
 
+        //Get Driver ID from Driver Table
+
+        $response5 = $this->modelBMS->getDriver($userId);
+
 
         //Storing value in session
-        if($response1) {
+        if($response1 && $response2 && $response3 && $response4 && $response5) {
             $_SESSION['userId'] = $userId;
             $_SESSION['companyId'] = $companyId;
             $_SESSION['userName'] = $response2['fullname'];
             $_SESSION['languageCode'] = 'ta';
             $_SESSION['userRoleId'] = $response4['id'];
+            $_SESSION['driverId'] = $response5['driverId'];
 
             //Yokesh you need to store session as per your need.
 
