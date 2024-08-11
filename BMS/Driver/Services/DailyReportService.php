@@ -44,6 +44,28 @@ class DailyReportService {
         }
     }
 
+    public function getDisplayTrip() {
+
+        //SELECT COUNT(*) FROM bms_shifts s INNER JOIN bms_trips t ON s.shift_id = t.shift_id WHERE s.shift_status = true AND t.trip_status = true AND t.is_active = true
+        $currentDate = date('Y-m-d');
+
+        // $driverShift = $this->modelBMS->getDisplayTrip($_SESSION['driverId'], $currentDate);
+
+        // if (!$driverShift) {
+        //     return [
+        //         'status' => 'success',
+        //         'display' => 'SELECT BUS',
+        //         'message' => 'Now we want to display the SELECT BUS'
+        //     ];
+        // } else {
+        //     return [
+        //         'status' => 'success',
+        //         'display' => 'SELECT TRIP',
+        //         'message' => 'Now we want to display the SELECT TRIP'
+        //     ];
+        // }
+    }
+
     public function getBuses() {
         $response = $this->modelBMS->getBuses($_SESSION['companyId']);
         if($response) {
