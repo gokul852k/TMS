@@ -26,8 +26,23 @@ class DailyReportController {
         echo json_encode($this->serviceDR->createDailyReport($_POST['bus-id']));
     }
 
-    private function createTrip() {
-        echo json_encode($this->serviceDR->createTrip($_POST['start-route'], $_POST['end-route'], $_POST['start-km']));
+    private function startTrip() {
+        echo json_encode($this->serviceDR->startTrip($_POST['start-route'], $_POST['end-route'], $_POST['start-km']));
+    }
+
+    private function startTrip2() {
+        echo json_encode($this->serviceDR->startTrip2($_POST['trip-id-2'], $_POST['start-km']));
+    }
+    private function endTrip() {
+        echo json_encode($this->serviceDR->endTrip($_POST['trip-id'], $_POST['trip-driver-id'], $_POST['end-km']));
+    }
+
+    private function endDuty() {
+        echo json_encode($this->serviceDR->endDuty($_POST['tripId']));
+    }
+
+    private function endDuty2() {
+        echo json_encode($this->serviceDR->endDuty2());
     }
 }
 

@@ -27,7 +27,7 @@ class DailyReportService {
 
         $currentDate = date('Y-m-d');
 
-        $driverShift = $this->modelBMS->checkDriverShiftByDate($_SESSION['driverId'], $currentDate);
+        $driverShift = $this->modelBMS->checkDriverShiftByDriverId($_SESSION['driverId']);
 
         if (!$driverShift) {
             return [
@@ -46,24 +46,56 @@ class DailyReportService {
 
     public function getDisplayTrip() {
 
-        //SELECT COUNT(*) FROM bms_shifts s INNER JOIN bms_trips t ON s.shift_id = t.shift_id WHERE s.shift_status = true AND t.trip_status = true AND t.is_active = true
-        $currentDate = date('Y-m-d');
+        $driverTrip = $this->modelBMS->getDisplayTrip($_SESSION['driverId']);
 
-        // $driverShift = $this->modelBMS->getDisplayTrip($_SESSION['driverId'], $currentDate);
+        if (!$driverTrip) {
+            return [
+                'status' => 'success',
+                'display' => 'TRIP START',
+                'message' => 'Now we want to display the TRIP START'
+            ];
+        } else {
+            return [
+                'status' => 'success',
+                'display' => 'TRIP END',
+                'tripId' => $driverTrip['trip_id'],
+                'tripDriverId' => $driverTrip['trip_driver_id'],
+                'message' => 'Now we want to display the TRIP END'
+            ];
+        }
+    }
 
-        // if (!$driverShift) {
-        //     return [
-        //         'status' => 'success',
-        //         'display' => 'SELECT BUS',
-        //         'message' => 'Now we want to display the SELECT BUS'
-        //     ];
-        // } else {
-        //     return [
-        //         'status' => 'success',
-        //         'display' => 'SELECT TRIP',
-        //         'message' => 'Now we want to display the SELECT TRIP'
-        //     ];
-        // }
+    public function getDisplayStartTrip($tripId) {
+        $tripDetails = $this->modelBMS->getDisplayStartTrip($tripId);
+
+        if ($tripDetails) {
+            return [
+                'status' => 'success',
+                'message' => 'Now we want to display the Start KM'
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Error while fetching trip data'
+            ];
+        }
+    }
+
+    public function getTripDetails($tripId) {
+        $tripDetails = $this->modelBMS->getTripDetails($tripId, $_SESSION['languageCode']);
+
+        if ($tripDetails) {
+            return [
+                'status' => 'success',
+                'data' => $tripDetails,
+                'message' => 'Now we want to display the SELECT BUS'
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Error while fetching trip data'
+            ];
+        }
     }
 
     public function getBuses() {
@@ -212,7 +244,7 @@ class DailyReportService {
         return $this->modelBMS->getRoutes($_SESSION['companyId'], $_SESSION['languageCode']);
     }
 
-    public function createTrip($startRoute, $endRoute, $startKm) {
+    public function startTrip($startRoute, $endRoute, $startKm) {
         $response1 = $this->modelBMS->getShiftIdByDriverId($_SESSION['driverId']);
         if (!$response1) {
             return [
@@ -231,6 +263,7 @@ class DailyReportService {
             ];
         }
 
+        //Loop and insert trip_driver and trip_conductor
         $response3 = $this->modelBMS->createTripDriver($_SESSION['companyId'], $response2['tripId'], $_SESSION['driverId']);
 
         if ($response2['status'] != 'success') {
@@ -245,5 +278,168 @@ class DailyReportService {
                 "message" => "Trip Started."
             ];
         }
+    }
+
+    public function startTrip2($tripId, $startKm) {
+        $response = $this->modelBMS->updateTripStartKm($tripId, $startKm);
+        if ($response) {
+            return [
+                "status" => "success",
+                "message" => "Trip Started."
+            ];
+        } else {
+            return [
+                'status' => 'Oops!',
+                'message' => 'Something went wrong while start trip',
+                'error' => 'Error while select shift id from shift driver table.'
+            ];
+        }
+        
+    }
+
+    public function endTrip($tripId, $tripDriverId, $endKm) {
+        $updateTrip = $this->modelBMS->updateEndTrip($tripId, $endKm);
+        $updateTripDriver = $this->modelBMS->updateTripDriverStatus($tripDriverId);
+
+        //Check for change trip status
+        if ($updateTrip && $updateTripDriver) {
+            $checkTripStatus = $this->modelBMS->checkTripStatus($tripId);
+
+            if (!$checkTripStatus) {
+                $updateTripStatus = $this->modelBMS->updateTripStatus($tripId);
+
+                if ($updateTripStatus) {
+                    return [
+                        'status' => 'success',
+                        'message' => 'Trip ended.',
+                        'tripId' => $tripId
+                    ];
+                } else {
+                    return [
+                        'status' => 'success',
+                        'message' => 'Trip ended.',
+                        'tripId' => $tripId,
+                        'error' => 'Error while updating trip status'
+                    ];
+                }
+            } else {
+                return [
+                    'status' => 'success',
+                    'message' => 'Trip ended.',
+                    'tripId' => $tripId
+                ];
+            }
+        } else {
+            return [
+                'status' => 'Oops!',
+                'message' => 'Something went wrong while start trip',
+                'error' => 'Error while updating trip and driver trip in table.'
+            ];
+        }
+        
+    }
+
+    public function endDuty($tripId) {
+        $shift = $this->modelBMS->getShiftId($tripId);
+
+        if (!$shift) {
+            return [
+                'status' => 'Oops!',
+                'message' => 'Something went wrong while end duty',
+                'error' => 'Error while fetch shift data in trip table.'
+            ];
+        }
+
+        $shiftId = $shift['shift_id'];
+
+        //Update shift driver
+
+        $updateDriverStatus = $this->modelBMS->updateDriverShiftStatus($shiftId);
+
+        if (!$updateDriverStatus) {
+            return [
+                'status' => 'Oops!',
+                'message' => 'Something went wrong while end duty',
+                'error' => 'Error while update work_status in shift driver table.'
+            ];
+        }
+
+        //check for conductor work status is true
+
+        $conductor = false;
+
+        if (!$conductor) {
+            $updateShiftStatus = $this->modelBMS->updateShiftStatus($shiftId);
+
+            if (!$updateShiftStatus) {
+                return [
+                    'status' => 'success',
+                    'message' => 'Duty ended successfully.',
+                    'error' => 'Error while update status in shift table.'
+                ];
+            }
+            return [
+                'status' => 'success',
+                'message' => 'Duty ended successfully.',
+                'error' => ''
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'message' => 'Duty ended successfully.'
+        ];
+    }
+
+    public function endDuty2() {
+        $driverShift = $this->modelBMS->getShiftIdByDriverId($_SESSION['driverId']);
+
+        if (!$driverShift) {
+            return [
+                'status' => 'Oops!',
+                'message' => 'Something went wrong while end duty',
+                'error' => 'Error while fetch driver shift data in trip table.'
+            ];
+        }
+
+        $shiftId = $driverShift['shiftId'];
+
+        //Update shift driver
+
+        $updateDriverStatus = $this->modelBMS->updateDriverShiftStatus($shiftId);
+
+        if (!$updateDriverStatus) {
+            return [
+                'status' => 'Oops!',
+                'message' => 'Something went wrong while end duty',
+                'error' => 'Error while update work_status in shift driver table.'
+            ];
+        }
+
+        //check for conductor work status is true
+
+        $conductor = false;
+
+        if (!$conductor) {
+            $updateShiftStatus = $this->modelBMS->updateShiftStatus($shiftId);
+
+            if (!$updateShiftStatus) {
+                return [
+                    'status' => 'success',
+                    'message' => 'Duty ended successfully.',
+                    'error' => 'Error while update status in shift table.'
+                ];
+            }
+            return [
+                'status' => 'success',
+                'message' => 'Duty ended successfully.',
+                'error' => ''
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'message' => 'Duty ended successfully.'
+        ];
     }
 }
