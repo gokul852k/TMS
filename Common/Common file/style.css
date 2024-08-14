@@ -209,7 +209,7 @@ input:focus {
   border-radius: 5px;
   box-shadow: var(--first-shadow);
   padding: 30px !important;
-  /* margin: 10px; */
+  margin: 10px;
 }
 .box-container-sm {
   background-color: #FFFFFF;

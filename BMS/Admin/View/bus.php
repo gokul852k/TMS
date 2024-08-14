@@ -252,7 +252,7 @@ require_once './navbar.php';
                     <div class="pop-up-button-div box-container box-head m-b-10">
                         <button type="submit" name="submit" class="button-2 box-shadow">Add Bus</button>
                         <button type="reset" name="submit" class="button-3 box-shadow"
-                            onclick="popupClose('driver-add')">cancel</button>
+                            onclick="popupClose('bus-add')">cancel</button>
                     </div>
                 </form>
             </div>
