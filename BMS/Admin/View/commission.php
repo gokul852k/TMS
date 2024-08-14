@@ -12,110 +12,10 @@ require_once './navbar.php';
     <div class="container box-container box-head w3-animate-top">
         <div class="row row-head">
             <div class="">
-                <h4 class="heading">Bus Details</h4>
+                <h4 class="heading">Commission Details</h4>
             </div>
             <div class="row-head-div-2">
-                <button class="button-1 head-button3" onclick="popupOpen('bus-add'); getFuelType()"><i
-                        class="fa-solid fa-bus"></i>Add Bus</button>
-                <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
-            </div>
-        </div>
-    </div>
-    <div class="container box-container w3-animate-top">
-        <div class="row row-head c-5">
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 card-row-d-r">
-                        <div class="col card-col-d-r">
-                            <div class="card radius-10 border-start border-0 border-3 border-info">
-                                <a href="#" class="no-underline">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <p class="mb-0 text-secondary">Total Bus</p>
-                                                <h4 class="my-1 text-info t-c-4" id="total-bus">-</h4>
-                                            </div>
-                                            <div class="widgets-icons-2 rounded-circle bg-g-4 text-white ms-auto">
-                                                <i class="fa-solid fa-bus"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col card-col-d-r">
-                            <div class="card radius-10 border-start border-0 border-3 border-info">
-                                <a href="#" class="no-underline">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <p class="mb-0 text-secondary">Total KM</p>
-                                                <h4 class="my-1 text-info t-c-5" id="total-km">-</h4>
-                                            </div>
-                                            <div class="widgets-icons-2 rounded-circle bg-g-5 text-white ms-auto">
-                                                <i class="fa-solid fa-gauge-max"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col card-col-d-r">
-                            <div class="card radius-10 border-start border-0 border-3 border-info">
-                                <a href="#" class="no-underline">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <p class="mb-0 text-secondary">Avg Mileage</p>
-                                                <h4 class="my-1 text-info t-c-6" id="avg-mileage">-</h4>
-                                            </div>
-                                            <div class="widgets-icons-2 rounded-circle bg-g-6 text-white ms-auto">
-                                                <i class="fa-solid fa-gas-pump"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col card-col-d-r">
-                            <div class="card radius-10 border-start border-0 border-3 border-info">
-                                <a href="#" class="no-underline">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <p class="mb-0 text-secondary">Cost per KM</p>
-                                                <h4 class="my-1 text-info t-c-7" id="cost-per-km">-</h4>
-                                            </div>
-                                            <div class="widgets-icons-2 rounded-circle  bg-g-7 text-white ms-auto">
-                                                <i class="fa-solid fa-receipt"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col card-col-d-r">
-                            <div class="card radius-10 border-start border-0 border-3 border-info">
-                                <a href="#" class="no-underline">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <p class="mb-0 text-secondary">Expired</p>
-                                                <h4 class="my-1 text-info t-c-3" id="expitations">-</h4>
-                                            </div>
-                                            <div
-                                                class="widgets-icons-2 rounded-circle  bg-gradient-blooker text-white ms-auto">
-                                                <i class="fa-solid fa-file-xmark"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
+                <button class="button-1 head-button2" onclick="popupOpen('add'); getFuelType()"><i class="fa-solid fa-money-check-pen"></i>Add Commission</button>
             </div>
         </div>
     </div>
@@ -127,18 +27,15 @@ require_once './navbar.php';
                     <div class="col-xs-12">
                         <table
                             summary="This table shows how to create responsive tables using Datatables' extended functionality"
-                            class="table table-bordered table-hover dt-responsive" id="bus-table">
+                            class="table table-bordered table-hover dt-responsive" id="commission-table">
 
                             <thead>
                                 <tr>
                                     <th class="th">S.No</th>
-                                    <th class="th">Bus Number</th>
-                                    <th class="th">Fuel Type</th>
-                                    <th class="th">Total KM</th>
-                                    <th class="th">Avg Mileage</th>
-                                    <th class="th">Cost per KM</th>
-                                    <th class="th">RC Book Status</th>
-                                    <th class="th">Insurance Status</th>
+                                    <th class="th">Collection Range From</th>
+                                    <th class="th">Collection Range To</th>
+                                    <th class="th">Amount Per Commission</th>
+                                    <th class="th">Commission Amount</th>   
                                     <th class="th">Action</th>
                                 </tr>
                             </thead>
@@ -154,115 +51,52 @@ require_once './navbar.php';
 </div>
 
 <!--Add Bus Pop ups-->
-<div class="tms-pop-up" id="bus-add">
-    <div class="pop-up-bg" onclick="popupClose('bus-add')"></div>
-    <div class="pop-up-card-2 scrollbar w3-animate-top">
+<div class="tms-pop-up" id="add">
+    <div class="pop-up-bg" onclick="popupClose('add')"></div>
+    <div class="pop-up-card-3 scrollbar w3-animate-top">
         <div class="pop-up-card-content">
             <div class="container box-container box-head">
                 <div class="row row-head">
                     <div class="">
-                        <h4 class="heading"><i class="fa-solid fa-user-pilot"></i>Add Bus</h4>
+                        <h4 class="heading"><i class="fa-solid fa-user-pilot"></i>Add Commission</h4>
                     </div>
                     <div class="row-head-div-2">
-                        <button class="button-1 head-button2" title="close" onclick="popupClose('bus-add')"><i
+                        <button class="button-1 head-button2" title="close" onclick="popupClose('add')"><i
                                 class="fa-solid fa-xmark"></i></button>
                     </div>
                 </div>
             </div>
             <div class="register-driver">
-                <form enctype="multipart/form-data" id="bus-form">
+                <form enctype="multipart/form-data" id="commission-form">
                     <div class="container box-container">
                         <div class="row">
-                            <h4 class="heading">Bus Details</h4>
+                            <h4 class="heading">Commission Details</h4>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
-                                <input type="text" class="input-field" name="bus-number" placeholder="Bus Number"
-                                    required />
+                            <div class="col-sm-12">
+                                <label for="" class="input-label">Collection Range From</label>
+                                <input type="number" class="input-field" name="range-from" placeholder="" required/>
                             </div>
-                            <div class="col-sm-6">
-                                <input type="text" class="input-field" name="bus-model" placeholder="Bus Model" />
+                            <div class="col-sm-12">
+                                <label for="" class="input-label">Collection Range To</label>
+                                <input type="number" class="input-field" name="range-to" placeholder="" required/>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <input type="number" class="input-field" name="seating-capacity"
-                                    placeholder="Seating Capacity" />
+                            <div class="col-sm-12">
+                                <label for="" class="input-label">Amount Per Commission</label>
+                                <input type="number" class="input-field" name="amount-per-commission" placeholder="" required/>
                             </div>
-                            <div class="col-sm-6">
-                                <select class="input-field" id="fuel-type" name="fuel-type" required>
-                                    <option value="">--Select Fuel Type--</option>
-                                </select>
+                            <div class="col-sm-12">
+                                <label for="" class="input-label">Commission Amount</label>
+                                <input type="number" class="input-field" name="commission-amount" placeholder="" required/>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <select class="input-field" name="bus-status" required>
-                                    <option value="" disabled selected>--Select Bus Status--</option>
-                                    <option value="1">Running</option>
-                                    <option value="0">Not Running</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-6">
-                                <input type="number" class="input-field" name="driver-salary"
-                                    placeholder="Driver Salary" required/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <input type="number" class="input-field" name="conductor-salary"
-                                    placeholder="Conductor Salary" required/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="container box-container">
-                        <div class="row">
-                            <h4 class="heading">Documents</h4>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label for="exampleFormControlFile1" class="drop-container" id="dropcontainer">
-                                    <span class="drop-title">RC Book</span>
-                                    <br>
-                                    <input type="file" class="form-control-file" name="rc-book" accept="image/*,.pdf" />
-                                </label>
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="exampleFormControlFile1" class="drop-container" id="dropcontainer">
-                                    <span class="drop-title">Upload Bus Insurance</span>
-                                    <br>
-                                    <input type="file" class="form-control-file" name="insurance"
-                                        accept="image/*,.pdf" />
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label for="" class="input-label">RC Book Number</label>
-                                <input type="text" class="input-field" name="rc-book-number" />
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="" class="input-label">Insurance Number</label>
-                                <input type="text" class="input-field" name="insurance-number" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label for="" class="input-label">RC Book Expiry Date</label>
-                                <input type="date" class="input-field" name="rc-book-expiry" />
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="" class="input-label">Insurance Expiry Date</label>
-                                <input type="date" class="input-field" name="insurance-expiry" />
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <div class="pop-up-button-div box-container box-head m-b-10">
-                        <button type="submit" name="submit" class="button-2 box-shadow">Add Bus</button>
+                        <button type="submit" name="submit" class="button-2 box-shadow">Add Commission</button>
                         <button type="reset" name="submit" class="button-3 box-shadow"
-                            onclick="popupClose('bus-add')">cancel</button>
+                            onclick="popupClose('add')">cancel</button>
                     </div>
                 </form>
             </div>
@@ -692,7 +526,7 @@ require_once './navbar.php';
 <script src="../../../Common/Common file/pop_up.js"></script>
 <script src="../../../Common/Common file/data_table.js"></script>
 <script src="../../../Common/Common file/main.js"></script>
-<script src="./js/bus_ajax.js"></script>
+<script src="./js/commission_ajax.js"></script>
 <?php
 require_once './footer.php';
 ?>

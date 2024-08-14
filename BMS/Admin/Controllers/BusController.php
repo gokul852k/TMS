@@ -33,6 +33,8 @@ class BusController {
         $seatingCapacity = $_POST['seating-capacity'];
         $fuelType = $_POST['fuel-type'];
         $busStatus = $_POST['bus-status'];
+        $driverSalary = $_POST['driver-salary'];
+        $conductorSalary = $_POST['conductor-salary'];
         $rcBookNumber = $_POST['rc-book-number'];
         $insuranceNumber = $_POST['insurance-number'];
         $rcBookExpiry = $_POST['rc-book-expiry'];
@@ -40,7 +42,7 @@ class BusController {
         $rcBook = $_FILES['rc-book'];
         $insurance = $_FILES['insurance'];
 
-        echo json_encode($this->busService->createBus($busNumber, $busModel, $seatingCapacity, $fuelType, $busStatus, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook, $insurance));
+        echo json_encode($this->busService->createBus($busNumber, $busModel, $seatingCapacity, $fuelType, $busStatus, $driverSalary, $conductorSalary, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook, $insurance));
     }
 
     private function getBusCardDetails() {
@@ -61,6 +63,8 @@ class BusController {
         $busModel = $_POST['bus_model'];
         $seatingCapacity = $_POST['seating_capacity'];
         $fuelTypeId = $_POST['fuel_type_id'];
+        $driverSalary = $_POST['driver_salary'];
+        $conductorSalary = $_POST['conductor_salary'];
         $busStatus = $_POST['bus_status'];
         $rcbookNo = $_POST['rcbook_no'];
         $insuranceNo = $_POST['insurance_no'];
@@ -70,7 +74,7 @@ class BusController {
         $rcBook = $_FILES['rcbook_path'];
         $insurance = $_FILES['insurance_path'];
 
-        echo json_encode($this->busService->updateBus($busId, $busNumber, $busModel, $seatingCapacity, $fuelTypeId, $busStatus, $rcbookNo, $insuranceNo, $rcbookExpiry, $insuranceExpiry, $rcBook, $insurance));
+        echo json_encode($this->busService->updateBus($busId, $busNumber, $busModel, $seatingCapacity, $fuelTypeId, $driverSalary, $conductorSalary, $busStatus, $rcbookNo, $insuranceNo, $rcbookExpiry, $insuranceExpiry, $rcBook, $insurance));
     
     }
 

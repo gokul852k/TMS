@@ -1,6 +1,6 @@
 <?php
 
-class BusModel {
+class CommissionModel {
     private $db;
 
     public function __construct($db) {
@@ -17,29 +17,19 @@ class BusModel {
         return $result ? $result : null;
     }
 
-    public function setBus($companyId, $busNumber, $busModel, $seatingCapacity, $fuelType, $busStatus, $driverSalary, $conductorSalary, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook_path, $insurance_path) {
-        $stmt = $this->db->prepare("INSERT INTO `bms_bus` (`company_id`, `bus_number`, `seating_capacity`, `fuel_type_id`, `rcbook_no`, `rcbook_expiry`, `rcbook_path`, `insurance_no`, `insurance_expiry`, `insurance_path`, `driver_salary`, `conductor_salary`, `bus_status`) VALUES (:companyId, :busNumber, :seatingCapacity, :fuelType, :rcBookNumber, :rcBookExpiry, :rcBook_path, :insuranceNumber, :insuranceExpiry, :insurance_path, :driverSalary, :conductorSalary, :busStatus)");
+    public function setCommission($companyId, $rangeFrom, $rangeTo, $amountPerCommission, $commissionAmount) {
+        $stmt = $this->db->prepare("INSERT INTO `bms_commission`(`company_id`, `collection_range_from`, `collection_range_to`, `amount_per_commission`, `commission_amount`) VALUES (:companyId, :rangeFrom, :rangeTo, :amountPerCommission, :commissionAmount)");
         $stmt->bindParam("companyId", $companyId);
-        $stmt->bindParam("busNumber", $busNumber);
-        $stmt->bindParam("seatingCapacity", $seatingCapacity);
-        $stmt->bindParam("fuelType", $fuelType);
-        $stmt->bindParam("rcBookNumber", $rcBookNumber);
-        $stmt->bindParam("rcBookExpiry", $rcBookExpiry);
-        $stmt->bindParam("rcBook_path", $rcBook_path);
-        $stmt->bindParam("insuranceNumber", $insuranceNumber);
-        $stmt->bindParam("insuranceExpiry", $insuranceExpiry);
-        $stmt->bindParam("insurance_path", $insurance_path);
-        $stmt->bindParam("driverSalary", $driverSalary);
-        $stmt->bindParam("conductorSalary", $conductorSalary);
-        $stmt->bindParam("busStatus", $busStatus);
+        $stmt->bindParam("rangeFrom", $rangeFrom);
+        $stmt->bindParam("rangeTo", $rangeTo);
+        $stmt->bindParam("amountPerCommission", $amountPerCommission);
+        $stmt->bindParam("commissionAmount", $commissionAmount);
 
         if ($stmt->execute()) {
             if ($stmt->rowCount() > 0) {
-                $lastId = $this->db->lastInsertId();
                 return [
                     'status' => 'success',
-                    'message' => 'Inserted successfully.',
-                    'busId' => $lastId
+                    'message' => 'Inserted successfully.'
                 ];
             } else {
                 return [
@@ -101,29 +91,9 @@ class BusModel {
         return $result ? $result : null;
     }
 
-    public function getBuses($companyId) {
+    public function getCommission($companyId) {
         $isActive = true;
-        $stmt = $this->db->prepare("SELECT
-                                        b.id AS 'bus_id',
-                                        b.bus_number,
-                                        ft.fuel AS 'fuel_type',
-                                        COALESCE(bs.total_km, 0) AS 'total_km',
-                                        COALESCE(bs.avg_mileage, 0) AS 'avg_mileage',
-                                        COALESCE(bs.cost_per_km, 0) AS 'cost_per_km',
-                                        CASE
-                                            WHEN b.rcbook_expiry < CURRENT_DATE() THEN 'expired'
-                                            WHEN b.rcbook_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) THEN 'expires'
-                                            ELSE 'active'
-                                        END AS 'rc_book_status',
-                                        CASE
-                                            WHEN b.insurance_expiry < CURRENT_DATE() THEN 'expired'
-                                            WHEN b.insurance_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) THEN 'expires'
-                                            ELSE 'active'
-                                        END AS 'insurance_status'
-                                    FROM bms_bus b
-                                    INNER JOIN bms_fuel_type ft ON b.fuel_type_id = ft.id
-                                    LEFT JOIN bms_bus_summary bs ON b.id = bs.bus_id
-                                    WHERE b.company_id = :companyId AND b.is_active = :isActive");
+        $stmt = $this->db->prepare("SELECT * FROM `bms_commission` WHERE company_id = :companyId AND is_active = :isActive");
         $stmt->bindParam(":companyId", $companyId);
         $stmt->bindParam(":isActive", $isActive);
         $stmt->execute();

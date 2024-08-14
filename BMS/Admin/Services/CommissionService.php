@@ -1,14 +1,13 @@
 <?php
 
 require_once '../../config.php';
-require_once '../Models/BusModel.php';
+require_once '../Models/CommissionModel.php';
 require_once '../Services/FileUpload.php';
 
-class BusService {
+class CommissionService {
     private $modelBMS;
 
     private $modelA;
-    private $mail;
 
     public function __construct()
     {
@@ -17,8 +16,8 @@ class BusService {
         }
         global $bmsDB;
         global $authenticationDB;
-        $this->modelBMS = new BusModel($bmsDB);
-        $this->modelA = new BusModel($authenticationDB);
+        $this->modelBMS = new CommissionModel($bmsDB);
+        $this->modelA = new CommissionModel($authenticationDB);
     }
 
     public function getFuelType() {
@@ -37,43 +36,22 @@ class BusService {
         ];
     }
 
-    public function createBus($busNumber, $busModel, $seatingCapacity, $fuelType, $busStatus, $driverSalary, $conductorSalary, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook, $insurance)
+    public function createCommission($rangeFrom, $rangeTo, $amountPerCommission, $commissionAmount)
     {
+        //Insert Commission details in drivers table in bms DB
 
+        $response = $this->modelBMS->setCommission($_SESSION['companyId'], $rangeFrom, $rangeTo, $amountPerCommission, $commissionAmount);
 
-        $uploadService = new FileUpload();
-
-        //Upload RC Book
-
-        $rcBook_dir = "../../Assets/User/RC book/";
-
-        $rcBook_filename = $uploadService->uploadFile($rcBook, $rcBook_dir);
-
-        $rcBook_path = $rcBook_filename['status'] === 'success' ? 'RC book/' . $rcBook_filename['fileName'] : '';
-
-        //Upload Insurance
-
-        $insurance_dir = "../../Assets/User/Bus insurance/";
-
-        $insurance_filename = $uploadService->uploadFile($insurance, $insurance_dir);
-
-        $insurance_path = $insurance_filename['status'] === 'success' ? 'Bus insurance/' . $insurance_filename['fileName'] : '';
-
-        //Insert Driver details in drivers table in bms DB
-
-        $response1 = $this->modelBMS->setBus($_SESSION['companyId'], $busNumber, $busModel, $seatingCapacity, $fuelType, $busStatus, $driverSalary, $conductorSalary, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook_path, $insurance_path);
-
-        $response2 = $this->modelBMS->setBusSummary($_SESSION['companyId'], $response1['busId']);
-        if ($response1['status'] == 'success' && $response2['status'] == 'success') {
+        if ($response['status'] == 'success') {
             return [
                 "status" => "success",
-                "message" => "The bus has created successfully."
+                "message" => "The commisiion added successfully."
             ];
         } else {
             return [
                 'status' => 'error',
                 'message' => 'Something went wrong while creating the bus',
-                'error' => 'Error while insert data in bus table.'
+                'error' => 'Error while insert data in commission table.'
             ];
         }
     }
@@ -207,9 +185,9 @@ class BusService {
         ];
     }
 
-    public function getBuses()
+    public function getCommission()
     {
-        $response = $this->modelBMS->getBuses($_SESSION['companyId']);
+        $response = $this->modelBMS->getCommission($_SESSION['companyId']);
         if (!$response) {
             return [
                 'status' => 'no data',
