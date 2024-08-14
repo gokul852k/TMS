@@ -329,7 +329,7 @@ $companies = ["Apple", "Google", "Microsoft", "Amazon"];
             </div>
             <div class="container driver-info" style="display: none">
                 <form enctype="multipart/form-data" id="company-edit-form">
-                    <input type="hidden" name="driver_id" id="d-e-driver-id">
+                    <input type="hidden" name="company_id" id="d-e-driver-id">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="row">

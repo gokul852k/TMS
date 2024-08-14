@@ -49,6 +49,7 @@ class CompanyController {
     }
 
     private function updateCompany() {
+        $company_id = $_POST['company_id'];
         $company = $_POST['company'];
         $gstnum = $_POST['gstnum'];
         $email = $_POST['email'];
@@ -57,7 +58,7 @@ class CompanyController {
         $state = $_POST['state'];
         $district = $_POST['district'];
         $pincode = $_POST['pincode'];
-        echo json_encode($this->service->updateCompany($company, $gstnum, $mobile, $email, $address, $state, $district, $pincode));
+        echo json_encode($this->service->updateCompany($company_id, $company, $gstnum, $mobile, $email, $address, $state, $district, $pincode));
     
     }
 

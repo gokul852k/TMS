@@ -60,7 +60,7 @@ class CompanyService
 
     }
 
-    public function updateCompany($company, $gstnum, $mobile, $email, $address, $state, $district, $pincode)
+    public function updateCompany($company_id, $company, $gstnum, $mobile, $email, $address, $state, $district, $pincode)
     {
         $driverInfo = [
             "company_name" => $company,
@@ -73,7 +73,7 @@ class CompanyService
             "pincode" => $pincode
         ];
 
-        $currentData = $this->modelCMS->getCompanyDetailss($driverId);
+        $currentData = $this->modelCMS->getCompanyDetailss($$company_id);
 
         if (!$currentData) {
             return [
@@ -180,7 +180,7 @@ class CompanyService
                 $update_values[":$field"] = $new_value;
             }
 
-            $update_values['id'] = $driverId;
+            $update_values['id'] = $$company_id;
 
             $final_response = $this->modelCMS->updateCompany($update_fields, $update_values);
 
@@ -206,8 +206,8 @@ class CompanyService
         }
     }
 
-    public function deleteDriver($driverId) {
-        $currentData = $this->modelCMS->getDriverDetails($driverId);
+    public function deleteDriver($company_id) {
+        $currentData = $this->modelCMS->getDriverDetails($company_id);
 
         if (!$currentData) {
             return [
@@ -252,12 +252,12 @@ class CompanyService
             ];
         }
 
-        $response2 = $this->modelCMS->deleteDriver($driverId);
+        $response2 = $this->modelCMS->deleteDriver($$company_id);
 
         if ($response2) {
             return [
                 'status' => 'success',
-                'message' => 'Driver deleted successfully.'
+                'message' => 'Company deleted successfully.'
             ];
         } else {
             return [
