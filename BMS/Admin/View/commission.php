@@ -11,7 +11,7 @@ require_once './navbar.php';
 <div class="register-driver">
     <div class="container box-container box-head w3-animate-top">
         <div class="row row-head">
-            <div class="">
+            <div class="row-head-div-1">
                 <h4 class="heading">Commission Details</h4>
             </div>
             <div class="row-head-div-2">

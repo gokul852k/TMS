@@ -136,6 +136,14 @@
     flex: 1;
 }
 
+.row-head-div-1 {
+    flex: 1 !important;
+}
+
+.row-head-div-2 {
+    flex: 1 !important;
+}
+
 .box-container {
     width: calc(100% - 20px);
 }

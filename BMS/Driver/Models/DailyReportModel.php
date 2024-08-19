@@ -335,15 +335,16 @@ class DailyReportModel {
 
     public function checkTripStatus($tripId) {
         $status = true;
-        $isActive = true;
-        $passenger = 0;
-        $collectionAmount = 0;
-        $stmt = $this->db->prepare("SELECT trip_id FROM `bms_trips` WHERE `trip_id` = :tripId AND `trip_status` = :status AND (`passenger` = :passenger OR `collection_amount` = :collectionAmount) AND `is_active` = :isActive");
+        // $isActive = true;
+        // $passenger = 0;
+        // $collectionAmount = 0;
+        $stmt = $this->db->prepare("SELECT shift_id , trip_id, start_km, passenger, collection_amount FROM `bms_trips` WHERE `trip_id` = :tripId AND `trip_status` = :status");
+        // $stmt = $this->db->prepare("SELECT trip_id FROM `bms_trips` WHERE `trip_id` = :tripId AND `trip_status` = :status AND (`passenger` = :passenger OR `collection_amount` = :collectionAmount) AND `is_active` = :isActive");
         $stmt->bindParam("tripId", $tripId);
         $stmt->bindParam("status", $status);
-        $stmt->bindParam("passenger", $passenger);
-        $stmt->bindParam("collectionAmount", $collectionAmount);
-        $stmt->bindParam("isActive", $isActive);
+        // $stmt->bindParam("passenger", $passenger);
+        // $stmt->bindParam("collectionAmount", $collectionAmount);
+        // $stmt->bindParam("isActive", $isActive);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -385,5 +386,31 @@ class DailyReportModel {
 
         return $stmt->execute() ? true : false;
 
+    }
+
+    public function updateKmInShift($shiftId, $totalKm) {
+        $stmt = $this->db->prepare("UPDATE `bms_shifts` SET `total_km` = `total_km` + :totalKm WHERE `shift_id` = :shiftId");
+        $stmt->bindParam(":totalKm", $totalKm);
+        $stmt->bindParam(":shiftId", $shiftId);
+
+        return $stmt->execute() ? true : false;
+
+    }
+
+    public function getDailyReport($shiftId) {
+        $stmt = $this->db->prepare("SELECT `report_id` FROM `bms_shifts` WHERE `shift_id` = :shiftId");
+        $stmt->bindParam(":shiftId", $shiftId);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    }
+
+    public function updateKmInDailyReport($reportId, $totalKm) {
+        $stmt = $this->db->prepare("UPDATE `bms_daily_reports` SET `total_km` = `total_km` + :totalKm WHERE `report_id` = :reportId");
+        $stmt->bindParam(":totalKm", $totalKm);
+        $stmt->bindParam(":reportId", $reportId);
+
+        return $stmt->execute() ? true : false;
     }
 }
