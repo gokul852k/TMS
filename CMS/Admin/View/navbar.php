@@ -122,9 +122,12 @@ if ($navbarResponse && !empty($navbarResponse)) {
         </div>
     </div>
 
+    <section class="home">
+
     <script src="../../../Common/Common file/navbar.js"></script>
     <script src="../../../Common/Common file/mobile_navbar.js"></script>
     <script src="./Js/ajax.js"></script>
+    <script src="../../../Common/Common file/common_function.js"></script>
 
     <?php
 } else {

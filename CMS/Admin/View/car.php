@@ -12,11 +12,11 @@ require_once './navbar.php';
     <div class="container box-container box-head w3-animate-top">
         <div class="row row-head">
             <div class="">
-                <h4 class="heading">Bus Details</h4>
+                <h4 class="heading">Car Details</h4>
             </div>
             <div class="row-head-div-2">
-                <button class="button-1 head-button3" onclick="popupOpen('bus-add'); getFuelType()"><i
-                        class="fa-solid fa-bus"></i>Add Bus</button>
+                <button class="button-1 head-button3" onclick="popupOpen('car-add'); getFuelType()"><i
+                        class="fa-solid fa-car"></i>Add Car</button>
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
             </div>
         </div>
@@ -32,11 +32,11 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Total Bus</p>
-                                                <h4 class="my-1 text-info t-c-4" id="total-bus">-</h4>
+                                                <p class="mb-0 text-secondary">Total Car</p>
+                                                <h4 class="my-1 text-info t-c-4" id="total-car">-</h4>
                                             </div>
                                             <div class="widgets-icons-2 rounded-circle bg-g-4 text-white ms-auto">
-                                                <i class="fa-solid fa-bus"></i>
+                                                <i class="fa-solid fa-car"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -127,12 +127,12 @@ require_once './navbar.php';
                     <div class="col-xs-12">
                         <table
                             summary="This table shows how to create responsive tables using Datatables' extended functionality"
-                            class="table table-bordered table-hover dt-responsive" id="bus-table">
+                            class="table table-bordered table-hover dt-responsive" id="car-table">
 
                             <thead>
                                 <tr>
                                     <th class="th">S.No</th>
-                                    <th class="th">Bus Number</th>
+                                    <th class="th">Car Number</th>
                                     <th class="th">Fuel Type</th>
                                     <th class="th">Total KM</th>
                                     <th class="th">Avg Mileage</th>
@@ -153,35 +153,35 @@ require_once './navbar.php';
     </div>
 </div>
 
-<!--Add Bus Pop ups-->
-<div class="tms-pop-up" id="bus-add">
-    <div class="pop-up-bg" onclick="popupClose('bus-add')"></div>
+<!--Add Car Pop ups-->
+<div class="tms-pop-up" id="car-add">
+    <div class="pop-up-bg" onclick="popupClose('car-add')"></div>
     <div class="pop-up-card-2 scrollbar w3-animate-top">
         <div class="pop-up-card-content">
             <div class="container box-container box-head">
                 <div class="row row-head">
                     <div class="">
-                        <h4 class="heading"><i class="fa-solid fa-user-pilot"></i>Add Bus</h4>
+                        <h4 class="heading"><i class="fa-solid fa-user-pilot"></i>Add Car</h4>
                     </div>
                     <div class="row-head-div-2">
-                        <button class="button-1 head-button2" title="close" onclick="popupClose('bus-add')"><i
+                        <button class="button-1 head-button2" title="close" onclick="popupClose('car-add')"><i
                                 class="fa-solid fa-xmark"></i></button>
                     </div>
                 </div>
             </div>
             <div class="register-driver">
-                <form enctype="multipart/form-data" id="bus-form">
+                <form enctype="multipart/form-data" id="car-form">
                     <div class="container box-container">
                         <div class="row">
-                            <h4 class="heading">Bus Details</h4>
+                            <h4 class="heading">Car Details</h4>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <input type="text" class="input-field" name="bus-number" placeholder="Bus Number"
+                                <input type="text" class="input-field" name="car-number" placeholder="Car Number"
                                     required />
                             </div>
                             <div class="col-sm-6">
-                                <input type="text" class="input-field" name="bus-model" placeholder="Bus Model" />
+                                <input type="text" class="input-field" name="car-model" placeholder="Car Model" />
                             </div>
                         </div>
                         <div class="row">
@@ -197,25 +197,14 @@ require_once './navbar.php';
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                                <select class="input-field" name="bus-status" required>
-                                    <option value="" disabled selected>--Select Bus Status--</option>
+                                <select class="input-field" name="car-status" required>
+                                    <option value="" disabled selected>--Select Car Status--</option>
                                     <option value="1">Running</option>
                                     <option value="0">Not Running</option>
                                 </select>
                             </div>
-                            <div class="col-sm-6">
-                                <input type="number" class="input-field" name="driver-salary"
-                                    placeholder="Driver Salary" required/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <input type="number" class="input-field" name="conductor-salary"
-                                    placeholder="Conductor Salary" required/>
-                            </div>
                         </div>
                     </div>
-
                     <div class="container box-container">
                         <div class="row">
                             <h4 class="heading">Documents</h4>
@@ -230,7 +219,7 @@ require_once './navbar.php';
                             </div>
                             <div class="col-sm-6">
                                 <label for="exampleFormControlFile1" class="drop-container" id="dropcontainer">
-                                    <span class="drop-title">Upload Bus Insurance</span>
+                                    <span class="drop-title">Upload Car Insurance</span>
                                     <br>
                                     <input type="file" class="form-control-file" name="insurance"
                                         accept="image/*,.pdf" />
@@ -260,9 +249,9 @@ require_once './navbar.php';
                     </div>
 
                     <div class="pop-up-button-div box-container box-head m-b-10">
-                        <button type="submit" name="submit" class="button-2 box-shadow">Add Bus</button>
+                        <button type="submit" name="submit" class="button-2 box-shadow">Add Car</button>
                         <button type="reset" name="submit" class="button-3 box-shadow"
-                            onclick="popupClose('bus-add')">cancel</button>
+                            onclick="popupClose('car-add')">cancel</button>
                     </div>
                 </form>
             </div>
@@ -271,17 +260,17 @@ require_once './navbar.php';
 </div>
 
 <!--View Driver Pop ups-->
-<div class="tms-pop-up" id="bus-view">
-    <div class="pop-up-bg" onclick="popupClose('bus-view')"></div>
+<div class="tms-pop-up" id="car-view">
+    <div class="pop-up-bg" onclick="popupClose('car-view')"></div>
     <div class="pop-up-card scrollbar w3-animate-top">
         <div class="pop-up-card-content">
             <div class="container box-container box-head">
                 <div class="row row-head">
                     <div class="">
-                        <h4 class="heading"><i class="fa-solid fa-user-pilot"></i>Bus Details</h4>
+                        <h4 class="heading"><i class="fa-solid fa-user-pilot"></i>Car Details</h4>
                     </div>
                     <div class="row-head-div-2">
-                        <button class="button-1 head-button2" title="close" onclick="popupClose('bus-view')"><i
+                        <button class="button-1 head-button2" title="close" onclick="popupClose('car-view')"><i
                                 class="fa-solid fa-xmark"></i></button>
                     </div>
                 </div>
@@ -290,7 +279,7 @@ require_once './navbar.php';
                 <div class="loader"></div>
                 <p class="loader-text">Loading</p>
             </div>
-            <div class="container bus-info" style="display: none">
+            <div class="container car-info" style="display: none">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="driver-info-right box-container-2 m-b-10">
@@ -305,7 +294,7 @@ require_once './navbar.php';
                                                             <div class="d-flex align-items-center">
                                                                 <div>
                                                                     <p class="mb-0 text-secondary">Profit</p>
-                                                                    <h4 class="my-1 text-info t-c-4" id="b-v-profit">
+                                                                    <h4 class="my-1 text-info t-c-4" id="c-v-profit">
                                                                         -</h4>
                                                                 </div>
                                                                 <div
@@ -324,7 +313,7 @@ require_once './navbar.php';
                                                             <div class="d-flex align-items-center">
                                                                 <div>
                                                                     <p class="mb-0 text-secondary">Cost</p>
-                                                                    <h4 class="my-1 text-info t-c-3" id="b-v-cost">-
+                                                                    <h4 class="my-1 text-info t-c-3" id="c-v-cost">-
                                                                     </h4>
                                                                 </div>
                                                                 <div
@@ -343,7 +332,7 @@ require_once './navbar.php';
                                                             <div class="d-flex align-items-center">
                                                                 <div>
                                                                     <p class="mb-0 text-secondary">Total KM</p>
-                                                                    <h4 class="my-1 text-info t-c-5" id="b-v-total-km">-
+                                                                    <h4 class="my-1 text-info t-c-5" id="c-v-total-km">-
                                                                     </h4>
                                                                 </div>
                                                                 <div
@@ -363,7 +352,7 @@ require_once './navbar.php';
                                                                 <div>
                                                                     <p class="mb-0 text-secondary">Avg Mileage</p>
                                                                     <h4 class="my-1 text-info t-c-6"
-                                                                        id="b-v-avg-mileage">-</h4>
+                                                                        id="c-v-avg-mileage">-</h4>
                                                                 </div>
                                                                 <div
                                                                     class="widgets-icons-2 rounded-circle bg-g-6 text-white ms-auto">
@@ -382,7 +371,7 @@ require_once './navbar.php';
                                                                 <div>
                                                                     <p class="mb-0 text-secondary">Cost per KM</p>
                                                                     <h4 class="my-1 text-info t-c-7"
-                                                                        id="b-v-cost-per-km">-</h4>
+                                                                        id="c-v-cost-per-km">-</h4>
                                                                 </div>
                                                                 <div
                                                                     class="widgets-icons-2 rounded-circle  bg-g-7 text-white ms-auto">
@@ -419,73 +408,73 @@ require_once './navbar.php';
 
                         <div class="driver-info-right box-container-2 m-b-10">
                             <div class="row">
-                                <p class="info-title">Bus information</p>
+                                <p class="info-title">Car information</p>
                                 <div class="col-sm-2">
                                     <div class="infos">
-                                        <p class="info-heading">Bus Number</p>
-                                        <p class="info-content" id="b-v-bus-no">-</p>
+                                        <p class="info-heading">Car Number</p>
+                                        <p class="info-content" id="c-v-car-no">-</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="infos">
-                                        <p class="info-heading">Bus Model</p>
-                                        <p class="info-content" id="b-v-bus-model">-</p>
+                                        <p class="info-heading">Car Model</p>
+                                        <p class="info-content" id="c-v-car-model">-</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="infos">
                                         <p class="info-heading">Seating Capacity</p>
-                                        <p class="info-content" id="b-v-seating-capacity">-</p>
+                                        <p class="info-content" id="c-v-seating-capacity">-</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="infos">
                                         <p class="info-heading">Fuel Type</p>
-                                        <p class="info-content" id="b-v-fuel-type">-</p>
+                                        <p class="info-content" id="c-v-fuel-type">-</p>
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                                <!-- <div class="col-sm-2">
                                     <div class="infos">
                                         <p class="info-heading">Driver Salary</p>
-                                        <p class="info-content" id="b-v-driver-salary">-</p>
+                                        <p class="info-content" id="c-v-driver-salary">-</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="infos">
                                         <p class="info-heading">Conductor Salary</p>
-                                        <p class="info-content" id="b-v-conductor-salary">-</p>
+                                        <p class="info-content" id="c-v-conductor-salary">-</p>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="row">
                                 <div class="col-sm-2">
                                     <div class="infos">
-                                        <p class="info-heading">Bus Status</p>
-                                        <p class="info-content" id="b-v-bus-status">-</p>
+                                        <p class="info-heading">Car Status</p>
+                                        <p class="info-content" id="c-v-car-status">-</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="infos">
                                         <p class="info-heading">RC Book Number</p>
-                                        <p class="info-content" id="b-v-rc-no">-</p>
+                                        <p class="info-content" id="c-v-rc-no">-</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="infos">
                                         <p class="info-heading">RC Book Expiry Date</p>
-                                        <p class="info-content" id="b-v-rcbook-expiry">-</p>
+                                        <p class="info-content" id="c-v-rcbook-expiry">-</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="infos">
                                         <p class="info-heading">Insurance Number</p>
-                                        <p class="info-content" id="b-v-insurance-no">-</p>
+                                        <p class="info-content" id="c-v-insurance-no">-</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="infos">
                                         <p class="info-heading">Insurance Expiry Date</p>
-                                        <p class="info-content" id="b-v-insurance-expiry">-</p>
+                                        <p class="info-content" id="c-v-insurance-expiry">-</p>
                                     </div>
                                 </div>
                             </div>
@@ -496,7 +485,7 @@ require_once './navbar.php';
                                 <div class="col-sm-3">
                                     <div class="infos">
                                         <p class="info-heading">RC Book</p>
-                                        <a href="" id="b-v-rcbook-path" class="document-view d-v-2" target="_blank">
+                                        <a href="" id="c-v-rcbook-path" class="document-view d-v-2" target="_blank">
                                             <i class="fa-duotone fa-file-invoice"></i>
                                         </a>
                                     </div>
@@ -504,7 +493,7 @@ require_once './navbar.php';
                                 <div class="col-sm-3">
                                     <div class="infos">
                                         <p class="info-heading">Insurance</p>
-                                        <a href="" id="b-v-insurance-path" class="document-view  d-v-3" target="_blank">
+                                        <a href="" id="c-v-insurance-path" class="document-view  d-v-3" target="_blank">
                                             <i class="fa-duotone fa-file-invoice"></i>
                                         </a>
                                     </div>
@@ -522,17 +511,17 @@ require_once './navbar.php';
 
 <!--Edit Driver Pop ups-->
 
-<div class="tms-pop-up" id="bus-edit">
-    <div class="pop-up-bg" onclick="popupClose('bus-edit')"></div>
+<div class="tms-pop-up" id="car-edit">
+    <div class="pop-up-bg" onclick="popupClose('car-edit')"></div>
     <div class="pop-up-card-2 scrollbar w3-animate-top">
         <div class="pop-up-card-content">
             <div class="container box-container box-head">
                 <div class="row row-head">
                     <div class="">
-                        <h4 class="heading"><i class="fa-solid fa-user-pilot"></i>Update Bus Details</h4>
+                        <h4 class="heading"><i class="fa-solid fa-user-pilot"></i>Update Car Details</h4>
                     </div>
                     <div class="row-head-div-2">
-                        <button class="button-1 head-button2" title="close" onclick="popupClose('bus-edit')"><i
+                        <button class="button-1 head-button2" title="close" onclick="popupClose('car-edit')"><i
                                 class="fa-solid fa-xmark"></i></button>
                     </div>
                 </div>
@@ -541,55 +530,44 @@ require_once './navbar.php';
                 <div class="loader"></div>
                 <p class="loader-text">Loading</p>
             </div>
-            <div class="container bus-info p-0" style="display: none">
-                <form enctype="multipart/form-data" id="bus-edit-form">
-                    <input type="hidden" name="bus_id" id="b-e-bus-id">
+            <div class="container car-info p-0" style="display: none">
+                <form enctype="multipart/form-data" id="car-edit-form">
+                    <input type="hidden" name="car_id" id="c-e-car-id">
                     <div class="container box-container">
                         <div class="row">
-                            <h4 class="heading">Bus Details</h4>
+                            <h4 class="heading">Car Details</h4>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
-                            <label for="" class="input-label">Bus Number</label>
-                                <input type="text" class="input-field" name="bus_number" id="b-e-bus-no"
-                                    placeholder="Bus Number" required />
+                            <label for="" class="input-label">Car Number</label>
+                                <input type="text" class="input-field" name="car_number" id="c-e-car-no"
+                                    placeholder="Car Number" required />
                             </div>
                             <div class="col-sm-6">
-                            <label for="" class="input-label">Bus Model</label>
-                                <input type="text" class="input-field" name="bus_model" id="b-e-bus-model"
-                                    placeholder="Bus Model" required />
+                            <label for="" class="input-label">Car Model</label>
+                                <input type="text" class="input-field" name="car_model" id="c-e-car-model"
+                                    placeholder="Car Model" required />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                             <label for="" class="input-label">Seating Capacity</label>
                                 <input type="number" class="input-field" name="seating_capacity"
-                                    id="b-e-seating-capacity" placeholder="Seating Capacity" required />
+                                    id="c-e-seating-capacity" placeholder="Seating Capacity" required />
                             </div>
                             <div class="col-sm-6">
                             <label for="" class="input-label">Fuel Type</label>
-                                <select class="input-field" name="fuel_type_id" id="b-e-fuel-type">
+                                <select class="input-field" name="fuel_type_id" id="c-e-fuel-type">
                                     <option value="">--Select Fuel Type--</option>
                                 </select>
                             </div>
                         </div>
+                        
                         <div class="row">
                             <div class="col-sm-6">
-                            <label for="" class="input-label">Driver Salary</label>
-                                <input type="number" class="input-field" name="driver_salary"
-                                    id="b-e-driver-salary" placeholder="Driver Salary" required />
-                            </div>
-                            <div class="col-sm-6">
-                            <label for="" class="input-label">Conductor Salary</label>
-                                <input type="number" class="input-field" name="conductor_salary"
-                                    id="b-e-conductor-salary" placeholder="Conductor Salary" required />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                            <label for="" class="input-label">Bus Status</label>
-                                <select class="input-field" name="bus_status" id="b-e-bus-status">
-                                    <option value="">--Select Bus Status--</option>
+                            <label for="" class="input-label">Car Status</label>
+                                <select class="input-field" name="car_status" id="c-e-car-status">
+                                    <option value="">--Select Car Status--</option>
                                 </select>
                             </div>
 
@@ -597,24 +575,24 @@ require_once './navbar.php';
                         <div class="row">
                             <div class="col-sm-6">
                             <label for="" class="input-label">Rc Book Number</label>
-                                <input type="text" class="input-field" name="rcbook_no" id="b-e-rc-no"
+                                <input type="text" class="input-field" name="rcbook_no" id="c-e-rc-no"
                                     placeholder="Rc Book Number" required />
                             </div>
                             <div class="col-sm-6">
                             <label for="" class="input-label">Insurance Number</label>
-                                <input type="text" class="input-field" name="insurance_no" id="b-e-insurance-no"
+                                <input type="text" class="input-field" name="insurance_no" id="c-e-insurance-no"
                                     placeholder="Insurance Number" required />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <label for="" class="input-label">RC Book Expiry Date</label>
-                                <input type="date" class="input-field" name="rcbook_expiry" id="b-e-rcbook-expiry"
+                                <input type="date" class="input-field" name="rcbook_expiry" id="c-e-rcbook-expiry"
                                     required />
                             </div>
                             <div class="col-sm-6">
                                 <label for="" class="input-label">Insurance Expiry Date</label>
-                                <input type="date" class="input-field" name="insurance_expiry" id="b-e-insurance-expiry"
+                                <input type="date" class="input-field" name="insurance_expiry" id="c-e-insurance-expiry"
                                     required />
                             </div>
                         </div>
@@ -622,7 +600,7 @@ require_once './navbar.php';
                             <div class="col-sm-6">
                                 <div class="infos">
                                     <p class="info-heading">RC Book</p>
-                                    <a href="" id="b-e-rcbook-path" class="document-view d-v-2 m-t-10" target="_blank">
+                                    <a href="" id="c-e-rcbook-path" class="document-view d-v-2 m-t-10" target="_blank">
                                         <i class="fa-duotone fa-file-invoice"></i>
                                     </a>
                                     <div class="file-input m-t-20">
@@ -643,7 +621,7 @@ require_once './navbar.php';
                             <div class="col-sm-6">
                                 <div class="infos">
                                     <p class="info-heading">Insurance</p>
-                                    <a href="" id="b-e-insurance-path" class="document-view d-v-3 m-t-10"
+                                    <a href="" id="c-e-insurance-path" class="document-view d-v-3 m-t-10"
                                         target="_blank">
                                         <i class="fa-duotone fa-file-invoice"></i>
                                     </a>
@@ -668,9 +646,9 @@ require_once './navbar.php';
                         <div class="col-sm-12">
                             <div class="pop-up-button-div box-container box-head  m-b-10 m-t-0">
                                 <button type="submit" name="submit" class="button-2 box-shadow"
-                                    onclick="popupClose('bus-edit')">Update Bus</button>
+                                    onclick="popupClose('car-edit')">Update Car</button>
                                 <button type="button" class="button-3 box-shadow"
-                                    onclick="popupClose('bus-edit')">cancel</button>
+                                    onclick="popupClose('car-edit')">cancel</button>
                             </div>
                         </div>
                     </div>
@@ -692,7 +670,7 @@ require_once './navbar.php';
 <script src="../../../Common/Common file/pop_up.js"></script>
 <script src="../../../Common/Common file/data_table.js"></script>
 <script src="../../../Common/Common file/main.js"></script>
-<script src="./js/bus_ajax.js"></script>
+<script src="./js/car_ajax.js"></script>
 <?php
 require_once './footer.php';
 ?>
