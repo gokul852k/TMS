@@ -305,10 +305,27 @@ class DailyReportService {
         if ($updateTrip && $updateTripDriver) {
             $checkTripStatus = $this->modelBMS->checkTripStatus($tripId);
 
-            if (!$checkTripStatus) {
-                $updateTripStatus = $this->modelBMS->updateTripStatus($tripId);
+            if ($checkTripStatus) {
+                if ($checkTripStatus['passenger'] != 0 && $checkTripStatus['collection_amount'] !== 0) {
+                    //Check for the passenger and collection amount is 0 than change the trip_status = false
+                    $updateTripStatus = $this->modelBMS->updateTripStatus($tripId);
+                }
 
-                if ($updateTripStatus) {
+                //Add and update the KM in bms_daily_report and bms_shift
+                $totalKm = $endKm - $checkTripStatus['start_km'];
+
+                //Update KM in bms_shift
+                $updateKmInDailyReport = $this->modelBMS->updateKmInShift($checkTripStatus['shift_id'], $totalKm);
+
+                //Update KM in bms_daily_report
+                $dailyReport = $this->modelBMS->getDailyReport($checkTripStatus['shift_id']);
+
+                if ($dailyReport) {
+                    $updateKmInDailyReport = $this->modelBMS->updateKmInDailyReport($dailyReport['report_id'], $totalKm);
+                }
+                
+
+                if ($updateKmInDailyReport && $dailyReport) {
                     return [
                         'status' => 'success',
                         'message' => 'Trip ended.',
@@ -319,14 +336,15 @@ class DailyReportService {
                         'status' => 'success',
                         'message' => 'Trip ended.',
                         'tripId' => $tripId,
-                        'error' => 'Error while updating trip status'
+                        'error' => 'Error while updating KM'
                     ];
                 }
             } else {
                 return [
                     'status' => 'success',
                     'message' => 'Trip ended.',
-                    'tripId' => $tripId
+                    'tripId' => $tripId,
+                    'error' => 'Error while fetch trip from trip table'
                 ];
             }
         } else {
