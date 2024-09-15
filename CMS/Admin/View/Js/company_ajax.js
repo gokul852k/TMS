@@ -281,7 +281,7 @@ $(document).ready(function () {
                 popupClose("progress-loader");
                 let data = JSON.parse(response);
                 if (data.status === 'success') {
-                    getDrivers();
+                    getCompany();
                     Swal.fire({
                         title: "Success",
                         text: data.message,
@@ -345,7 +345,7 @@ function deleteDriver(driverId, driverName) {
                     popupClose("progress-loader");
                     // let data = JSON.parse(response);
                     if (data.status === 'success') {
-                        getDrivers();
+                        getCompany();
                         Swal.fire({
                             title: "Deleted!",
                             text: data.message,

@@ -1,11 +1,11 @@
 <?php
 
 require_once '../../config.php';
-require_once '../Models/DriverModel.php';
-require_once '../Services/FileUpload.php';
+require_once '../Models/DailyReportModel.php';
+// require_once '../Services/FileUpload.php';
 require_once '../../../Common/Services/Mail2.php';
 
-class DriverService
+class DailyReportServices
 {
 
     private $modelCMS;
@@ -20,121 +20,55 @@ class DriverService
         }
         global $cmsDB;
         global $authenticationDB;
-        $this->modelCMS = new DriverModel($cmsDB);
-        $this->modelA = new DriverModel($authenticationDB);
+        $this->modelCMS = new DailyReportModel($cmsDB);
+        $this->modelA = new DailyReportModel($authenticationDB);
         $this->mail = new Mail2();
     }
 
-    public function createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo)
+    public function startTrip($currentDate, $currentTime, $checkin_km)
     {
+        //Insert cab daily report details in drivers table in Cms DB
+        $companyId = $_SESSION['companyId'];
+        $cabCompanyId = $_SESSION['cabCompanyId'];
+        $driverId = $_SESSION['dirverId'];
 
-        //Check mail ID is already exit
-        $response1 = $this->modelA->getMailID($mail);
+        $response = $this->modelCMS->startTrip($companyId, $cabCompanyId, $driverId, $currentDate, $currentTime, $checkin_km);
 
-        if ($response1) {
-            return [
-                'status' => 'mail error',
-                'message' => 'The email address you provided is already associated with a registered driver in our system. Please try registering with a different email address.'
-            ];
-        }
-
-        $uploadService = new FileUpload();
-
-        //Upload Driver Image
-
-        $driverImage_dir = "../../Assets/User/Driver image/";
-
-        $driverImage_filename = $uploadService->uploadFile($driverImage, $driverImage_dir);
-
-        $driverImage_path = $driverImage_filename['status'] === 'success' ? 'Driver image/' . $driverImage_filename['fileName'] : '';
-
-        //Upload Driving Licence
-
-        $drivingLicence_dir = "../../Assets/User/Driving licence/";
-
-        $drivingLicence_filename = $uploadService->uploadFile($drivingLicence, $drivingLicence_dir);
-
-        $drivingLicence_path = $drivingLicence_filename['status'] === 'success' ? 'Driving licence/' . $drivingLicence_filename['fileName'] : '';
-
-        //Upload Aadhar Card
-
-        $aadharCard_dir = "../../Assets/User/Driver aadharcard/";
-
-        $aadharCard_filename = $uploadService->uploadFile($aadharCard, $aadharCard_dir);
-
-        $aadharCard_path = $aadharCard_filename['status'] === 'success' ? 'Driver aadharcard/' . $aadharCard_filename['fileName'] : '';
-
-        //Upload PAN Card
-
-        $panCard_dir = "../../Assets/User/Driver pancard/";
-
-        $panCard_filename = $uploadService->uploadFile($panCard, $panCard_dir);
-
-        $panCard_path = $panCard_filename['status'] === 'success' ? 'Driver pancard/' . $panCard_filename['fileName'] : '';
-
-        //Password Hasing
-
-        $hashPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        //Insert username & password in users table in authentication DB
-
-        $response2 = $this->modelA->setDriversinUsers($mail, $hashPassword, $_SESSION['companyId']);
-
-        if (!$response2) {
+        if (!$response) {
             return [
                 'status' => 'error',
-                'message' => 'Something went wrong while creating the driver',
-                'error' => 'Error while insert data in users table.'
-            ];
-        }
-
-        $userId = $response2['userId'];
-
-        $responseRole = $this->modelA->setDriversinUserRole($userId, 3, 1);
-
-        if (!$responseRole) {
-            //Delete the user from users table
-            $this->modelCMS->deleteUser($userId);
-            return [
-                'status' => 'error',
-                'message' => 'Something went wrong while creating the driver',
-                'error' => 'Error while insert data in users table.'
-            ];
-        }
-
-        //Insert Driver details in drivers table in Cms DB
-
-        $response3 = $this->modelCMS->setDriver($userId, $_SESSION['companyId'], $name, $mobile, $subcompany, $mail, $address, $state, $district, $pincode, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path);
-
-        if (!$response3) {
-            //Delete the user from users table
-            $this->modelCMS->deleteUser($userId);
-
-            return [
-                'status' => 'error',
-                'message' => 'Something went wrong while creating the driver',
-                'error' => 'Error while insert data in driver table.'
-            ];
-        }
-
-        //Sent Mail to driver
-
-        $mailContent = $this->mailContent('en', $name, $mail, $password, $_SESSION['companyName'], 'http://localhost/TMS/CMS/Admin/View/driver.php');
-
-        $subject = $mailContent['subject'];
-        $body = $mailContent['body'];
-        $response4 = $this->mail->sendMail($mail, $subject, $body);
-
-        if ($response4['status'] == 'error') {
-            return [
-                "status" => "success",
-                "message" => "The driver has created a username and password, but the email has not been sent."
+                'message' => 'Something went wrong while Starting Duty',
+                'error' => 'Error while inserting data in Cab Daily Report table.'
             ];
         }
 
         return [
             "status" => "success",
-            "message" => "The driver has created a username and password, which has been sent to your email address."
+            "message" => "Duty Started Successfully"
+        ];
+
+    }
+
+    public function endTrip($currentDate, $currentTime, $checkout_km, $total_km)
+    {
+        //Insert cab daily report details in drivers table in Cms DB
+        $companyId = $_SESSION['companyId'];
+        $cabCompanyId = $_SESSION['cabCompanyId'];
+        $driverId = $_SESSION['dirverId'];
+
+        $response = $this->modelCMS->endTrip($companyId, $cabCompanyId, $driverId, $currentDate, $currentTime, $checkout_km, $total_km);
+
+        if (!$response) {
+            return [
+                'status' => 'error',
+                'message' => 'Something went wrong while Ending Duty',
+                'error' => 'Error while inserting data in Cab Daily Report table.'
+            ];
+        }
+
+        return [
+            "status" => "success",
+            "message" => "Duty Ended Successfully"
         ];
 
     }
@@ -144,7 +78,7 @@ class DriverService
         $driverInfo = [
             "fullname" => $name,
             "mobile" => $mobile,
-            "cab_company_id" => $subcompany,
+            "subcompany" => $subcompany,
             "address" => $address,
             "state" => $state,
             "district" => $district,
@@ -167,7 +101,7 @@ class DriverService
 
         //Check for changes
         $changes = [];
-        $fields = ['fullname', 'mobile', 'cab_company_id', 'address', 'state', 'district', 'pincode', 'licence_no', 'licence_expiry', 'aadhar_no', 'pan_no'];
+        $fields = ['fullname', 'mobile', 'subcompany', 'address', 'state', 'district', 'pincode', 'licence_no', 'licence_expiry', 'aadhar_no', 'pan_no'];
 
         //check & upload file changes
         $fileChanges = false;
@@ -284,6 +218,29 @@ class DriverService
                 'status' => 'error',
                 'message' => 'There are no changes in driver details.',
                 'error' => 'All values as in driver table'
+            ];
+        }
+    }
+
+    public function getDisplay() {
+
+        $currentDate = date('Y-m-d');
+
+        $driverShift = $this->modelCMS->checkDutyByDriverId($_SESSION['companyId'],$_SESSION['cabCompanyId'], $_SESSION['dirverId']);
+        print_r($driverShift);
+        if (!$driverShift) {
+            return [
+                'status' => 'success',
+                'display' => 'check_in',
+                'message' => 'Now we want to display the CHECK IN DIV',
+                'data' => $driverShift
+            ];
+        } else {
+            return [
+                'status' => 'success',
+                'display' => 'check_out',
+                'message' => 'Now we want to display the CHECK OUT DIV',
+                'data' => $driverShift
             ];
         }
     }

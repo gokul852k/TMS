@@ -1,3 +1,6 @@
+//Select company as  globle variable
+let company;
+
 getDrivers();
 
 function getDrivers() {
@@ -63,7 +66,7 @@ function getDrivers() {
                                                 class="fa-duotone fa-pen-to-square"></i></button>
                                 <button class="table-btn delete" onclick="deleteDriver(`+ item.id + `, '` + item.fullname + `')"><i class="fa-duotone fa-trash"></i></button>
                             </div>
-                        </td>`      
+                        </td>`
                     '</tr>';
                     tableBody.append(row);
                 })
@@ -166,7 +169,7 @@ function getDriverDetails(driverId) {
                 driverDetails.fullname != "" ? document.getElementById("d-v-name").innerHTML = driverDetails.fullname : document.getElementById("d-v-name").innerHTML = "-";
                 driverDetails.mail != "" ? document.getElementById("d-v-mail").innerHTML = driverDetails.mail : document.getElementById("d-v-mail").innerHTML = "-";
                 driverDetails.mobile != "" ? document.getElementById("d-v-mobile").innerHTML = driverDetails.mobile : document.getElementById("d-v-mobile").innerHTML = "-";
-                driverDetails.sub_company_id != "" ? document.getElementById("d-v-subcompany").innerHTML = driverDetails.sub_company_id : document.getElementById("d-v-subcompany").innerHTML = "-";
+                driverDetails.cab_company_id != "" ? document.getElementById("d-v-subcompany").innerHTML = driverDetails.cab_company_id : document.getElementById("d-v-subcompany").innerHTML = "-";
                 driverDetails.licence_no != "" ? document.getElementById("d-v-licence-no").innerHTML = driverDetails.licence_no : document.getElementById("d-v-licence-no").innerHTML = "-";
                 driverDetails.licence_expiry != "" ? document.getElementById("d-v-licence-ex").innerHTML = driverDetails.licence_expiry : document.getElementById("d-v-licence-ex").innerHTML = "-";
                 driverDetails.aadhar_no != "" ? document.getElementById("d-v-aadhar-no").innerHTML = driverDetails.aadhar_no : document.getElementById("d-v-aadhar-no").innerHTML = "-";
@@ -212,7 +215,10 @@ function getDriverDetails(driverId) {
 
 //Get Driver details for edit
 
-function getDriverDetailsForEdit(driverId) {
+async function getDriverDetailsForEdit(driverId) {
+    if (!company) {
+        await companyAjax();
+    }
     let formData = {
         driverId: driverId,
         action: 'getDriver'
@@ -234,7 +240,7 @@ function getDriverDetailsForEdit(driverId) {
                 driverDetails.fullname != "" ? document.getElementById("d-e-name").value = driverDetails.fullname : document.getElementById("d-e-name").value = "";
                 driverDetails.mail != "" ? document.getElementById("d-e-mail").value = driverDetails.mail : document.getElementById("d-e-mail").value = "";
                 driverDetails.mobile != "" ? document.getElementById("d-e-mobile").value = driverDetails.mobile : document.getElementById("d-e-mobile").value = "";
-                driverDetails.sub_company_id != "" ? document.getElementById("d-v-subcompany").innerHTML = driverDetails.sub_company_id : document.getElementById("d-v-subcompany").innerHTML = "-";
+                // driverDetails.cab_company_id != "" ? document.getElementById("d-e-subcompany").innerHTML = driverDetails.cab_company_id : document.getElementById("d-e-subcompany").innerHTML = "-";
                 driverDetails.licence_no != "" ? document.getElementById("d-e-licence-no").value = driverDetails.licence_no : document.getElementById("d-e-licence-no").value = "";
                 driverDetails.licence_expiry != "" ? document.getElementById("d-e-licence-ex").value = driverDetails.licence_expiry : document.getElementById("d-e-licence-ex").value = "";
                 driverDetails.aadhar_no != "" ? document.getElementById("d-e-aadhar-no").value = driverDetails.aadhar_no : document.getElementById("d-e-aadhar-no").value = "";
@@ -249,6 +255,20 @@ function getDriverDetailsForEdit(driverId) {
                 driverDetails.district != "" ? document.getElementById("d-e-district").value = driverDetails.district : document.getElementById("d-e-district").value = "";
                 driverDetails.state != "" ? document.getElementById("d-e-state").value = driverDetails.state : document.getElementById("d-e-state").value = "";
                 driverDetails.pincode != "" ? document.getElementById("d-e-pincode").value = driverDetails.pincode : document.getElementById("d-e-pincode").value = "";
+
+                //Select company Type
+                let select = $('#d-e-subcompany');
+                select.empty();
+                select.append('<option value="" disabled>--Select Company--</option>');
+
+                company.forEach(companys => {
+                    if (companys.id == driverDetails.cab_company_id) {
+                        select.append('<option value="' + companys.id + '" selected>' + companys.company_name + '</option>');
+                    } else {
+                        select.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
+                    }
+                });
+
             }
             else if (response.status === 'error') {
                 popupClose('driver-edit');
@@ -397,4 +417,55 @@ function deleteDriver(driverId, driverName) {
             });
         }
     });
+}
+
+//get Company
+
+async function getCompany() {
+    if (!company) {
+        await companyAjax();
+    }
+    let select = $('#subcompany');
+    select.empty();
+    select.append('<option value="" disabled selected>Select Company</option>');
+
+    company.forEach(companys => {
+        select.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
+    });
+
+}
+
+//Fuel type ajax
+function companyAjax() {
+    return new Promise((resolve, reject) => {
+        let formData = {
+            action: 'getCompany'
+        }
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/DriverController.php',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                if (response.status === 'success') {
+                    company = response.data;
+                    resolve();
+                } else {
+                    reject();
+                }
+            },
+            error: function (xhr, status, error) {
+                popupClose('driver-view');
+                console.error(xhr.responseText);
+                reject();
+                // Swal.fire({
+                //     title: "Error",
+                //     text: "Something went wrong! Please try again.",
+                //     icon: "error"
+                // });
+            }
+        });
+    })
+
 }

@@ -2,76 +2,75 @@
 let fuelTypes;
 
 //Get driver Table data 
-getCares();
+getDailyReport();
 
 
 
-function getCares() {
-    let formData1 = {
-        action: 'getCarCardDetails'
-    }
-    $.ajax({
-        type: 'POST',
-        url: '../Controllers/CarController.php',
-        data: formData1,
-        dataType: 'json',
-        success: function (response) {
-            console.log(response);
-            if (response.status === 'success') {
-                let cardDetails = response.data;
-                document.getElementById("total-car").innerHTML = cardDetails.total_car;
-                document.getElementById("total-km").innerHTML = cardDetails.total_km;
-                document.getElementById("avg-mileage").innerHTML = cardDetails.avg_mileage;
-                document.getElementById("cost-per-km").innerHTML = cardDetails.cost_per_km;
-                document.getElementById("expitations").innerHTML = cardDetails.expired_licenses;
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error(xhr.responseText);
-            // Swal.fire({
-            //     title: "Error",
-            //     text: "Something went wrong! Please try again.",
-            //     icon: "error"
-            // });
-        }
-    });
+function getDailyReport() {
+    // let formData1 = {
+    //     action: 'getCarCardDetails'
+    // }
+    // $.ajax({
+    //     type: 'POST',
+    //     url: '../Controllers/DailyReportController.php',
+    //     data: formData1,
+    //     dataType: 'json',
+    //     success: function (response) {
+    //         console.log(response);
+    //         if (response.status === 'success') {
+    //             let cardDetails = response.data;
+    //             document.getElementById("total-car").innerHTML = cardDetails.total_car;
+    //             document.getElementById("total-km").innerHTML = cardDetails.total_km;
+    //             document.getElementById("avg-mileage").innerHTML = cardDetails.avg_mileage;
+    //             document.getElementById("cost-per-km").innerHTML = cardDetails.cost_per_km;
+    //             document.getElementById("expitations").innerHTML = cardDetails.expired_licenses;
+    //         }
+    //     },
+    //     error: function (xhr, status, error) {
+    //         console.error(xhr.responseText);
+    //         // Swal.fire({
+    //         //     title: "Error",
+    //         //     text: "Something went wrong! Please try again.",
+    //         //     icon: "error"
+    //         // });
+    //     }
+    // });
     let formData2 = {
-        action: 'getCares'
+        action: 'getDailyReports'
     }
     $.ajax({
         type: 'POST',
-        url: '../Controllers/CarController.php',
+        url: '../Controllers/DailyReportController.php',
         data: formData2,
         dataType: 'json',
         success: function (response) {
             console.log(response);
             if (response.status === 'success') {
-                let carDetails = response.data;
-                console.log(carDetails);
+                let dailyReportDetails = response.data;
+                console.log(dailyReportDetails);
 
-                let tableBody = $('#car-table tbody');
+                let tableBody = $('#daily-report-table tbody');
                 tableBody.empty();
 
-                $.each(carDetails, function (index, item) {
+                $.each(dailyReportDetails, function (index, item) {
                     let row = '<tr>' +
-                        '<td>' + (index + 1) + '</td>' +
-                        '<td>' + item.car_number + '</td>' +
-                        '<td>' + item.fuel_type + '</td>' +
-                        '<td>' + item.total_km + '</td>' +
-                        '<td>' + item.avg_mileage + '</td>' +
-                        '<td>' + item.cost_per_km + '</td>' +
-                        '<td><div class="btn-td"><span class="' + item.rc_book_status + '">' + item.rc_book_status + '</span></div></td>' +
-                        '<td><div class="btn-td"><span class="' + item.insurance_status + '">' + item.insurance_status + '</span></div></td>' +
-                        `<td>
-                            <div class="th-btn">
-                                <button class="table-btn view" onclick="popupOpen('car-view'); getCarDetails(`+ item.car_id + `);"><i
-                                                class="fa-duotone fa-eye"></i></button>
-                                <button class="table-btn edit" onclick="popupOpen('car-edit'); getCarDetailsForEdit(`+ item.car_id + `);"><i
-                                                class="fa-duotone fa-pen-to-square"></i></button>
-                                <button class="table-btn delete" onclick="deleteCar(`+ item.car_id + `, '` + item.car_number + `')"><i class="fa-duotone fa-trash"></i></button>
-                            </div>
-                        </td>`      
-                    '</tr>';
+                                    '<td class="text-center">' + (index + 1) + '</td>' +
+                                    '<td class="text-center">' + item.fullname + '</td>' +
+                                    '<td class="text-center">' + item.check_in_date + '</td>' +
+                                    '<td class="text-center">' + item.check_in_time + '</td>' +
+                                    '<td class="text-center">' + item.check_in_km + '</td>' +
+                                    '<td class="text-center">' + item.check_out_date + '</td>' +
+                                    '<td class="text-center">' + item.check_out_time + '</td>' +
+                                    '<td class="text-center">' + item.check_out_km + '</td>' +
+                                    '<td class="text-center">' + item.total_km + '</td>' +
+                                    `<td class="text-center">
+                                        <div class="th-btn">
+                                            <button class="table-btn view" onclick="popupOpen('car-view'); getCarDetails(`+ item.daily_report_id + `);"><i class="fa-duotone fa-eye"></i></button>
+                                            <button class="table-btn edit" onclick="popupOpen('car-edit'); getCarDetailsForEdit(`+ item.daily_report_id + `);"><i class="fa-duotone fa-pen-to-square"></i></button>
+                                            <button class="table-btn delete" onclick="deleteBus(`+ item.daily_report_id + `, '` + item.fullname + `')"><i class="fa-duotone fa-trash"></i></button>
+                                        </div>
+                                    </td>`
+                                '</tr>';
                     tableBody.append(row);
                 })
                 DataTable();
@@ -111,7 +110,7 @@ function fuelTypeAjax() {
         }
         $.ajax({
             type: 'POST',
-            url: '../Controllers/CarController.php',
+            url: '../Controllers/DailyReportController.php',
             data: formData,
             dataType: 'json',
             success: function (response) {
@@ -159,7 +158,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: '../Controllers/CarController.php',
+            url: '../Controllers/DailyReportController.php',
             data: formData,
             contentType: false,
             processData: false,
@@ -168,7 +167,7 @@ $(document).ready(function () {
                 popupClose("progress-loader");
                 let data = JSON.parse(response);
                 if (data.status === 'success') {
-                    getCares();
+                    getDailyReport();
                     Swal.fire({
                         title: "Success",
                         text: data.message,
@@ -211,40 +210,40 @@ function getCarDetails(carId) {
     document.getElementsByClassName("loader-div")[0].style.display = "block";
     $.ajax({
         type: 'POST',
-        url: '../Controllers/CarController.php',
+        url: '../Controllers/DailyReportController.php',
         data: formData,
         dataType: 'json',
         success: function (response) {
             if (response.status === 'success') {
-                let carDetails = response.data;
-                console.log(carDetails);
+                let dailyReportDetails = response.data;
+                console.log(dailyReportDetails);
                 document.getElementsByClassName("loader-div")[0].style.display = "none";
                 document.getElementsByClassName("car-info")[0].style.display = "block";
 
-                console.log(typeof carDetails.fuel_cost);
+                console.log(typeof dailyReportDetails.fuel_cost);
                 //Card details
                 document.getElementById("c-v-profit").innerHTML = 0;
-                document.getElementById("c-v-cost").innerHTML = parseFloat(carDetails.fuel_cost) + parseFloat(carDetails.maintenance_cost);
-                document.getElementById("c-v-total-km").innerHTML = carDetails.total_km;
-                document.getElementById("c-v-avg-mileage").innerHTML = carDetails.avg_mileage;
-                document.getElementById("c-v-cost-per-km").innerHTML = carDetails.cost_per_km;
+                document.getElementById("c-v-cost").innerHTML = parseFloat(dailyReportDetails.fuel_cost) + parseFloat(dailyReportDetails.maintenance_cost);
+                document.getElementById("c-v-total-km").innerHTML = dailyReportDetails.total_km;
+                document.getElementById("c-v-avg-mileage").innerHTML = dailyReportDetails.avg_mileage;
+                document.getElementById("c-v-cost-per-km").innerHTML = dailyReportDetails.cost_per_km;
 
-                carDetails.car_number != "" ? document.getElementById("c-v-car-no").innerHTML = carDetails.car_number : document.getElementById("c-v-car-no").innerHTML = "-";
-                carDetails.car_model != "" ? document.getElementById("c-v-car-model").innerHTML = carDetails.car_model : document.getElementById("c-v-car-model").innerHTML = "-";
-                carDetails.seating_capacity != "" ? document.getElementById("c-v-seating-capacity").innerHTML = carDetails.seating_capacity : document.getElementById("c-v-seating-capacity").innerHTML = "-";
-                carDetails.fuel_type != "" ? document.getElementById("c-v-fuel-type").innerHTML = carDetails.fuel_type : document.getElementById("c-v-fuel-type").innerHTML = "-";
-                carDetails.car_status != "" ? document.getElementById("c-v-car-status").innerHTML = (carDetails.car_status == 1) ? "Running" : "Not Running" : document.getElementById("c-v-car-status").innerHTML = "-";
+                dailyReportDetails.car_number != "" ? document.getElementById("c-v-car-no").innerHTML = dailyReportDetails.car_number : document.getElementById("c-v-car-no").innerHTML = "-";
+                dailyReportDetails.car_model != "" ? document.getElementById("c-v-car-model").innerHTML = dailyReportDetails.car_model : document.getElementById("c-v-car-model").innerHTML = "-";
+                dailyReportDetails.seating_capacity != "" ? document.getElementById("c-v-seating-capacity").innerHTML = dailyReportDetails.seating_capacity : document.getElementById("c-v-seating-capacity").innerHTML = "-";
+                dailyReportDetails.fuel_type != "" ? document.getElementById("c-v-fuel-type").innerHTML = dailyReportDetails.fuel_type : document.getElementById("c-v-fuel-type").innerHTML = "-";
+                dailyReportDetails.car_status != "" ? document.getElementById("c-v-car-status").innerHTML = (dailyReportDetails.car_status == 1) ? "Running" : "Not Running" : document.getElementById("c-v-car-status").innerHTML = "-";
                 
-                carDetails.rcbook_no != "" ? document.getElementById("c-v-rc-no").innerHTML = carDetails.rcbook_no : document.getElementById("c-v-rc-no").innerHTML = "-";
-                carDetails.insurance_no != "" ? document.getElementById("c-v-insurance-no").innerHTML = carDetails.insurance_no : document.getElementById("c-v-insurance-no").value = "-";
-                carDetails.rcbook_expiry != "" ? document.getElementById("c-v-rcbook-expiry").innerHTML = convertDateFormat(carDetails.rcbook_expiry) : document.getElementById("c-v-rcbook-expiry").innerHTML = "-";
-                carDetails.insurance_expiry != "" ? document.getElementById("c-v-insurance-expiry").innerHTML = convertDateFormat(carDetails.insurance_expiry) : document.getElementById("c-v-insurance-expiry").innerHTML = "-";
+                dailyReportDetails.rcbook_no != "" ? document.getElementById("c-v-rc-no").innerHTML = dailyReportDetails.rcbook_no : document.getElementById("c-v-rc-no").innerHTML = "-";
+                dailyReportDetails.insurance_no != "" ? document.getElementById("c-v-insurance-no").innerHTML = dailyReportDetails.insurance_no : document.getElementById("c-v-insurance-no").value = "-";
+                dailyReportDetails.rcbook_expiry != "" ? document.getElementById("c-v-rcbook-expiry").innerHTML = convertDateFormat(dailyReportDetails.rcbook_expiry) : document.getElementById("c-v-rcbook-expiry").innerHTML = "-";
+                dailyReportDetails.insurance_expiry != "" ? document.getElementById("c-v-insurance-expiry").innerHTML = convertDateFormat(dailyReportDetails.insurance_expiry) : document.getElementById("c-v-insurance-expiry").innerHTML = "-";
                 
-                carDetails.rcbook_path != "" ? document.getElementById("c-v-rcbook-path").href = "../../Assets/User/" + carDetails.rcbook_path : document.getElementById("c-v-rcbook-path").href = "";
-                carDetails.insurance_path != "" ? document.getElementById("c-v-insurance-path").href = "../../Assets/User/" + carDetails.insurance_path : document.getElementById("c-v-insurance-path").href = "";
+                dailyReportDetails.rcbook_path != "" ? document.getElementById("c-v-rcbook-path").href = "../../Assets/User/" + dailyReportDetails.rcbook_path : document.getElementById("c-v-rcbook-path").href = "";
+                dailyReportDetails.insurance_path != "" ? document.getElementById("c-v-insurance-path").href = "../../Assets/User/" + dailyReportDetails.insurance_path : document.getElementById("c-v-insurance-path").href = "";
 
-                carDetails.rcbook_path != "" ? document.getElementById("c-v-rcbook-path").innerHTML = '<i class="fa-duotone fa-file-invoice"></i>' : document.getElementById("c-v-rcbook-path").innerHTML = "-";
-                carDetails.insurance_path != "" ? document.getElementById("c-v-insurance-path").innerHTML = '<i class="fa-duotone fa-file-invoice"></i>' : document.getElementById("c-v-insurance-path").innerHTML = "-";
+                dailyReportDetails.rcbook_path != "" ? document.getElementById("c-v-rcbook-path").innerHTML = '<i class="fa-duotone fa-file-invoice"></i>' : document.getElementById("c-v-rcbook-path").innerHTML = "-";
+                dailyReportDetails.insurance_path != "" ? document.getElementById("c-v-insurance-path").innerHTML = '<i class="fa-duotone fa-file-invoice"></i>' : document.getElementById("c-v-insurance-path").innerHTML = "-";
 
                 //Bar chart
                 var options = {
@@ -337,26 +336,26 @@ async function getCarDetailsForEdit(CarId) {
     document.getElementsByClassName("loader-div")[1].style.display = "block";
     $.ajax({
         type: 'POST',
-        url: '../Controllers/CarController.php',
+        url: '../Controllers/DailyReportController.php',
         data: formData,
         dataType: 'json',
         success: function (response) {
             if (response.status === 'success') {
-                let carDetails = response.data;
-                console.log(carDetails);
+                let dailyReportDetails = response.data;
+                console.log(dailyReportDetails);
                 document.getElementsByClassName("loader-div")[1].style.display = "none";
                 document.getElementsByClassName("car-info")[1].style.display = "block";
-                document.getElementById("c-e-car-id").value = carDetails.id;
-                carDetails.car_number != "" ? document.getElementById("c-e-car-no").value = carDetails.car_number : document.getElementById("c-e-car-no").value = "";
-                carDetails.car_model != "" ? document.getElementById("c-e-car-model").value = carDetails.car_model : document.getElementById("c-e-car-model").value = "";
-                carDetails.seating_capacity != "" ? document.getElementById("c-e-seating-capacity").value = carDetails.seating_capacity : document.getElementById("c-e-seating-capacity").value = "";
+                document.getElementById("c-e-car-id").value = dailyReportDetails.id;
+                dailyReportDetails.car_number != "" ? document.getElementById("c-e-car-no").value = dailyReportDetails.car_number : document.getElementById("c-e-car-no").value = "";
+                dailyReportDetails.car_model != "" ? document.getElementById("c-e-car-model").value = dailyReportDetails.car_model : document.getElementById("c-e-car-model").value = "";
+                dailyReportDetails.seating_capacity != "" ? document.getElementById("c-e-seating-capacity").value = dailyReportDetails.seating_capacity : document.getElementById("c-e-seating-capacity").value = "";
                 //FuelType
                 let select = $('#c-e-fuel-type');
                 select.empty();
                 select.append('<option value="" disabled>--Select Fuel Type--</option>');
 
                 fuelTypes.forEach(fuelType => {
-                    if (fuelType.id == carDetails.fuel_type_id) {
+                    if (fuelType.id == dailyReportDetails.fuel_type_id) {
                         select.append('<option value="' + fuelType.id + '" selected>' + fuelType.fuel + '</option>');
                     } else {
                         select.append('<option value="' + fuelType.id + '">' + fuelType.fuel + '</option>');
@@ -367,7 +366,7 @@ async function getCarDetailsForEdit(CarId) {
                 let select2 = $('#c-e-car-status');
                 select2.empty();
                 select2.append('<option value="" disabled>--Select Car Status--</option>');
-                if (carDetails.car_status) {
+                if (dailyReportDetails.car_status) {
                     select2.append('<option value="1" selected>Running</option>');
                     select2.append('<option value="0">Not Running</option>');
                 } else {
@@ -375,16 +374,16 @@ async function getCarDetailsForEdit(CarId) {
                     select2.append('<option value="0" selected>Not Running</option>');
                 }
                 
-                carDetails.rcbook_no != "" ? document.getElementById("c-e-rc-no").value = carDetails.rcbook_no : document.getElementById("c-e-rc-no").value = "";
-                carDetails.insurance_no != "" ? document.getElementById("c-e-insurance-no").value = carDetails.insurance_no : document.getElementById("c-e-insurance-no").value = "";
-                carDetails.rcbook_expiry != "" ? document.getElementById("c-e-rcbook-expiry").value = carDetails.rcbook_expiry : document.getElementById("c-e-rcbook-expiry").value = "";
-                carDetails.insurance_expiry != "" ? document.getElementById("c-e-insurance-expiry").value = carDetails.insurance_expiry : document.getElementById("c-e-insurance-expiry").value = "";
+                dailyReportDetails.rcbook_no != "" ? document.getElementById("c-e-rc-no").value = dailyReportDetails.rcbook_no : document.getElementById("c-e-rc-no").value = "";
+                dailyReportDetails.insurance_no != "" ? document.getElementById("c-e-insurance-no").value = dailyReportDetails.insurance_no : document.getElementById("c-e-insurance-no").value = "";
+                dailyReportDetails.rcbook_expiry != "" ? document.getElementById("c-e-rcbook-expiry").value = dailyReportDetails.rcbook_expiry : document.getElementById("c-e-rcbook-expiry").value = "";
+                dailyReportDetails.insurance_expiry != "" ? document.getElementById("c-e-insurance-expiry").value = dailyReportDetails.insurance_expiry : document.getElementById("c-e-insurance-expiry").value = "";
                 
-                carDetails.rcbook_path != "" ? document.getElementById("c-e-rcbook-path").href = "../../Assets/User/" + carDetails.rcbook_path : document.getElementById("c-e-rcbook-path").href = "";
-                carDetails.insurance_path != "" ? document.getElementById("c-e-insurance-path").href = "../../Assets/User/" + carDetails.insurance_path : document.getElementById("c-e-insurance-path").href = "";
+                dailyReportDetails.rcbook_path != "" ? document.getElementById("c-e-rcbook-path").href = "../../Assets/User/" + dailyReportDetails.rcbook_path : document.getElementById("c-e-rcbook-path").href = "";
+                dailyReportDetails.insurance_path != "" ? document.getElementById("c-e-insurance-path").href = "../../Assets/User/" + dailyReportDetails.insurance_path : document.getElementById("c-e-insurance-path").href = "";
 
-                carDetails.rcbook_path != "" ? document.getElementById("c-e-rcbook-path").innerHTML = '<i class="fa-duotone fa-file-invoice"></i>' : document.getElementById("c-e-rcbook-path").innerHTML = "-";
-                carDetails.insurance_path != "" ? document.getElementById("c-e-insurance-path").innerHTML = '<i class="fa-duotone fa-file-invoice"></i>' : document.getElementById("c-e-insurance-path").innerHTML = "-";
+                dailyReportDetails.rcbook_path != "" ? document.getElementById("c-e-rcbook-path").innerHTML = '<i class="fa-duotone fa-file-invoice"></i>' : document.getElementById("c-e-rcbook-path").innerHTML = "-";
+                dailyReportDetails.insurance_path != "" ? document.getElementById("c-e-insurance-path").innerHTML = '<i class="fa-duotone fa-file-invoice"></i>' : document.getElementById("c-e-insurance-path").innerHTML = "-";
 
             }
             else if (response.status === 'error') {
@@ -433,7 +432,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: '../Controllers/CarController.php',
+            url: '../Controllers/DailyReportController.php',
             data: formData,
             contentType: false,
             processData: false,
@@ -442,7 +441,7 @@ $(document).ready(function () {
                 popupClose("progress-loader");
                 let data = JSON.parse(response);
                 if (data.status === 'success') {
-                    getCares();
+                    getDailyReport();
                     Swal.fire({
                         title: "Success",
                         text: data.message,
@@ -477,10 +476,10 @@ $(document).ready(function () {
 
 //Delete Driver
 
-function deleteCar(carId, carName) {
+function deleteBus(busId, busName) {
     Swal.fire({
         title: "Are you sure?",
-        text: "You want to delete " + carName,
+        text: "You want to delete " + busName,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -493,12 +492,12 @@ function deleteCar(carId, carName) {
             let array = [["Deleting car. Please wait..", 4000], ["Deleting car documents..", 4000], ["Please wait a moment..", 4000]];
             progressLoader(array);
             let formData = {
-                carId: carId,
-                action: 'deleteCar'
+                busId: busId,
+                action: 'deleteBus'
             }
             $.ajax({
                 type: 'POST',
-                url: '../Controllers/CarController.php',
+                url: '../Controllers/BusController.php',
                 data: formData,
                 dataType: 'json',
                 success: function (data) {
@@ -506,7 +505,7 @@ function deleteCar(carId, carName) {
                     popupClose("progress-loader");
                     // let data = JSON.parse(response);
                     if (data.status === 'success') {
-                        getCares();
+                        getDailyReport();
                         Swal.fire({
                             title: "Deleted!",
                             text: data.message,

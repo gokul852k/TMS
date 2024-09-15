@@ -1,13 +1,16 @@
 <?php
 
-class DriverModel {
+class DailyReportModel
+{
     private $db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
-    public function getMailID($mail) {
+    public function getMailID($mail)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT `username` FROM `users` WHERE username = :username AND is_active = :isActive");
         $stmt->bindParam(":username", $mail);
@@ -18,11 +21,10 @@ class DriverModel {
         return $result ? $result : null;
     }
 
-    public function getDriverDetails($driverId) {
+    public function getDriverDetails($driverId)
+    {
         $isActive = true;
-        $stmt = $this->db->prepare("SELECT *,
-                                             (SELECT `company_name` FROM `cms_cab_company` WHERE `cms_cab_company`.`id`=`cms_drivers`.`cab_company_id`) AS cab_company_id
-                                             FROM `cms_drivers` WHERE `id` = :driverId AND `is_active` = :isActive");
+        $stmt = $this->db->prepare("SELECT * FROM `cms_drivers` WHERE `id` = :driverId AND `is_active` = :isActive");
         $stmt->bindParam(":driverId", $driverId);
         $stmt->bindParam(":isActive", $isActive);
         $stmt->execute();
@@ -31,7 +33,8 @@ class DriverModel {
         return $result ? $result : null;
     }
 
-    public function getDriversCardDetails($companyId) {
+    public function getDriversCardDetails($companyId)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT
                                     (SELECT COUNT(*) FROM cms_drivers WHERE company_id=:companyId AND is_active=:isActive) AS 'total_drivers',
@@ -46,8 +49,8 @@ class DriverModel {
 
         return $result ? $result : null;
     }
-    
-    public function getDriversDetails($companyId) {
+    public function getDriversDetails($companyId)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT 
                                         id, fullname, mail, mobile, district, licence_no, licence_expiry,
@@ -66,7 +69,8 @@ class DriverModel {
         return $result ? $result : null;
     }
 
-    public function setDriversinUsers($username, $password, $companyId) {
+    public function setDriversinUsers($username, $password, $companyId)
+    {
         $stmt = $this->db->prepare("INSERT INTO `users`(`username`, `password`, `company_id`) VALUES (:username, :password, :companyId)");
         $stmt->bindParam("username", $username);
         $stmt->bindParam("password", $password);
@@ -97,7 +101,8 @@ class DriverModel {
         }
     }
 
-    public function setDriversinUserRole($userId, $roleId, $systemId) {
+    public function setDriversinUserRole($userId, $roleId, $systemId)
+    {
         $stmt = $this->db->prepare("INSERT INTO `user_roles`(`user_id`, `role_id`, `system_id`) VALUES (:userId, :roleId, :systemId)");
         $stmt->bindParam("userId", $userId);
         $stmt->bindParam("roleId", $roleId);
@@ -125,26 +130,15 @@ class DriverModel {
         }
     }
 
-    public function setDriver($userId, $companyId, $name, $mobile, $subcompany, $mail, $address, $state, $district, $pincode, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path) {
-        $stmt = $this->db->prepare("INSERT INTO `cms_drivers` (`user_id`, `company_id`, `cab_company_id`, `fullname`, `mail`, `mobile`, `address`, `state`, `district`, `pincode`, `driver_image_path`, `licence_no`, `licence_expiry`, `licence_path`, `aadhar_no`, `aadhar_path`, `pan_no`, `pan_path`) VALUES (:userId, :companyId, :subcompany, :name, :mail, :mobile, :address, :state, :district, :pincode, :driverImage_path, :licenceNo, :licenceExpiry, :drivingLicence_path, :aadharNo, :aadharCard_path, :panNo, :panCard_path)");
-        $stmt->bindParam("userId", $userId);
+    public function startTrip($companyId, $cabCompanyId, $driverId, $currentDate, $currentTime, $checkin_km)
+    {
+        $stmt = $this->db->prepare("INSERT INTO `cms_drivers_daily_report` (`company_id`, `cab_company_id`, `driver_id`, `check_in_date`, `check_in_time`, `check_in_km`) VALUES (:companyId, :cabCompanyId, :driverId, :currentDate, :currentTime, :checkin_km)");
         $stmt->bindParam("companyId", $companyId);
-        $stmt->bindParam("subcompany", $subcompany);
-        $stmt->bindParam("name", $name);
-        $stmt->bindParam("mail", $mail);
-        $stmt->bindParam("mobile", $mobile);
-        $stmt->bindParam("address", $address);
-        $stmt->bindParam("state", $state);
-        $stmt->bindParam("district", $district);
-        $stmt->bindParam("pincode", $pincode);
-        $stmt->bindParam("driverImage_path", $driverImage_path);
-        $stmt->bindParam("licenceNo", $licenceNo);
-        $stmt->bindParam("licenceExpiry", $licenceExpiry);
-        $stmt->bindParam("drivingLicence_path", $drivingLicence_path);
-        $stmt->bindParam("aadharNo", $aadharNo);
-        $stmt->bindParam("aadharCard_path", $aadharCard_path);
-        $stmt->bindParam("panNo", $panNo);
-        $stmt->bindParam("panCard_path", $panCard_path);
+        $stmt->bindParam("cabCompanyId", $cabCompanyId);
+        $stmt->bindParam("driverId", $driverId);
+        $stmt->bindParam("currentDate", $currentDate);
+        $stmt->bindParam("currentTime", $currentTime);
+        $stmt->bindParam("checkin_km", $checkin_km);
 
         if ($stmt->execute()) {
             if ($stmt->rowCount() > 0) {
@@ -168,16 +162,116 @@ class DriverModel {
         }
     }
 
-    function deleteUser($userId) {
+    // public function endTrip($companyId, $cabCompanyId, $driverId, $currentDate, $currentTime, $checkin_km, $total_km)
+    // {
+    //     // $stmt = $this->db->prepare("INSERT INTO `cms_drivers_daily_report` (`company_id`, `cab_company_id`, `driver_id`, `check_in_date`, `check_in_time`, `check_in_km`) VALUES (:companyId, :cabCompanyId, :driverId, :currentDate, :currentTime, :checkin_km)");
+    //     $stmt = $this->db->prepare("UPDATE `cms_drivers_daily_report` SET `check_out_date`=:checkOutDate,`check_out_time`=:currentTime,`check_out_km`=:checkOutKm,`total_km`=:totalKM WHERE `company_id` = :companId AND `sub_company_id` = :subCompanyId AND `driver_id` = :driverId AND `check_in_date` IS NOT NULL AND `check_out_date` IS NULL AND `check_out_time` IS NULL AND `check_out_km` IS NULL ORDER BY `daily_report_id` DESC LIMIT 1");
+    //     $stmt->bindParam("companyId", $companyId);
+    //     $stmt->bindParam("cabCompanyId", $cabCompanyId);
+    //     $stmt->bindParam("driverId", $driverId);
+    //     $stmt->bindParam("currentDate", $currentDate);
+    //     $stmt->bindParam("currentTime", $currentTime);
+    //     $stmt->bindParam("checkin_km", $checkin_km);
+    //     $stmt->bindParam("total_km", $total_km);
+
+    //     print_r($stmt);
+    //     if ($stmt->execute()) {
+    //         if ($stmt->rowCount() > 0) {
+    //             return [
+    //                 'status' => 'success',
+    //                 'message' => 'Inserted successfully.'
+    //             ];
+    //         } else {
+    //             return [
+    //                 'status' => 'error',
+    //                 'message' => 'Insert failed.',
+    //                 'error' => 'No reason'
+    //             ];
+    //         }
+    //     } else {
+    //         return [
+    //             'status' => 'error',
+    //             'message' => 'Insert failed.',
+    //             'error' => $stmt->errorInfo()
+    //         ];
+    //     }
+    // }
+
+    public function endTrip($companyId, $cabCompanyId, $driverId, $checkOutDate, $currentTime, $checkOutKm, $totalKM)
+    {
+        // Prepare the SQL statement
+        $stmt = $this->db->prepare("UPDATE `cms_drivers_daily_report` 
+        SET `check_out_date` = :checkOutDate,
+            `check_out_time` = :currentTime,
+            `check_out_km` = :checkOutKm,
+            `total_km` = :totalKM
+        WHERE `company_id` = :companyId
+          AND `cab_company_id` = :cabCompanyId
+          AND `driver_id` = :driverId
+          AND `check_in_date` IS NOT NULL
+          AND `check_out_date` IS NULL
+          AND `check_out_time` IS NULL
+          AND `check_out_km` IS NULL
+        ORDER BY `id` DESC
+        LIMIT 1");
+
+        // Bind the parameters
+        $stmt->bindParam(':companyId', $companyId);
+        $stmt->bindParam(':cabCompanyId', $cabCompanyId);
+        $stmt->bindParam(':driverId', $driverId);
+        $stmt->bindParam(':checkOutDate', $checkOutDate);
+        $stmt->bindParam(':currentTime', $currentTime);
+        $stmt->bindParam(':checkOutKm', $checkOutKm);
+        $stmt->bindParam(':totalKM', $totalKM);
+
+        // Execute the statement and handle errors
+        if ($stmt->execute()) {
+            if ($stmt->rowCount() > 0) {
+                return [
+                    'status' => 'success',
+                    'message' => 'Inserted successfully.'
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Insert failed.',
+                    'error' => 'No reason'
+                ];
+            }
+        } else {
+            return [
+                'status' => 'error',
+                'message' => 'Insert failed.',
+                'error' => $stmt->errorInfo()
+            ];
+        }
+    }
+
+
+    public function checkDutyByDriverId($companyId, $cabCompanyId, $driverId)
+    {
+        $stmt = $this->db->prepare("SELECT id, check_in_km FROM `cms_drivers_daily_report` WHERE `company_id` = :companyId AND `cab_company_id` = :cabCompanyId AND `driver_id` = :driverId AND `check_in_time` IS NOT NULL AND `check_out_date` IS NULL AND `check_out_time` IS NULL AND `check_out_km` IS NULL ORDER BY `id` DESC LIMIT 1");
+        $stmt->bindParam("companyId", $companyId);
+        $stmt->bindParam("cabCompanyId", $cabCompanyId);
+        $stmt->bindParam("driverId", $driverId);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    }
+
+    function deleteUser($userId)
+    {
         $stmt = $this->db->prepare("DELETE FROM `users` WHERE `id`=:userId");
         $stmt->bindParam("userId", $userId);
         return $stmt->execute();
     }
 
-    function updateDriver($update_fields, $update_values) {
-        $sql = "UPDATE cms_drivers SET ". implode(", ", $update_fields) . " WHERE id = :id";
+    function updateDriver($update_fields, $update_values)
+    {
+        $sql = "UPDATE cms_drivers SET " . implode(", ", $update_fields) . " WHERE id = :id";
         $stmt = $this->db->prepare($sql);
-        
+
         if ($stmt->execute($update_values)) {
             return true;
         } else {
@@ -185,13 +279,15 @@ class DriverModel {
         }
     }
 
-    function deleteDriver($driverId) {
+    function deleteDriver($driverId)
+    {
         $stmt = $this->db->prepare("DELETE FROM `cms_drivers` WHERE `id`=:driverId");
         $stmt->bindParam("driverId", $driverId);
         return $stmt->execute();
     }
 
-    public function getCompany() {
+    public function getCompany()
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT `id`, `company_name` FROM cms_cab_company WHERE is_active = :isActive");
         $stmt->bindParam("isActive", $isActive);

@@ -1,13 +1,16 @@
 <?php
 
-class CarModel {
+class DailyReportModel
+{
     private $db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
-    public function getFuelType() {
+    public function getFuelType()
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT `id`, `fuel` FROM cms_fuel_type WHERE is_active = :isActive");
         $stmt->bindParam("isActive", $isActive);
@@ -17,7 +20,8 @@ class CarModel {
         return $result ? $result : null;
     }
 
-    public function setCar($companyId, $carNumber, $carModel, $seatingCapacity, $fuelType, $carStatus, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook_path, $insurance_path) {
+    public function setCar($companyId, $carNumber, $carModel, $seatingCapacity, $fuelType, $carStatus, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook_path, $insurance_path)
+    {
         $stmt = $this->db->prepare("INSERT INTO `cms_car` (`company_id`, `car_model`, `car_number`, `seating_capacity`, `fuel_type_id`, `rcbook_no`, `rcbook_expiry`, `rcbook_path`, `insurance_no`, `insurance_expiry`, `insurance_path`, `car_status`) VALUES (:companyId, :carModel, :carNumber, :seatingCapacity, :fuelType, :rcBookNumber, :rcBookExpiry, :rcBook_path, :insuranceNumber, :insuranceExpiry, :insurance_path, :carStatus)");
         $stmt->bindParam("companyId", $companyId);
         $stmt->bindParam("carModel", $carModel);
@@ -56,7 +60,8 @@ class CarModel {
         }
     }
 
-    public function setCarSummary($companyId, $carId) {
+    public function setCarSummary($companyId, $carId)
+    {
         $stmt = $this->db->prepare("INSERT INTO `cms_car_summary` (`company_id`, `car_id`) VALUES (:companyId, :carId)");
         $stmt->bindParam("companyId", $companyId);
         $stmt->bindParam("carId", $carId);
@@ -83,7 +88,8 @@ class CarModel {
         }
     }
 
-    public function getCarCardDetails($companyId) {
+    public function getCarCardDetails($companyId)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT
                                     (SELECT COUNT(*) FROM cms_car WHERE company_id=:companyId AND is_active=:isActive) AS 'total_car',
@@ -100,38 +106,52 @@ class CarModel {
         return $result ? $result : null;
     }
 
-    public function getCares($companyId) {
-        $isActive = true;
+    public function getDailyReports($companyId)
+    {
+        // $stmt = $this->db->prepare("SELECT
+        //                                 c.id AS 'car_id',
+        //                                 c.car_number,
+        //                                 ft.fuel AS 'fuel_type',
+        //                                 COALESCE(cs.total_km, 0) AS 'total_km',
+        //                                 COALESCE(cs.avg_mileage, 0) AS 'avg_mileage',
+        //                                 COALESCE(cs.cost_per_km, 0) AS 'cost_per_km',
+        //                                 CASE
+        //                                     WHEN c.rcbook_expiry < CURRENT_DATE() THEN 'expired'
+        //                                     WHEN c.rcbook_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) THEN 'expires'
+        //                                     ELSE 'active'
+        //                                 END AS 'rc_book_status',
+        //                                 CASE
+        //                                     WHEN c.insurance_expiry < CURRENT_DATE() THEN 'expired'
+        //                                     WHEN c.insurance_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) THEN 'expires'
+        //                                     ELSE 'active'
+        //                                 END AS 'insurance_status'
+        //                             FROM cms_car c
+        //                             INNER JOIN cms_fuel_type ft ON c.fuel_type_id = ft.id
+        //                             LEFT JOIN cms_car_summary cs ON c.id = cs.car_id
+        //                             WHERE c.company_id = :companyId");
         $stmt = $this->db->prepare("SELECT
-                                        c.id AS 'car_id',
-                                        c.car_number,
-                                        ft.fuel AS 'fuel_type',
-                                        COALESCE(cs.total_km, 0) AS 'total_km',
-                                        COALESCE(cs.avg_mileage, 0) AS 'avg_mileage',
-                                        COALESCE(cs.cost_per_km, 0) AS 'cost_per_km',
-                                        CASE
-                                            WHEN c.rcbook_expiry < CURRENT_DATE() THEN 'expired'
-                                            WHEN c.rcbook_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) THEN 'expires'
-                                            ELSE 'active'
-                                        END AS 'rc_book_status',
-                                        CASE
-                                            WHEN c.insurance_expiry < CURRENT_DATE() THEN 'expired'
-                                            WHEN c.insurance_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) THEN 'expires'
-                                            ELSE 'active'
-                                        END AS 'insurance_status'
-                                    FROM cms_car c
-                                    INNER JOIN cms_fuel_type ft ON c.fuel_type_id = ft.id
-                                    LEFT JOIN cms_car_summary cs ON c.id = cs.car_id
-                                    WHERE c.company_id = :companyId AND c.is_active = :isActive");
+                                            cddr.id AS 'daily_report_id',
+                                            cd.fullname AS 'fullname',
+                                            cddr.check_in_date,
+                                            cddr.check_in_time,
+                                            cddr.check_in_km,
+                                            COALESCE(cddr.check_out_date, '-') AS check_out_date,
+                                            COALESCE(cddr.check_out_time, '-') AS check_out_time,
+                                            COALESCE(cddr.check_out_km, '-') AS check_out_km,
+                                            COALESCE(cddr.total_km, '-') AS total_km
+                                        FROM cms_drivers_daily_report cddr
+                                        INNER JOIN cms_drivers cd ON cddr.driver_id = cd.id
+                                        WHERE cddr.company_id = :companyId");
+
         $stmt->bindParam(":companyId", $companyId);
-        $stmt->bindParam(":isActive", $isActive);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $result ? $result : null;
     }
 
-    function getCar($carId) {
+    function getCar($carId)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT * FROM cms_car WHERE id=:carId AND is_active=:isActive");
         $stmt->bindParam(":carId", $carId);
@@ -142,10 +162,11 @@ class CarModel {
         return $result ? $result : null;
     }
 
-    function updateCar($update_fields, $update_values) {
-        $sql = "UPDATE cms_car SET ". implode(", ", $update_fields) . " WHERE id = :id";
+    function updateCar($update_fields, $update_values)
+    {
+        $sql = "UPDATE cms_car SET " . implode(", ", $update_fields) . " WHERE id = :id";
         $stmt = $this->db->prepare($sql);
-        
+
         if ($stmt->execute($update_values)) {
             return true;
         } else {
@@ -153,7 +174,8 @@ class CarModel {
         }
     }
 
-    function getCarView($carId) {
+    function getCarView($carId)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT 
                                     c.car_number,
@@ -184,9 +206,10 @@ class CarModel {
         return $result ? $result : null;
     }
 
-    function deletecar($carId) {
-        $stmt = $this->db->prepare("DELETE FROM `cms_car` WHERE `id`=:carId");
-        $stmt->bindParam("carId", $carId);
+    function deleteBus($busId)
+    {
+        $stmt = $this->db->prepare("DELETE FROM `bms_bus` WHERE `id`=:busId");
+        $stmt->bindParam("busId", $busId);
         return $stmt->execute();
     }
 }

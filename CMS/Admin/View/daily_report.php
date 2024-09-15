@@ -12,11 +12,11 @@ require_once './navbar.php';
     <div class="container box-container box-head w3-animate-top">
         <div class="row row-head">
             <div class="">
-                <h4 class="heading">Car Details</h4>
+                <h4 class="heading">Daily Report Details</h4>
             </div>
             <div class="row-head-div-2">
-                <button class="button-1 head-button3" onclick="popupOpen('car-add'); getFuelType()"><i
-                        class="fa-solid fa-car"></i>Add Car</button>
+                <!-- <button class="button-1 head-button3" onclick="popupOpen('car-add'); getFuelType()"><i
+                        class="fa-solid fa-car"></i>Add Car</button> -->
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
             </div>
         </div>
@@ -32,7 +32,7 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Total Car</p>
+                                                <p class="mb-0 text-secondary">Total Drivers</p>
                                                 <h4 class="my-1 text-info t-c-4" id="total-car">-</h4>
                                             </div>
                                             <div class="widgets-icons-2 rounded-circle bg-g-4 text-white ms-auto">
@@ -49,7 +49,7 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Total KM</p>
+                                                <p class="mb-0 text-secondary">Driver On Duty</p>
                                                 <h4 class="my-1 text-info t-c-5" id="total-km">-</h4>
                                             </div>
                                             <div class="widgets-icons-2 rounded-circle bg-g-5 text-white ms-auto">
@@ -127,18 +127,19 @@ require_once './navbar.php';
                     <div class="col-xs-12">
                         <table
                             summary="This table shows how to create responsive tables using Datatables' extended functionality"
-                            class="table table-bordered table-hover dt-responsive" id="car-table">
+                            class="table table-bordered table-hover dt-responsive" id="daily-report-table">
 
                             <thead>
                                 <tr>
                                     <th class="th">S.No</th>
-                                    <th class="th">Car Number</th>
-                                    <th class="th">Fuel Type</th>
+                                    <th class="th">Driver Name</th>
+                                    <th class="th">Checkin Date</th>
+                                    <th class="th">Checkin Time</th>
+                                    <th class="th">Checkin KM</th>
+                                    <th class="th">Checkout Date</th>
+                                    <th class="th">Checkout Time</th>
+                                    <th class="th">Checkout KM</th>
                                     <th class="th">Total KM</th>
-                                    <th class="th">Avg Mileage</th>
-                                    <th class="th">Cost per KM</th>
-                                    <th class="th">RC Book Status</th>
-                                    <th class="th">Insurance Status</th>
                                     <th class="th">Action</th>
                                 </tr>
                             </thead>
@@ -658,7 +659,7 @@ require_once './navbar.php';
 <script src="../../../Common/Common file/pop_up.js"></script>
 <script src="../../../Common/Common file/data_table.js"></script>
 <script src="../../../Common/Common file/main.js"></script>
-<script src="./Js/car_ajax.js"></script>
+<script src="./Js/daily_report_ajax.js"></script>
 <?php
 require_once './footer.php';
 ?>

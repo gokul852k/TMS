@@ -2,6 +2,10 @@
 require_once '../../config.php';
 require_once '../Models/SessionModel.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 class SessionServices {
 
     private $modelMA;
@@ -21,8 +25,8 @@ class SessionServices {
 
     public function storeSessionValue($token) {
         $response1 = $this->modelA->getUser($token);
-        $userId = $response1['company_id'];
-        // $response2 = $this->modelMA->getUserDetails($userId);
+        $userId = $response1['id'];
+        $response2 = $this->modelCMS->getUserDetails($userId);
 
         //Get user role from Authentication Database
         $response3 = $this->modelA->getUserRoleFromAuthentication($response1['id']);
@@ -34,9 +38,12 @@ class SessionServices {
         //Storing value in session
         if($response1) {
             $_SESSION['userId'] = $userId;
-            // $_SESSION['companyId'] = $response2['id'];
-            // $_SESSION['companyName'] = $response2['company_name'];
-            // $_SESSION['companyLogo'] = $response2['company_logo'];
+            $_SESSION['dirverId'] = $response2['id'];
+            $_SESSION['cabCompanyId'] = $response2['cab_company_id'];
+            $_SESSION['fullName'] = $response2['fullname'];
+            $_SESSION['email'] = $response2['mail'];
+            $_SESSION['mobile'] = $response2['mobile'];
+            $_SESSION['companyId'] = $response2['company_id'];
             $_SESSION['languageCode'] = 'ta';
             $_SESSION['userRoleId'] = $response4['id'];
 

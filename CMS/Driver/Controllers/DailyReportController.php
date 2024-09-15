@@ -1,11 +1,11 @@
 <?php
 
-require_once '../Services/DriverService.php';
+require_once '../Services/DailyReportServices.php';
 
-class DriverController {
+class DailyReportController {
     private $service;
     public function __construct() {
-        $this->service = new DriverService();
+        $this->service = new DailyReportServices();
 
         // Check if the request is an AJAX request
         if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
@@ -23,26 +23,31 @@ class DriverController {
         }
     }
 
-    private function createDriver() {
-        $driverImage = $_FILES['imageUpload'];
-        $name = $_POST['fullname'];
-        $mobile = $_POST['mobile'];
-        $subcompany = $_POST['subcompany'];
-        $mail = $_POST['email'];
-        $password = $_POST['password'];
-        $address = $_POST['address'];
-        $state = $_POST['state'];
-        $district = $_POST['district'];
-        $pincode = $_POST['pincode'];
-        $drivingLicence = $_FILES['driving-licence'];
-        $licenceNo = $_POST['driving-licence-no'];
-        $licenceExpiry = $_POST['licence-expiry'];
-        $aadharCard = $_FILES['aadhar-card'];
-        $aadharNo = $_POST['aadhar-no'];
-        $panCard = $_FILES['pan-card'];
-        $panNo = $_POST['pan-no'];
+    private function startTrip() {
 
-        echo json_encode($this->service->createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
+        $currentDate = date('Y-m-d');
+
+        date_default_timezone_set('Asia/Kolkata');
+        $currentTime = date('H:i:s');
+        
+        $checkin_km = $_POST['checkin_km'];
+
+        echo json_encode($this->service->startTrip($currentDate, $currentTime, $checkin_km));
+    }
+
+    private function endTrip() {
+
+        $checkin = $_POST['hidden_checkin_km'];
+        $checkout_km = $_POST['checkout_km'];
+
+        $total_km = $checkout_km - $checkin;
+
+        $currentDate = date('Y-m-d');
+
+        date_default_timezone_set('Asia/Kolkata');
+        $currentTime = date('H:i:s');
+        // echo $currentDate;
+        echo json_encode($this->service->endTrip($currentDate, $currentTime, $checkout_km, $total_km));
     }
 
     private function getDriver() {
@@ -58,10 +63,15 @@ class DriverController {
     }
 
     private function updateDriver() {
+
+        $companyId = $_SESSION['companyId'];
+        $cabCompanyId = $_SESSION['cabCompanyId'];
+        $driverId = $_SESSION['dirverId'];
+
         $driverId = $_POST['driver_id'];
         $name = $_POST['fullname'];
         $mobile = $_POST['mobile'];
-        $cabcompany = $_POST['cabcompany'];
+        $subcompany = $_POST['subcompany'];
         $password = $_POST['password'];
         $address = $_POST['address'];
         $state = $_POST['state'];
@@ -77,7 +87,7 @@ class DriverController {
         $aadharCard = $_FILES['aadhar_path'];
         $panCard = $_FILES['pan_path'];
 
-        echo json_encode($this->service->updateDriver($driverId, $driverImage, $name, $mobile, $cabcompany, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
+        echo json_encode($this->service->updateDriver($driverId, $driverImage, $name, $mobile, $subcompany, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
     
     }
 
@@ -91,4 +101,4 @@ class DriverController {
 
 }
 
-new DriverController();
+new DailyReportController();

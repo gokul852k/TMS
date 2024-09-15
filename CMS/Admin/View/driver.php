@@ -2,7 +2,6 @@
 require_once './header.php';
 require_once './navbar.php';
 
-$companies = ["Apple", "Google", "Microsoft", "Amazon"];
 ?>
 
 <link rel="stylesheet" href="../../../Common/Common file/card.css">
@@ -23,7 +22,7 @@ $companies = ["Apple", "Google", "Microsoft", "Amazon"];
                 <h4 class="heading">Driver Details</h4>
             </div>
             <div class="row-head-div-2">
-                <button class="button-1 head-button3" onclick="popupOpen('driver-add')"><i
+                <button class="button-1 head-button3" onclick="popupOpen('driver-add'); getCompany()"><i
                         class="fa-solid fa-user-plus"></i>Add Driver</button>
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
             </div>
@@ -196,7 +195,7 @@ $companies = ["Apple", "Google", "Microsoft", "Amazon"];
                                     </div>
                                     <div class="col-sm-4">
                                         <select class="input-field" name="subcompany" id="subcompany" required>
-                                            <option value="">Select Company</option>
+                                            <option value="">--Select Company--</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6">
@@ -324,8 +323,8 @@ $companies = ["Apple", "Google", "Microsoft", "Amazon"];
                                             <p class="info-content" id="d-v-mobile"></p>
                                         </div>
                                         <div class="infos">
-                                            <p class="info-heading">Sub Company</p>
-                                            <p class="info-content" id="d-v-subcompany"></p>
+                                            <p class="info-heading">Cab Company</p>
+                                            <p class="info-content" id="d-v-subcompany">-</p>
                                         </div>
                                     </div>
                                 </div>
@@ -561,9 +560,7 @@ $companies = ["Apple", "Google", "Microsoft", "Amazon"];
                                             </div>
                                             <div class="infos">
                                                 <p class="info-heading">Company Id</p>
-                                                <!-- <input type="text" class="input-field m-0" name="d-e-subcompany"
-                                                    id="d-e-subcompany" /> -->
-                                                <select class="input-field" name="d-e-subcompany" id="d-e-subcompany"
+                                                <select class="input-field" name="cabcompany" id="d-e-subcompany"
                                                     required>
                                                     <option value="">Select Company</option>
                                                 </select>
@@ -751,8 +748,8 @@ $companies = ["Apple", "Google", "Microsoft", "Amazon"];
 <script src="../../../Common/Common file/pop_up.js"></script>
 <script src="../../../Common/Common file/data_table.js"></script>
 <script src="../../../Common/Common file/main.js"></script>
-<script src="./js/driver.js"></script>
-<script src="./js/drivers_ajax.js"></script>
+<script src="./Js/driver.js"></script>
+<script src="./Js/drivers_ajax.js"></script>
 <?php
 require_once './footer.php';
 ?>

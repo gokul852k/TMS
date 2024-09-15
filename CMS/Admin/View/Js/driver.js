@@ -29,14 +29,3 @@ function licenceStatus(licenceExpiry) {
         return 'active';
     }
 }
-
-const companies = ["Apple", "Google", "Microsoft", "Amazon"];
-const select = document.getElementById('subcompany');
-
-companies.forEach(company => {
-    const option = document.createElement('option');
-    // option.value = company;
-    option.value = companies.indexOf(company)+1;
-    option.textContent = company;
-    select.appendChild(option);
-});

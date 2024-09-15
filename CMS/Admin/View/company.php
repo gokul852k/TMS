@@ -339,28 +339,28 @@ $companies = ["Apple", "Google", "Microsoft", "Amazon"];
                                         <div class="col-sm-6">
                                             <div class="infos">
                                                 <p class="info-heading">Company Name</p>
-                                                <input type="text" class="input-field m-0" name="address"
+                                                <input type="text" class="input-field m-0" name="company"
                                                     id="d-e-name" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="infos">
                                                 <p class="info-heading">GST Number</p>
-                                                <input type="text" class="input-field m-0" name="district"
+                                                <input type="text" class="input-field m-0" name="gstnum"
                                                     id="d-e-gstno" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="infos">
                                                 <p class="info-heading">Email</p>
-                                                <input type="text" class="input-field m-0" name="state"
+                                                <input type="text" class="input-field m-0" name="email"
                                                     id="d-e-mail" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="infos">
                                                 <p class="info-heading">Contact Number</p>
-                                                <input type="text" class="input-field m-0" name="pincode"
+                                                <input type="text" class="input-field m-0" name="mobile"
                                                     id="d-e-mobile" />
                                             </div>
                                         </div>
@@ -430,8 +430,8 @@ $companies = ["Apple", "Google", "Microsoft", "Amazon"];
 <script src="../../../Common/Common file/pop_up.js"></script>
 <script src="../../../Common/Common file/data_table.js"></script>
 <script src="../../../Common/Common file/main.js"></script>
-<script src="./js/driver.js"></script>
-<script src="./js/company_ajax.js"></script>
+<script src="./Js/driver.js"></script>
+<script src="./Js/company_ajax.js"></script>
 <?php
 require_once './footer.php';
 ?>

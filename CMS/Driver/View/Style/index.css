@@ -1,0 +1,44 @@
+
+.text{
+    margin-bottom: 2%;
+}
+.para {
+    padding: 10px 0;
+    color: gray;
+
+}
+
+.para span {
+    font-weight: 500;
+}
+
+/* For WebKit (Chrome, Safari) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.odometer {
+    width: 180px;
+}
+
+.img-div {
+    display: flex;
+    justify-content: center;
+}
+
+.work-done {
+    position: absolute;
+    top: 12%;
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: 500;
+    z-index: 1;
+    width: 100%;
+}

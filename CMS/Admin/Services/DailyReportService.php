@@ -1,10 +1,10 @@
 <?php
 
 require_once '../../config.php';
-require_once '../Models/CarModel.php';
+require_once '../Models/DailyReportModel.php';
 require_once '../Services/FileUpload.php';
 
-class CarService {
+class DailyReportService {
     private $modelCMS;
 
     private $modelA;
@@ -17,8 +17,8 @@ class CarService {
         }
         global $cmsDB;
         global $authenticationDB;
-        $this->modelCMS = new CarModel($cmsDB);
-        $this->modelA = new CarModel($authenticationDB);
+        $this->modelCMS = new DailyReportModel($cmsDB);
+        $this->modelA = new DailyReportModel($authenticationDB);
     }
 
     public function getFuelType() {
@@ -205,9 +205,9 @@ class CarService {
         ];
     }
 
-    public function getCares()
+    public function getDailyReports()
     {
-        $response = $this->modelCMS->getCares($_SESSION['companyId']);
+        $response = $this->modelCMS->getDailyReports($_SESSION['companyId']);
         if (!$response) {
             return [
                 'status' => 'no data',
@@ -252,8 +252,8 @@ class CarService {
         ];
     }
 
-    public function deletecar($carId) {
-        $currentData = $this->modelCMS->getCar($carId);
+    public function deletecar($busId) {
+        $currentData = $this->modelCMS->getCar($busId);
 
         if (!$currentData) {
             return [
@@ -274,7 +274,7 @@ class CarService {
             unlink($oldInsurance);
         }
 
-        $response = $this->modelCMS->deletecar($carId);
+        $response = $this->modelCMS->deleteBus($busId);
 
         if ($response) {
             return [

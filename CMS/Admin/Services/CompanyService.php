@@ -73,7 +73,7 @@ class CompanyService
             "pincode" => $pincode
         ];
 
-        $currentData = $this->modelCMS->getCompanyDetailss($$company_id);
+        $currentData = $this->modelCMS->getCompanyDetailss($company_id);
 
         if (!$currentData) {
             return [
@@ -180,7 +180,7 @@ class CompanyService
                 $update_values[":$field"] = $new_value;
             }
 
-            $update_values['id'] = $$company_id;
+            $update_values['id'] = $company_id;
 
             $final_response = $this->modelCMS->updateCompany($update_fields, $update_values);
 
@@ -207,7 +207,7 @@ class CompanyService
     }
 
     public function deleteDriver($company_id) {
-        $currentData = $this->modelCMS->getDriverDetails($company_id);
+        $currentData = $this->modelCMS->getCompanyDetailss($company_id);
 
         if (!$currentData) {
             return [
@@ -216,43 +216,8 @@ class CompanyService
                 'error' => 'Error while select driver data in driver table.'
             ];
         }
-        //Delete old file
-        $oldDriverImage = "../../Assets/User/" . $currentData['driver_image_path'];
-        if (file_exists($oldDriverImage) && is_file($oldDriverImage)) {
-            unlink($oldDriverImage);
-        }
 
-        //Delete old file
-        $oldDrivingLicence = "../../Assets/User/" . $currentData['licence_path'];
-        if (file_exists($oldDrivingLicence) && is_file($oldDrivingLicence)) {
-            unlink($oldDrivingLicence);
-        }
-
-        //Delete old file
-        $oldAadharCard = "../../Assets/User/" . $currentData['aadhar_path'];
-        if (file_exists($oldAadharCard) && is_file($oldAadharCard)) {
-            unlink($oldAadharCard);
-        }
-
-        //Delete old file
-        $oldPanCard = "../../Assets/User/" . $currentData['pan_path'];
-        if (file_exists($oldPanCard) && is_file($oldPanCard)) {
-            unlink($oldPanCard);
-        }
-        
-
-        //Delete drive from users table in Authentication DB
-        $response1 = $this->modelA->deleteUser($currentData['user_id']);
-
-        if (!$response1) {
-            return [
-                'status' => 'error',
-                'message' => 'Something went wrong while deleting the driver',
-                'error' => 'Error while delete driver data in users table in Authentication DB.'
-            ];
-        }
-
-        $response2 = $this->modelCMS->deleteDriver($$company_id);
+        $response2 = $this->modelCMS->deleteDriver($company_id);
 
         if ($response2) {
             return [

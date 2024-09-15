@@ -124,7 +124,7 @@ class CompanyModel {
     }
 
     public function setDriver($userId, $companyId, $name, $mobile, $subcompany, $mail, $address, $state, $district, $pincode, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path) {
-        $stmt = $this->db->prepare("INSERT INTO `cms_drivers` (`user_id`, `company_id`, `sub_company_id`, `fullname`, `mail`, `mobile`, `address`, `state`, `district`, `pincode`, `driver_image_path`, `licence_no`, `licence_expiry`, `licence_path`, `aadhar_no`, `aadhar_path`, `pan_no`, `pan_path`) VALUES (:userId, :companyId, :subcompany, :name, :mail, :mobile, :address, :state, :district, :pincode, :driverImage_path, :licenceNo, :licenceExpiry, :drivingLicence_path, :aadharNo, :aadharCard_path, :panNo, :panCard_path)");
+        $stmt = $this->db->prepare("INSERT INTO `cms_drivers` (`user_id`, `company_id`, `cab_company_id`, `fullname`, `mail`, `mobile`, `address`, `state`, `district`, `pincode`, `driver_image_path`, `licence_no`, `licence_expiry`, `licence_path`, `aadhar_no`, `aadhar_path`, `pan_no`, `pan_path`) VALUES (:userId, :companyId, :subcompany, :name, :mail, :mobile, :address, :state, :district, :pincode, :driverImage_path, :licenceNo, :licenceExpiry, :drivingLicence_path, :aadharNo, :aadharCard_path, :panNo, :panCard_path)");
         $stmt->bindParam("userId", $userId);
         $stmt->bindParam("companyId", $companyId);
         $stmt->bindParam("subcompany", $subcompany);
@@ -173,7 +173,7 @@ class CompanyModel {
     }
 
     function updateCompany($update_fields, $update_values) {
-        $sql = "UPDATE cms_drivers SET ". implode(", ", $update_fields) . " WHERE id = :id";
+        $sql = "UPDATE cms_cab_company SET ". implode(", ", $update_fields) . " WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         
         if ($stmt->execute($update_values)) {
@@ -184,7 +184,7 @@ class CompanyModel {
     }
 
     function deleteDriver($driverId) {
-        $stmt = $this->db->prepare("DELETE FROM `cms_drivers` WHERE `id`=:driverId");
+        $stmt = $this->db->prepare("DELETE FROM `cms_cab_company` WHERE `id`=:driverId");
         $stmt->bindParam("driverId", $driverId);
         return $stmt->execute();
     }
