@@ -1,0 +1,70 @@
+{
+    "car-id": "1",
+    "driver-name": "3",
+    "date": "2024-09-27",
+    "spare": {
+        "1": {
+            "'spareId'": "1",
+            "'spareQuantity'": "2",
+            "'sparePrice'": "44"
+        },
+        "2": {
+            "'spareId'": "1",
+            "'spareQuantity'": "33",
+            "'sparePrice'": "34"
+        }
+    },
+    "service_charge": "33",
+    "total_chargers": "222",
+    "action": "createMaintenanceReport"
+}
+
+{
+    "maintenance_report_id": "",
+    "car-id": "1",
+    "driver-name": "3",
+    "cabcompany": "1",
+    "date": "2024-09-05",
+    "spare": {
+        "1": {
+            "maintenance_report_sub_id": "",
+            "'spareId'": "1",
+            "'spareQuantity'": "4",
+            "'sparePrice'": "23"
+        },
+        "2": {
+            "'spareId'": "1",
+            "'spareQuantity'": "2",
+            "'sparePrice'": "22"
+        }
+    },
+    "service_charge": "23",
+    "total_chargers": "222",
+    "action": "createMaintenanceReport"
+}
+
+{
+    "status": "success",
+    "data": {
+        "maintenanceReportId": 3,
+        "carId": 1,
+        "car_number": "TN30CC7769",
+        "driverId": 12,
+        "fullname": "sundhara travels",
+        "cabcompanyId": 1,
+        "company_name": "Sampath Travels",
+        "maintenanceDate": "2024-10-18",
+        "serviceCharge": 500,
+        "totalCharge": "789",
+        "maintenanceBillUrl": "",
+        "spare": {
+            "1": {
+                "maintenance_report_sub_id": "3",
+                "spareId": "37",
+                "spare_name": "Pinion",
+                "spareQuantity": "4.00",
+                "sparePrice": "200.00"
+            }
+        }
+    }
+}

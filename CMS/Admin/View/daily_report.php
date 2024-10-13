@@ -15,8 +15,8 @@ require_once './navbar.php';
                 <h4 class="heading">Daily Report Details</h4>
             </div>
             <div class="row-head-div-2">
-                <!-- <button class="button-1 head-button3" onclick="popupOpen('car-add'); getFuelType()"><i
-                        class="fa-solid fa-car"></i>Add Car</button> -->
+                <button class="button-1 head-button3" onclick="popupOpen('car-add'); getFuelType()"><i
+                        class="fa-solid fa-car"></i>Add</button>
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
             </div>
         </div>
@@ -170,7 +170,7 @@ require_once './navbar.php';
                     </div>
                 </div>
             </div>
-            <div class="register-driver">
+            <!-- <div class="register-driver"> -->
                 <form enctype="multipart/form-data" id="car-form">
                     <div class="container box-container">
                         <div class="row">
@@ -255,7 +255,7 @@ require_once './navbar.php';
                             onclick="popupClose('car-add')">cancel</button>
                     </div>
                 </form>
-            </div>
+            <!-- </div> -->
         </div>
     </div>
 </div>
