@@ -66,7 +66,7 @@ function getMaintenanceReports() {
                             </button>
                                 <button class="table-btn edit" onclick="popupOpen('edit'); getMaintenanceReportEdit(`+ item.maintenance_report_id + `);"><i
                                                     class="fa-duotone fa-pen-to-square"></i></button>
-                                <button class="table-btn delete" onclick="deleteMaintenance(`+ item.maintenance_report_id +`)"><i class="fa-duotone fa-trash"></i></button>
+                                <button class="table-btn delete" onclick="deleteMaintenance(`+ item.maintenance_report_id + `)"><i class="fa-duotone fa-trash"></i></button>
                             </div>
                         </td>`
                     '</tr>';
@@ -134,7 +134,7 @@ function getMaintenanceReportDetails(maintenance_report_id) {
 
 
 async function getDetails() {
-    alert("getEditDetails");
+    // alert("getEditDetails");
     if (!cars) {
         await carsAjax();
     }
@@ -208,7 +208,8 @@ $(document).ready(function () {
                 popupClose("progress-loader");
                 let data = JSON.parse(response);
                 if (data.status === 'success') {
-                    alert('Success');
+                    getMaintenanceReports();
+                    // alert('Success');
                     Swal.fire({
                         title: "Success",
                         text: data.message,
@@ -355,7 +356,7 @@ function getMaintenanceReportEdit(maintenance_report_id) {
                 });
             }
         },
-        error: function (xhr, status, error) {
+       error: function (xhr, status, error) {
             popupClose('bus-view');
             console.error(xhr.responseText);
             Swal.fire({
@@ -397,7 +398,7 @@ $(document).ready(function () {
                 popupClose("progress-loader");
                 let data = JSON.parse(response);
                 if (data.status === 'success') {
-                    getDailyReports();
+                    getMaintenanceReports()();
                     Swal.fire({
                         title: "Success",
                         text: data.message,
@@ -459,8 +460,9 @@ function deleteMaintenance(maintenance_report_id, carId, maintenanceDate) {
                 success: function (response) {
                     console.log(response);
                     popupClose("progress-loader");
-                    let data = JSON.parse(response);
+                    let data = response;
                     if (data.status === 'success') {
+                        getMaintenanceReports();
                         Swal.fire({
                             title: "Success",
                             text: data.message,
@@ -493,3 +495,137 @@ function deleteMaintenance(maintenance_report_id, carId, maintenanceDate) {
         }
     });
 }
+
+function unSelect() {
+    document.querySelectorAll('[name="days"]').forEach(function (radio) {
+        radio.checked = false;
+    });
+}
+
+function uncheck() {
+    document.querySelector('input[name="filter-from-date"]').value = '';
+    document.querySelector('input[name="filter-to-date"]').value = '';
+}
+
+$(document).ready(function () {
+    $('#filter-form').on('submit', function (e) {
+        e.preventDefault();
+        //Calling progress bar
+        popupOpen("progress-loader");
+        let array = [["Applying filter..", 4000], ["please wait a moment..", 4000], ["Uploading fuel bill..", 4000]];
+        progressLoader(array);
+        var formData = new FormData(this);
+        formData.append('orderBy', 'ASC');
+        formData.append('action', 'applyFilter');
+
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/MaintenanceReportController.php',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log(response);
+                popupClose("progress-loader");
+                let data = JSON.parse(response);
+                if (data.status === 'success') {
+
+                    //Card
+                    let maintenanceDetails = data.cardCount;
+                    document.getElementById("total-amount").innerHTML = maintenanceDetails.total_charge;
+                    document.getElementById("total-services").innerHTML = maintenanceDetails.total_services;
+                    document.getElementById("avg-service-charge").innerHTML = maintenanceDetails.avg_service_charge;
+                    // document.getElementById("c-collection").innerHTML = cardDetails.collection;
+                    // document.getElementById("c-expense").innerHTML = cardDetails.expenses;
+                    // document.getElementById("c-fuel-amount").innerHTML = cardDetails.fuelAmount;
+                    // document.getElementById("c-salary").innerHTML = cardDetails.salary;
+                    // document.getElementById("c-commission").innerHTML = cardDetails.commission;
+                    // document.getElementById("c-loss").innerHTML = cardDetails.loss;
+                    // document.getElementById("c-profit").innerHTML = cardDetails.profit;
+
+
+                    // Assuming DataTables is already initialized on '#daily-report-table'
+                    let table = $('#maintenance-report-table').DataTable(); // Initialize the DataTable
+
+                    // Clear the DataTable
+                    table.clear();
+
+                    // Daily Report Data
+                    let reports = data.dailyReport;
+
+                    // Iterate over reports and add rows to the DataTable
+                    $.each(reports, function (index, report) {
+                        let row = [
+                            index + 1, // Add index
+                            report.car_number,
+                            report.fullname,
+                            report.maintenance_date,
+                            report.total_charge,
+                            // report.avgMilage,
+                            // report.passenger,
+                            // report.collection,
+                            // report.expenses,
+                            // report.fuelAmount,
+                            // report.salary,
+                            // report.commission,
+                            // report.profit,
+                            // `<div class="th-btn">
+                            //     <button class="table-btn view" onclick="popupOpen('view'); getMaintenanceReportDetails(${item.maintenance_report_id});" title="View">
+                            //         <i class="fa-duotone fa-eye"></i>
+                            //     </button>
+                            //     <button class="table-btn edit" onclick="popupOpen('edit'); getMaintenanceReportEdit(`+ item.maintenance_report_id + `); title="Edit">
+                            //         <i class="fa-duotone fa-pen-to-square"></i>
+                            //     </button>
+                            //     <button class="table-btn delete" onclick="deleteMaintenance(`+ item.maintenance_report_id + `)" title="Delete">
+                            //         <i class="fa-duotone fa-trash"></i>
+                            //     </button>
+                            // </div>`
+
+                            `<div class="th-btn">
+                                <button class="table-btn view" onclick="popupOpen('view'); getDailyReportDetails(${report.reportId});" title="View">
+                                    <i class="fa-duotone fa-eye"></i>
+                                </button>
+                                <button class="table-btn edit" onclick="popupOpen('edit'); getDailyReportForEdit(${report.reportId});" title="Edit">
+                                    <i class="fa-duotone fa-pen-to-square"></i>
+                                </button>
+                                <button class="table-btn delete" onclick="deleteBus(${report.reportId}, '${report.busNumber}')" title="Delete">
+                                    <i class="fa-duotone fa-trash"></i>
+                                </button>
+                            </div>`
+                        ];
+
+                        
+
+                        // Add the new row to the DataTable
+                        table.row.add(row);
+                    });
+
+                    // Redraw the DataTable to show the new data
+                    table.draw();
+
+                }
+                else if (data.status === 'error') {
+                    Swal.fire({
+                        title: "Oops!",
+                        text: data.message,
+                        icon: "error"
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Oops!",
+                        text: data.message,
+                        icon: "error"
+                    });
+                }
+            },
+            error: function (response) {
+                console.error(xhr.responseText);
+                Swal.fire({
+                    title: "Oops!",
+                    text: "Something went wrong! Please try again.",
+                    icon: "error"
+                });
+            }
+        });
+    });
+});

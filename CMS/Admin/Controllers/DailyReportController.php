@@ -27,20 +27,19 @@ class DailyReportController {
         echo json_encode($this->dailyReoprtService->getFuelType());
     }
 
-    private function createCar() {
-        $carNumber = $_POST['car-number'];
-        $carModel = $_POST['car-model'];
-        $seatingCapacity = $_POST['seating-capacity'];
-        $fuelType = $_POST['fuel-type'];
-        $carStatus = $_POST['car-status'];
-        $rcBookNumber = $_POST['rc-book-number'];
-        $insuranceNumber = $_POST['insurance-number'];
-        $rcBookExpiry = $_POST['rc-book-expiry'];
-        $insuranceExpiry = $_POST['insurance-expiry'];
-        $rcBook = $_FILES['rc-book'];
-        $insurance = $_FILES['insurance'];
+    private function createDailyReport() {
+        $carNumber = $_POST['car-id'];
+        $driverName = $_POST['driver-name'];
+        $cabCompany = $_POST['cabcompany'];
+        $date = $_POST['date'];
+        $startKM = $_POST['st-km'];
+        $startDate = $_POST['st-date'];
+        $startTime = $_POST['st-time'];
+        $endKM = $_POST['ed-km'];
+        $endDate = $_POST['ed-date'];
+        $endTime = $_POST['ed-time'];
 
-        echo json_encode($this->dailyReoprtService->createCar($carNumber, $carModel, $seatingCapacity, $fuelType, $carStatus, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook, $insurance));
+        echo json_encode($this->dailyReoprtService->createDailyReport($carNumber, $driverName, $cabCompany, $date, $startKM, $startDate, $startTime, $endKM, $endDate, $endTime));
     }
 
     private function getCarCardDetails() {
@@ -56,21 +55,20 @@ class DailyReportController {
     }
 
     private function updateCar() {
-        $carId = $_POST['car_id'];
-        $carNumber = $_POST['car_number'];
-        $carModel = $_POST['car_model'];
-        $seatingCapacity = $_POST['seating_capacity'];
-        $fuelTypeId = $_POST['fuel_type_id'];
-        $carStatus = $_POST['car_status'];
-        $rcbookNo = $_POST['rcbook_no'];
-        $insuranceNo = $_POST['insurance_no'];
-        $rcbookExpiry = $_POST['rcbook_expiry'];
-        $insuranceExpiry = $_POST['insurance_expiry'];
+        $dailyReportId = $_POST['daily_id'];
+        $carNumber = $_POST['car-id'];
+        $driverName = $_POST['driver-name'];
+        $cabCompany = $_POST['cabcompany'];
+        echo $_POST['cabcompany'];
+        $date = $_POST['date'];
+        $startKM = $_POST['st-km'];
+        $startDate = $_POST['st-date'];
+        $startTime = $_POST['st-time'];
+        $endKM = $_POST['ed-km'];
+        $endDate = $_POST['ed-date'];
+        $endTime = $_POST['ed-time'];
 
-        $rcBook = $_FILES['rcbook_path'];
-        $insurance = $_FILES['insurance_path'];
-
-        echo json_encode($this->dailyReoprtService->updateCar($carId, $carNumber, $carModel, $seatingCapacity, $fuelTypeId, $carStatus, $rcbookNo, $insuranceNo, $rcbookExpiry, $insuranceExpiry, $rcBook, $insurance));
+        echo json_encode($this->dailyReoprtService->updateCar($dailyReportId,$carNumber, $driverName, $cabCompany, $date, $startKM, $startDate, $startTime, $endKM, $endDate, $endTime));
     
     }
 

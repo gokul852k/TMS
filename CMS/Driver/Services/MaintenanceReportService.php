@@ -3,7 +3,7 @@
 require_once '../../config.php';
 require_once '../Models/MaintenanceReportModel.php';
 require_once '../Services/FileUpload.php';
-require_once '../Services/ChartService.php';
+// require_once '../Services/ChartService.php';
 
 class MaintenanceReportService
 {
@@ -40,12 +40,29 @@ class MaintenanceReportService
         ];
     }
 
+    public function getCars()
+    {
+        $response = $this->modelCMS->getCars($_SESSION['companyId']);
+        // print_r($response);
+        if (!$response) {
+            return [
+                'status' => 'no data',
+                'message' => 'No data found'
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'data' => $response
+        ];
+    }
+
     public function createMaintenanceReport($postData, $postImage)
     {
 
         $carId = $postData['car-id'];
-        $driverId = $postData['driver-name'];
-        $cabcompany = $postData['cabcompany'];
+        $driverId = $_SESSION['dirverId'];
+        $cabcompany = $_SESSION['cabCompanyId'];
         $date = $postData['date'];
         $serviceCharge = $postData['service_charge'];
         $totalCharges = $postData['total_chargers'];
@@ -66,9 +83,9 @@ class MaintenanceReportService
 
         if ($setMaintenanceReport['status'] == 'error') {
             return [
-                'status' => 'error',
-                'message' => 'Something went wrong while add the daily report',
-                'error' => 'Error while set daily report in daily report table.'
+                'status' => 'errorMain',
+                'message' => 'Something went wrong while add the Maintenance Report',
+                'error' => 'Error while set Maintenance Report in Maintenance Report table.'
             ];
         }
 
@@ -86,8 +103,8 @@ class MaintenanceReportService
 
                 if ($setShift["status"] == "error") {
                     return [
-                        'status' => 'error',
-                        'message' => 'Something went wrong while add the daily report',
+                        'status' => 'errorSub',
+                        'message' => 'Something went wrong while add the Spare Part',
                         'error' => 'Error while set spare in spare table.'
                     ];
                 }
@@ -97,7 +114,7 @@ class MaintenanceReportService
 
         return [
             'status' => 'success',
-            'message' => 'Daily Report Added Successfully.'
+            'message' => 'Maintenance Added Successfully.'
         ];
     }
 
@@ -240,22 +257,6 @@ class MaintenanceReportService
         ];
     }
 
-    public function getCars()
-    {
-        $response = $this->modelCMS->getCars($_SESSION['companyId']);
-        if (!$response) {
-            return [
-                'status' => 'no data',
-                'message' => 'No data found'
-            ];
-        }
-
-        return [
-            'status' => 'success',
-            'data' => $response
-        ];
-    }
-
     public function getSpareParts()
     {
         $response = $this->modelCMS->getSpareParts($_SESSION['languageCode']);
@@ -274,7 +275,7 @@ class MaintenanceReportService
     // $_SESSION['languageCode']
     public function getDriverName()
     {
-        $response = $this->modelCMS->getDriverName($_SESSION['companyId']);
+        $response = $this->modelCMS->getDriverName();
         if (!$response) {
             return [
                 'status' => 'no data',

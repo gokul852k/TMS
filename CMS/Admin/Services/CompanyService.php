@@ -40,7 +40,7 @@ class CompanyService
 
         //Insert Driver details in drivers table in Cms DB
 
-        $response3 = $this->modelCMS->setCompany($company, $gstnum, $mobile, $email, $address, $state, $district, $pincode);
+        $response3 = $this->modelCMS->setCompany($_SESSION['companyId'],$company, $gstnum, $mobile, $email, $address, $state, $district, $pincode);
 
         if (!$response3) {
             //Delete the user from users table
@@ -285,8 +285,8 @@ class CompanyService
 
     public function getCompanys()
     {
-        // $response = $this->modelCMS->getCompanyDetails($_SESSION['companyId']);
-        $response = $this->modelCMS->getCompanyDetails();
+        $response = $this->modelCMS->getCompanyDetails($_SESSION['companyId']);
+        // $response = $this->modelCMS->getCompanyDetails();
         if (!$response) {
             return [
                 'status' => 'no data',

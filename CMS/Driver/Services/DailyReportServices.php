@@ -596,4 +596,29 @@ class DailyReportServices
             ];
         }
     }
+
+    public function getTranslationsLabels($pageId) {
+        $response = $this->modelCMS->getTranslationsLabels($pageId, $_SESSION['languageCode']);
+        // print_r ($response);
+        if ($response) {
+            return $response;
+        } else {
+            return null;
+        }
+    }
+
+    public function getTranslationsLabels2($pageId) {
+        $response = $this->modelCMS->getTranslationsLabels($pageId, $_SESSION['languageCode']);
+        if ($response) {
+            return [
+                'status' => 'success',
+                'data' => $response
+            ];
+        } else {
+            return [
+                'status' => 'error'
+            ];
+        }
+    }
+
 }

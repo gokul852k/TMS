@@ -1,5 +1,10 @@
 <?php
 
+// $servername1 = "localhost"; // or your server IP address
+// $username1 = "u632564128_cms";
+// $password1 = "L@6dPP*:g";
+// $database1 = "u632564128_cms";
+
 $servername1 = "localhost"; // or your server IP address
 $username1 = "root";
 $password1 = "";
@@ -17,6 +22,11 @@ try {
     echo "Connection failed: " . $e->getMessage();
 }
 
+// $servername2 = "localhost";
+// $username2 = "u632564128_master_admin";
+// $password2 = "UVyW+Wp/5";
+// $database2 = "u632564128_master_admin";
+
 $servername2 = "localhost"; // or your server IP address
 $username2 = "root";
 $password2 = "";
@@ -33,6 +43,11 @@ try {
     // Connection failed
     echo "Connection failed: " . $e->getMessage();
 }
+
+// $servername3 = "localhost";
+// $username3 = "u632564128_authentication";
+// $password3 = "e~/]JD/4L";
+// $database3 = "u632564128_authentication";
 
 $servername3 = "localhost"; // or your server IP address
 $username3 = "root";

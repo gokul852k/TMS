@@ -177,8 +177,6 @@ require_once '../Services/MaintenanceReportService.php';
                     <div>
                         <div class="row p-20">
 
-
-
                             <div class="col-sm-4">
                                 <label for="" class="input-label">Car No</label>
                                 <select class="input-field" name="car-id" id="car-no" required>
@@ -397,54 +395,61 @@ require_once '../Services/MaintenanceReportService.php';
                     </button>
                 </div>
                 <div class="admin-modal-body">
-                    <div class="row p-20">
+                    <div class="row">
+                        <div class="col-sm-12 filter-btn-list">
+                            <div class="btn_check">
+                                <input type="radio" id="check1" name="days" value="1" onchange="uncheck()">
+                                <label class="btn btn-default" for="check1">Today</label>
+                            </div>
+                            <div class="btn_check">
+                                <input type="radio" id="check2" name="days" value="7" onchange="uncheck()">
+                                <label class="btn btn-default" for="check2">Last 7 Days</label>
+                            </div>
+                            <div class="btn_check">
+                                <input type="radio" id="check3" name="days" value="30" onchange="uncheck()">
+                                <label class="btn btn-default" for="check3">Last 30 Days</label>
+                            </div>
+                        </div>
+
                         <div class="col-sm-12">
                             <label for="" class="input-label">Date</label>
-                            <div class="form-group filter-date">
+                            <div class="form-group filter-date m-b-20" onchange="unSelect()">
                                 <span>From</span>
                                 <input type="date" name="filter-from-date" class="form-field">
                             </div>
-                            <div class="form-group filter-date">
+                            <div class="form-group filter-date m-b-20" onchange="unSelect()">
                                 <input type="date" name="filter-to-date" class="form-field">
                                 <span>To</span>
                             </div>
                         </div>
-                        <div class="selectpicker-row p-0">
-                            <div class="col-sm-12 search-select-1">
-                                <label for="" class="input-label">Car No</label>
-                                <select class="selectpicker input-field" data-show-subtext="true"
-                                    data-live-search="true" name="filter-car" id="filter-car">
 
-                                </select>
-                            </div>
+                        <div class="col-sm-12 search-select-1">
+                            <label for="" class="input-label">Car No</label>
+                            <select class="input-field" name="filter-car" id="filter-car">
+
+                            </select>
                         </div>
-                        <div class="selectpicker-row p-0">
-                            <div class="col-sm-12 search-select-1">
-                                <label for="" class="input-label">Spare Part</label>
-                                <select class="selectpicker input-field" data-show-subtext="true"
-                                    data-live-search="true" name="spare-part-filter" id="spare-part-filter">
+                        <div class="col-sm-12 search-select-1">
+                            <label for="" class="input-label">Driver</label>
+                            <select class="input-field" name="filter-driver" id="filter-driver">
 
-                                </select>
-                            </div>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 search-select-1">
+                            <label for="" class="input-label">Spare</label>
+                            <select class="input-field" name="filter-spare" id="filter-spare">
+
+                            </select>
                         </div>
 
-                        <div class="selectpicker-row p-0">
-                            <div class="col-sm-12 search-select-1">
-                                <label for="" class="input-label">Driver</label>
-                                <select class="selectpicker input-field" data-show-subtext="true"
-                                    data-live-search="true" name="driver-filter" id="driver-filter">
-
-                                </select>
-                            </div>
-                        </div>
                         <div class="col-sm-12">
-                            <label for="" class="input-label">Fuel Cost Range</label>
-                            <div class="form-group filter-date">
+                            <label for="" class="input-label">Total Charges</label>
+                            <div class="form-group filter-date m-b-20">
                                 <span>From</span>
-                                <input type="number" name="filter-fuel-cost-from" class="form-field">
+                                <input type="number" name="filter-charges-from" class="form-field">
                             </div>
-                            <div class="form-group filter-date">
-                                <input type="number" name="filter-fuel-cost-to" class="form-field">
+                            <div class="form-group filter-date m-b-20">
+                                <input type="number" name="filter-charges-to" class="form-field">
                                 <span>To</span>
                             </div>
                         </div>

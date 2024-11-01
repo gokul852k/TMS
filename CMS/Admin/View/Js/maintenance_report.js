@@ -502,9 +502,11 @@ async function getDetails() {
     // Add default "Select Car" option
     select.append('<option value="" selected>Select Car</option>');
 
-    cars.forEach((car) => {
-        select.append('<option value="' + car.id + '">' + car.car_number + '</option>');
-    });
+    if(cars != undefined){
+        cars.forEach((car) => {
+            select.append('<option value="' + car.id + '">' + car.car_number + '</option>');
+        });
+    }
 
     //Spare parts
     if (!sparePart) {
@@ -516,9 +518,11 @@ async function getDetails() {
     // Add default "Select Spare" option
     sparePartSelect = '<option value="" selected>Select Spare</option>';
 
-    sparePart.forEach((spar_part) => {
-        sparePartSelect += '<option value="' + spar_part.spare_part_id + '">' + spar_part.spare_part_name + '</option>';
-    });
+    if(sparePart != undefined){
+        sparePart.forEach((spar_part) => {
+            sparePartSelect += '<option value="' + spar_part.spare_part_id + '">' + spar_part.spare_part_name + '</option>';
+        });
+    }
 
     select2.append(sparePartSelect);
 
@@ -532,9 +536,11 @@ async function getDetails() {
     // Add default "Select Spare" option
     select3.append('<option value="" selected>Select Driver</option>');
 
-    driver_opt.forEach((driver_options) => {
-        select3.append('<option value="' + driver_options.id + '">' + driver_options.fullName + '</option>');
-    });
+    if(driver_opt != undefined){
+        driver_opt.forEach((driver_options) => {
+            select3.append('<option value="' + driver_options.id + '">' + driver_options.fullName + '</option>');
+        });
+    }
 
     // Company
     if (!company) {
@@ -544,9 +550,11 @@ async function getDetails() {
     select4.empty();
     select4.append('<option value="" disabled selected>Select Company</option>');
 
-    companyss.forEach(companys => {
-        select4.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
-    });
+    if(companyss != undefined){
+        companyss.forEach(companys => {
+            select4.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
+        });
+    }
 
 }
 
@@ -565,10 +573,9 @@ function sparePartAjax() {
                 console.log(response);
                 if (response.status === 'success') {
                     sparePart = response.data;
-                    resolve();
-                } else {
-                    reject();
+                    
                 }
+                resolve();
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
@@ -599,10 +606,9 @@ function driverAjax() {
                 console.log(response);
                 if (response.status === 'success') {
                     driver_opt = response.data;
-                    resolve();
-                } else {
-                    reject();
-                }
+                   
+                } 
+                resolve();
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
@@ -633,10 +639,9 @@ function conductorAjax() {
                 console.log(response);
                 if (response.status === 'success') {
                     conductors = response.data;
-                    resolve();
-                } else {
-                    reject();
+                    
                 }
+                resolve();
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
@@ -667,10 +672,9 @@ function carsAjax() {
                 console.log(response);
                 if (response.status === 'success') {
                     cars = response.data;
-                    resolve();
-                } else {
-                    reject();
+                    
                 }
+                resolve();
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
@@ -700,10 +704,9 @@ function routeAjax() {
                 console.log(response);
                 if (response.status === 'success') {
                     routes = response.data;
-                    resolve();
-                } else {
-                    reject();
+                    
                 }
+                resolve();
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
@@ -734,10 +737,9 @@ function companyAjax() {
                 console.log(response);
                 if (response.status === 'success') {
                     companyss = response.data;
-                    resolve();
-                } else {
-                    reject();
+                    
                 }
+                resolve();
             },
             error: function (xhr, status, error) {
                 popupClose('driver-view');
@@ -761,20 +763,7 @@ let carFilter;
 //Get Field for Filter
 async function getFilterField() {
 
-    if (!sparePartFilter) {
-        await sparePartAjax();
-    }
-    let select1 = $('#spare-part-filter');
-    select1.empty();  // Clear existing options
-
-    // Add default "Select Spare" option
-    sparePartSelect = '<option value="" selected>Select Spare</option>';
-
-    sparePart.forEach((spar_part) => {
-        sparePartSelect += '<option value="' + spar_part.spare_part_id + '">' + spar_part.spare_part_name + '</option>';
-    });
-
-    if (!carFilter) {
+    if (!cars) {
         await carsAjax();
     }
 
@@ -783,23 +772,57 @@ async function getFilterField() {
 
     // Add default "Select Car" option
     select.append('<option value="" selected>Select Car</option>');
+    if(cars != undefined){    
+        cars.forEach((car) => {
+            select.append('<option value="' + car.id + '">' + car.car_number + '</option>');
+        });
+    }
 
-    carFilter.forEach((car) => {
-        select.append('<option value="' + car.id + '">' + car.car_number + '</option>');
-    });
+    //Spare parts
+    if (!sparePart) {
+        await sparePartAjax();
+    }
+    let select2 = $('#filter-spare');
+    select2.empty();  // Clear existing options
 
-    if (!driverFilter) {
+    // Add default "Select Spare" option
+    sparePartSelect = '<option value="" selected>Select Spare</option>';
+
+    if(sparePart != undefined){
+        sparePart.forEach((spar_part) => {
+            sparePartSelect += '<option value="' + spar_part.spare_part_id + '">' + spar_part.spare_part_name + '</option>';
+        });
+    }
+
+    select2.append(sparePartSelect);
+
+    //Spare parts
+    if (!drivers) {
         await driverAjax();
     }
-    let select3 = $('#driver-filter');
+    let select3 = $('#filter-driver');
     select3.empty();  // Clear existing options
 
     // Add default "Select Spare" option
     select3.append('<option value="" selected>Select Driver</option>');
 
-    driver_opt.forEach((driver_options) => {
-        select3.append('<option value="' + driver_options.id + '">' + driver_options.fullName + '</option>');
-    });
+    if(driver_opt != undefined){
+        driver_opt.forEach((driver_options) => {
+            select3.append('<option value="' + driver_options.id + '">' + driver_options.fullName + '</option>');
+        });
+    }
+
+    // Company
+    // if (!company) {
+    //     await companyAjax();
+    // }
+    // let select4 = $('#cabcompany');
+    // select4.empty();
+    // select4.append('<option value="" disabled selected>Select Company</option>');
+
+    // companyss.forEach(companys => {
+    //     select4.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
+    // });
 
 }
 
@@ -896,6 +919,11 @@ async function displayEdit(data) {
 
     // Select the label element by ID
     var label = document.getElementById('icon_upload');
+
+    var existingIconLink = label.querySelector('.icon-link');
+    if (existingIconLink) {
+        label.removeChild(existingIconLink);
+    }
 
     // Check if the variable has a value
     if (variableValue) {

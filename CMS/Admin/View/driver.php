@@ -22,7 +22,7 @@ require_once './navbar.php';
                 <h4 class="heading">Driver Details</h4>
             </div>
             <div class="row-head-div-2">
-                <button class="button-1 head-button3" onclick="popupOpen('driver-add'); getCompany()"><i
+                <button class="button-1 head-button3" onclick="popupOpen('driver-add'); getCompanyAndLang()"><i
                         class="fa-solid fa-user-plus"></i>Add Driver</button>
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
             </div>
@@ -195,7 +195,7 @@ require_once './navbar.php';
                                     </div>
                                     <div class="col-sm-4">
                                         <select class="input-field" name="subcompany" id="subcompany" required>
-                                            <option value="">--Select Company--</option>
+                                            <option value="">Select Company</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-6">
@@ -215,14 +215,19 @@ require_once './navbar.php';
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="text" class="input-field" name="state" placeholder="State" />
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="text" class="input-field" name="district" placeholder="District" />
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 <input type="number" class="input-field" name="pincode" placeholder="Pin Code" />
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="input-field" name="language" id="language" placeholder="language" required>
+                                    
+                                </select>
                             </div>
                         </div>
 
@@ -563,6 +568,13 @@ require_once './navbar.php';
                                                 <select class="input-field" name="cabcompany" id="d-e-subcompany"
                                                     required>
                                                     <option value="">Select Company</option>
+                                                </select>
+                                            </div>
+                                            <div class="infos">
+                                                <p class="info-heading">Language</p>
+                                                <select class="input-field" name="language" id="d-e-language"
+                                                    required>
+                                                    <option value="">Select Language</option>
                                                 </select>
                                             </div>
                                             <div class="infos">

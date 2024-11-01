@@ -34,6 +34,7 @@ class DriverController {
         $state = $_POST['state'];
         $district = $_POST['district'];
         $pincode = $_POST['pincode'];
+        $language = $_POST['language'];
         $drivingLicence = $_FILES['driving-licence'];
         $licenceNo = $_POST['driving-licence-no'];
         $licenceExpiry = $_POST['licence-expiry'];
@@ -42,7 +43,7 @@ class DriverController {
         $panCard = $_FILES['pan-card'];
         $panNo = $_POST['pan-no'];
 
-        echo json_encode($this->service->createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
+        echo json_encode($this->service->createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $address, $state, $district, $pincode, $language, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
     }
 
     private function getDriver() {
@@ -67,6 +68,7 @@ class DriverController {
         $state = $_POST['state'];
         $district = $_POST['district'];
         $pincode = $_POST['pincode'];
+        $language = $_POST['language'];
         $licenceNo = $_POST['licence_no'];
         $licenceExpiry = $_POST['licence_expiry'];
         $aadharNo = $_POST['aadhar_no'];
@@ -77,7 +79,7 @@ class DriverController {
         $aadharCard = $_FILES['aadhar_path'];
         $panCard = $_FILES['pan_path'];
 
-        echo json_encode($this->service->updateDriver($driverId, $driverImage, $name, $mobile, $cabcompany, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
+        echo json_encode($this->service->updateDriver($driverId, $driverImage, $name, $mobile, $cabcompany, $password, $address, $state, $district, $pincode, $language, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
     
     }
 
@@ -87,6 +89,10 @@ class DriverController {
 
     private function getCompany() {
         echo json_encode($this->service->getCompany());
+    }
+
+    private function getLanguage() {
+        echo json_encode($this->service->getLanguage());
     }
 
 }

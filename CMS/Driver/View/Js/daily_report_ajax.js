@@ -1,3 +1,38 @@
+// Get translations labels
+let tlabels;
+getTranslations();
+function getTranslations () {
+    var formData2 = {
+        action: 'getTranslations',
+        pageId: 2
+    }
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/DailyReportController.php',
+        data: formData2,
+        dataType: 'json',
+        success: function (response) {
+            if (response.status == "success") {
+                tlabels = response.data;
+                console.log(tlabels);
+            }else {
+                tlabels = [
+                    {"translation": "Something went wrong while Starting Duty"},    // 0
+                    {"translation": "Duty Started Successfully"},                   // 1
+                    {"translation": "Something went wrong while Ending Duty"},      // 2
+                    {"translation": "Duty Ended Successfully"},                     // 3
+                    {"translation": "Please enter the correct Reading"},            // 4
+                    {"translation": "Oops!"},                                       // 5
+                    {"translation": "Success"},                                     // 6
+                    {"translation": "Something went wrong! Please try again."},     // 7
+                    {"translation": "Alert"}                                        // 8
+                ]
+            }
+            
+        }
+    });
+}
+
 // Start Trip
 
 $(document).ready(function () {
@@ -36,8 +71,8 @@ $(document).ready(function () {
                 let data = JSON.parse(response);
                 if (data.status === 'success') {
                     Swal.fire({
-                        title: "Success",
-                        text: data.message,
+                        title: tlabels[6]['translation'],
+                        text: tlabels[1]['translation'],
                         icon: "success",
                         timer: 6000,
                         timerProgressBar: true
@@ -50,14 +85,14 @@ $(document).ready(function () {
                 }
                 else if (data.status === 'error') {
                     Swal.fire({
-                        title: "Oops!",
-                        text: data.message,
+                        title: tlabels[5]['translation'],
+                        text: tlabels[0]['translation'],
                         icon: "error"
                     });
                 } else {
                     Swal.fire({
-                        title: "Oops!",
-                        text: data.message,
+                        title: tlabels[5]['translation'],
+                        text: tlabels[0]['translation'],
                         icon: "error"
                     });
                 }
@@ -65,8 +100,8 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
                 Swal.fire({
-                    title: "Oops!",
-                    text: "Something went wrong! Please try again.",
+                    title: tlabels[5]['translation'],
+                    text: tlabels[7]['translation'],
                     icon: "error"
                 });
             }
@@ -114,8 +149,8 @@ $(document).ready(function () {
                     let data = JSON.parse(response);
                     if (data.status === 'success') {
                         Swal.fire({
-                            title: "Success",
-                            text: data.message,
+                            title: tlabels[6]['translation'],
+                            text: tlabels[3]['translation'],
                             icon: "success",
                             timer: 6000,
                             timerProgressBar: true
@@ -128,14 +163,14 @@ $(document).ready(function () {
                     }
                     else if (data.status === 'error') {
                         Swal.fire({
-                            title: "Oops!",
-                            text: data.message,
+                            title: tlabels[5]['translation'],
+                            text: tlabels[2]['translation'],
                             icon: "error"
                         });
                     } else {
                         Swal.fire({
-                            title: "Oops!",
-                            text: data.message,
+                            title: tlabels[5]['translation'],
+                            text: tlabels[2]['translation'],
                             icon: "error"
                         });
                     }
@@ -143,16 +178,16 @@ $(document).ready(function () {
                 error: function (xhr, status, error) {
                     console.error(xhr.responseText);
                     Swal.fire({
-                        title: "Oops!",
-                        text: "Something went wrong! Please try again.",
+                        title: tlabels[5]['translation'],
+                        text: tlabels[7]['translation'],
                         icon: "error"
                     });
                 }
             });
         } else {
             Swal.fire({
-                title: "Alert",
-                text: "Please enter the correct Reading",
+                title: tlabels[8]['translation'],
+                text: tlabels[4]['translation'],
                 icon: "warning",
                 timer: 6000,
                 timerProgressBar: true

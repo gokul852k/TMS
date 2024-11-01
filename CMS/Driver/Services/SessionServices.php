@@ -85,6 +85,9 @@ class SessionServices {
         // Delete the remember me cookie
         setcookie('remember_me_tms_user', '', time() - 3600, '/', 'localhost', false, true);
 
+        //For Server
+        // setcookie('remember_me_tms_user', '', time() - 3600, '/', false, true);
+
         return [
             "status" => "success"
         ];

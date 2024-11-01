@@ -233,11 +233,10 @@ class MaintenanceReportModel
         }
     }
 
-    public function getDriverName($companyId)
+    public function getDriverName()
     {
         $isActive = true;
-        $stmt = $this->db->prepare("SELECT id, fullName FROM cms_drivers WHERE company_id=:companyId AND is_active = :isActive");
-        $stmt->bindParam("companyId", $companyId);
+        $stmt = $this->db->prepare("SELECT id, fullName FROM cms_drivers WHERE is_active = :isActive");
         $stmt->bindParam("isActive", $isActive);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

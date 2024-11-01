@@ -1,5 +1,9 @@
 <?php
 
+error_reporting(E_ALL);
+error_reporting(-1);
+ini_set('error_reporting', E_ALL);
+
 require_once '../../config.php';
 require_once '../Models/DriverModel.php';
 require_once '../Services/FileUpload.php';
@@ -25,7 +29,7 @@ class DriverService
         $this->mail = new Mail2();
     }
 
-    public function createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo)
+    public function createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $address, $state, $district, $pincode, $language, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo)
     {
 
         //Check mail ID is already exit
@@ -104,7 +108,7 @@ class DriverService
 
         //Insert Driver details in drivers table in Cms DB
 
-        $response3 = $this->modelCMS->setDriver($userId, $_SESSION['companyId'], $name, $mobile, $subcompany, $mail, $address, $state, $district, $pincode, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path);
+        $response3 = $this->modelCMS->setDriver($userId, $_SESSION['companyId'], $name, $mobile, $subcompany, $mail, $address, $state, $district, $pincode, $language, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path);
 
         if (!$response3) {
             //Delete the user from users table
@@ -139,7 +143,7 @@ class DriverService
 
     }
 
-    public function updateDriver($driverId, $driverImage, $name, $mobile, $subcompany, $password, $address, $state, $district, $pincode, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo)
+    public function updateDriver($driverId, $driverImage, $name, $mobile, $subcompany, $password, $address, $state, $district, $pincode, $language, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo)
     {
         $driverInfo = [
             "fullname" => $name,
@@ -149,6 +153,7 @@ class DriverService
             "state" => $state,
             "district" => $district,
             "pincode" => $pincode,
+            "language" => $language,
             "licence_no" => $licenceNo,
             "licence_expiry" => $licenceExpiry,
             "aadhar_no" => $aadharNo,
@@ -167,12 +172,12 @@ class DriverService
 
         //Check for changes
         $changes = [];
-        $fields = ['fullname', 'mobile', 'cab_company_id', 'address', 'state', 'district', 'pincode', 'licence_no', 'licence_expiry', 'aadhar_no', 'pan_no'];
+        $fields = ['fullname', 'mobile', 'cab_company_id', 'address', 'state', 'district', 'pincode', 'language', 'licence_no', 'licence_expiry', 'aadhar_no', 'pan_no'];
 
         //check & upload file changes
         $fileChanges = false;
 
-        $uploadService = new FileUpload();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        $uploadService = new FileUpload();
 
         //Upload Driver image
         if (isset($driverImage) && $driverImage['error'] === UPLOAD_ERR_OK) {
@@ -192,7 +197,7 @@ class DriverService
             }
         }
 
-        
+
         //Upload Driving Licence
         if (isset($drivingLicence) && $drivingLicence['error'] === UPLOAD_ERR_OK) {
             $drivingLicence_dir = "../../Assets/User/Driving licence/";
@@ -288,8 +293,11 @@ class DriverService
         }
     }
 
-    public function getCompany() {
-        $response = $this->modelCMS->getCompany();
+    public function getCompany()
+    {
+        $response = $this->modelCMS->getCompany($_SESSION['companyId']);
+
+        // echo 'Hello'.$response;
 
         if (!$response) {
             return [
@@ -304,7 +312,8 @@ class DriverService
         ];
     }
 
-    public function deleteDriver($driverId) {
+    public function deleteDriver($driverId)
+    {
         $currentData = $this->modelCMS->getDriverDetails($driverId);
 
         if (!$currentData) {
@@ -337,7 +346,7 @@ class DriverService
         if (file_exists($oldPanCard) && is_file($oldPanCard)) {
             unlink($oldPanCard);
         }
-        
+
 
         //Delete drive from users table in Authentication DB
         $response1 = $this->modelA->deleteUser($currentData['user_id']);
@@ -400,7 +409,8 @@ class DriverService
         ];
     }
 
-    public function getDriversCardDetails() {
+    public function getDriversCardDetails()
+    {
         $response = $this->modelCMS->getDriversCardDetails($_SESSION['companyId']);
         if (!$response) {
             return [
@@ -639,4 +649,21 @@ class DriverService
             ];
         }
     }
+
+    public function getLanguage()
+    {
+        $response = $this->modelCMS->getLanguage($_SESSION['companyId']);
+        if (!$response) {
+            return [
+                'status' => 'no data',
+                'message' => 'No data found'
+            ];
+        }
+
+        return [
+            'status' => 'success',
+            'data' => $response
+        ];
+    }
+
 }

@@ -297,5 +297,19 @@ class DailyReportModel
         return $result ? $result : null;
     }
 
+    public function getTranslationsLabels($pageId, $languageCode)
+    {
+        $stmt = $this->db->prepare("SELECT lt.translation FROM `cms_pages` p INNER JOIN cms_labels l ON l.page_id = p.page_id 
+                    INNER JOIN cms_label_translations lt ON lt.label_id = l.label_id INNER JOIN cms_languages la ON la.id = lt.language_id 
+                    WHERE p.page_id = :pageId AND la.code = :languageCode ORDER BY lt.translation_id ASC");
+
+        $stmt->bindParam("pageId", $pageId);
+        $stmt->bindParam("languageCode", $languageCode);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    }
+
 }
 

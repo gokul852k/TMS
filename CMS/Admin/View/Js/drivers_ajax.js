@@ -1,6 +1,9 @@
 //Select company as  globle variable
 let company;
 
+let languages;
+
+
 getDrivers();
 
 function getDrivers() {
@@ -269,6 +272,23 @@ async function getDriverDetailsForEdit(driverId) {
                     }
                 });
 
+                //Select Language Type
+
+                let selectlang = $('#d-e-language');
+                selectlang.empty();  // Clear existing options
+            
+                // Add default "Select Language" option
+                selectlang.append('<option value="" disabled>Select Language</option>');
+            
+                languages.forEach((language) => {
+                    if (driverDetails.language == language.code) {
+                        selectlang.append('<option value="' + language.code + '" selected>' + language.name + '</option>');
+                    } else {
+                        selectlang.append('<option value="' + language.code + '">' + language.name + '</option>');
+                    }
+                    
+                });
+
             }
             else if (response.status === 'error') {
                 popupClose('driver-edit');
@@ -421,17 +441,40 @@ function deleteDriver(driverId, driverName) {
 
 //get Company
 
-async function getCompany() {
+
+async function getCompanyAndLang() {
     if (!company) {
         await companyAjax();
     }
+
     let select = $('#subcompany');
     select.empty();
     select.append('<option value="" disabled selected>Select Company</option>');
 
-    company.forEach(companys => {
-        select.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
-    });
+    if(company != undefined){
+        company.forEach(companys => {
+            select.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
+        });
+    }
+
+    //get language
+
+    if(!languages) {
+        await languageAjax();
+    }
+
+    //Bus
+    let select2 = $('#language');
+    select2.empty();  // Clear existing options
+
+    // Add default "Select Bus" option
+    select2.append('<option value="" disabled selected>Select Language</option>');
+
+    if(languages != undefined){
+        languages.forEach((language) => {
+            select2.append('<option value="' + language.code + '">' + language.name + '</option>');
+        });
+    }
 
 }
 
@@ -449,14 +492,12 @@ function companyAjax() {
             success: function (response) {
                 console.log(response);
                 if (response.status === 'success') {
-                    company = response.data;
-                    resolve();
-                } else {
-                    reject();
+                    company = response.data;  
                 }
+                resolve();
             },
             error: function (xhr, status, error) {
-                popupClose('driver-view');
+                // popupClose('driver-view');
                 console.error(xhr.responseText);
                 reject();
                 // Swal.fire({
@@ -468,4 +509,34 @@ function companyAjax() {
         });
     })
 
+}
+
+function languageAjax() {
+    return new Promise((resolve, reject) => {
+        let formData = {
+            action: 'getLanguage'
+        }
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/DriverController.php',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                if (response.status === 'success') {
+                    languages = response.data;    
+                }
+                resolve();
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                reject();
+                // Swal.fire({
+                //     title: "Error",
+                //     text: "Something went wrong! Please try again.",
+                //     icon: "error"
+                // });
+            }
+        });
+    })  
 }

@@ -125,8 +125,8 @@ class DriverModel {
         }
     }
 
-    public function setDriver($userId, $companyId, $name, $mobile, $subcompany, $mail, $address, $state, $district, $pincode, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path) {
-        $stmt = $this->db->prepare("INSERT INTO `cms_drivers` (`user_id`, `company_id`, `cab_company_id`, `fullname`, `mail`, `mobile`, `address`, `state`, `district`, `pincode`, `driver_image_path`, `licence_no`, `licence_expiry`, `licence_path`, `aadhar_no`, `aadhar_path`, `pan_no`, `pan_path`) VALUES (:userId, :companyId, :subcompany, :name, :mail, :mobile, :address, :state, :district, :pincode, :driverImage_path, :licenceNo, :licenceExpiry, :drivingLicence_path, :aadharNo, :aadharCard_path, :panNo, :panCard_path)");
+    public function setDriver($userId, $companyId, $name, $mobile, $subcompany, $mail, $address, $state, $district, $pincode, $language, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path) {
+        $stmt = $this->db->prepare("INSERT INTO `cms_drivers` (`user_id`, `company_id`, `cab_company_id`, `fullname`, `mail`, `mobile`, `address`, `state`, `district`, `pincode`, `language`, `driver_image_path`, `licence_no`, `licence_expiry`, `licence_path`, `aadhar_no`, `aadhar_path`, `pan_no`, `pan_path`) VALUES (:userId, :companyId, :subcompany, :name, :mail, :mobile, :address, :state, :district, :pincode, :language, :driverImage_path, :licenceNo, :licenceExpiry, :drivingLicence_path, :aadharNo, :aadharCard_path, :panNo, :panCard_path)");
         $stmt->bindParam("userId", $userId);
         $stmt->bindParam("companyId", $companyId);
         $stmt->bindParam("subcompany", $subcompany);
@@ -137,6 +137,7 @@ class DriverModel {
         $stmt->bindParam("state", $state);
         $stmt->bindParam("district", $district);
         $stmt->bindParam("pincode", $pincode);
+        $stmt->bindParam("language", $language);
         $stmt->bindParam("driverImage_path", $driverImage_path);
         $stmt->bindParam("licenceNo", $licenceNo);
         $stmt->bindParam("licenceExpiry", $licenceExpiry);
@@ -191,9 +192,23 @@ class DriverModel {
         return $stmt->execute();
     }
 
-    public function getCompany() {
+    public function getCompany($companyId) {
         $isActive = true;
-        $stmt = $this->db->prepare("SELECT `id`, `company_name` FROM cms_cab_company WHERE is_active = :isActive");
+        $stmt = $this->db->prepare("SELECT `id`, `company_name` FROM cms_cab_company WHERE company_id=:companyId AND is_active = :isActive");
+        $stmt->bindParam("companyId", $companyId);
+        $stmt->bindParam("isActive", $isActive);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    }
+
+    public function getLanguage($companyId) {
+        $isActive = true;
+        $stmt = $this->db->prepare("SELECT l.code, l.name FROM cms_company_languages cl
+                                    INNER JOIN cms_languages l ON cl.language_id = l.id
+                                    WHERE cl.company_id = :companyId AND cl.is_active = :isActive");
+        $stmt->bindParam("companyId", $companyId);
         $stmt->bindParam("isActive", $isActive);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

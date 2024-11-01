@@ -44,13 +44,13 @@ class CompanyModel {
 
         return $result ? $result : null;
     }
-    public function getCompanyDetails() {
+    public function getCompanyDetails($companyId) {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT 
                                         id, company_name, district, state, company_email, gstnumber, company_phone
                                     FROM cms_cab_company 
-                                    WHERE is_active = :isActive");
-        // $stmt->bindParam(":companyId", $companyId);
+                                    WHERE company_id=:companyId AND is_active = :isActive");
+        $stmt->bindParam(":companyId", $companyId);
         $stmt->bindParam(":isActive", $isActive);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -58,9 +58,10 @@ class CompanyModel {
         return $result ? $result : null;
     }
 
-    public function setCompany($company, $gstnum, $mobile, $email, $address, $state, $district, $pincode) {
-        $stmt = $this->db->prepare("INSERT INTO `cms_cab_company`(`company_name`, `company_address`, `district`, `state`, `pincode`, `gstnumber`, `company_email`, `company_phone`) VALUES (:company, :address, :district, :state, :pincode, :gstnum, :email, :mobile)");
+    public function setCompany($companyId, $company, $gstnum, $mobile, $email, $address, $state, $district, $pincode) {
+        $stmt = $this->db->prepare("INSERT INTO `cms_cab_company`(`company_id`, `company_name`, `company_address`, `district`, `state`, `pincode`, `gstnumber`, `company_email`, `company_phone`) VALUES (:companyId, :company, :address, :district, :state, :pincode, :gstnum, :email, :mobile)");
         
+        $stmt->bindParam(":companyId", $companyId);
         $stmt->bindParam(":company", $company);
         $stmt->bindParam(":address", $address);
         $stmt->bindParam(":district", $district);

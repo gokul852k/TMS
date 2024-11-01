@@ -98,6 +98,10 @@ class DailyReportController {
     private function getCompany() {
         echo json_encode($this->service->getCompany());
     }
+    
+    private function getTranslations() {
+        echo json_encode($this->service->getTranslationsLabels2($_POST['pageId']));
+    }
 
 }
 
