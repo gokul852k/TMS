@@ -61,7 +61,7 @@ class MaintenanceReportService
     {
 
         $carId = $postData['car-id'];
-        $driverId = $_SESSION['dirverId'];
+        $driverId = $_SESSION['driverId'];
         $cabcompany = $_SESSION['cabCompanyId'];
         $date = $postData['date'];
         $serviceCharge = $postData['service_charge'];

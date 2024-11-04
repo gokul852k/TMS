@@ -1,3 +1,5 @@
+
+
 // let cars;
 // let drivers;
 // let company;fv
@@ -19,6 +21,8 @@ async function getDetails() {
         cars.forEach((car) => {
             select.append('<option value="' + car.id + '">' + car.car_number + '</option>');
         });
+    }else{
+        select.append('<option value="">No car found.</option>');
     }
 
     //Spare parts
@@ -35,6 +39,8 @@ async function getDetails() {
         driver_opt.forEach((driver_options) => {
             select3.append('<option value="' + driver_options.id + '">' + driver_options.fullName + '</option>');
         });
+    }else{
+        select3.append('<option value="">No driver found.</option>');
     }
 
 
@@ -49,6 +55,8 @@ async function getDetails() {
         companies.forEach(companys => {
             select4.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
         });
+    }else{
+        select4.append('<option value="">No company found.</option>');
     }
 }
 

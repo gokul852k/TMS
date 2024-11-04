@@ -20,10 +20,10 @@ function getCares() {
             if (response.status === 'success') {
                 let cardDetails = response.data;
                 document.getElementById("total-car").innerHTML = cardDetails.total_car;
-                document.getElementById("total-km").innerHTML = cardDetails.total_km;
-                document.getElementById("avg-mileage").innerHTML = cardDetails.avg_mileage;
-                document.getElementById("cost-per-km").innerHTML = cardDetails.cost_per_km;
-                document.getElementById("expitations").innerHTML = cardDetails.expired_licenses;
+                document.getElementById("total-km").innerHTML = cardDetails.rc_alert;
+                document.getElementById("avg-mileage").innerHTML = cardDetails.ins_alert;
+                document.getElementById("cost-per-km").innerHTML = cardDetails.rcbook_expiry;
+                document.getElementById("expitations").innerHTML = cardDetails.insurance_expiry;
             }
         },
         error: function (xhr, status, error) {
@@ -57,9 +57,8 @@ function getCares() {
                         '<td>' + (index + 1) + '</td>' +
                         '<td>' + item.car_number + '</td>' +
                         '<td>' + item.fuel_type + '</td>' +
-                        '<td>' + item.total_km + '</td>' +
-                        '<td>' + item.avg_mileage + '</td>' +
-                        '<td>' + item.cost_per_km + '</td>' +
+                        '<td style="text-align:center;">' + item.seat + '</td>' +
+                        '<td>' + item.car_model + '</td>' +
                         '<td><div class="btn-td"><span class="' + item.rc_book_status + '">' + item.rc_book_status + '</span></div></td>' +
                         '<td><div class="btn-td"><span class="' + item.insurance_status + '">' + item.insurance_status + '</span></div></td>' +
                         `<td>

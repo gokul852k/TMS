@@ -42,8 +42,8 @@ class DailyReportController {
         echo json_encode($this->dailyReoprtService->createDailyReport($carNumber, $driverName, $cabCompany, $date, $startKM, $startDate, $startTime, $endKM, $endDate, $endTime));
     }
 
-    private function getCarCardDetails() {
-        echo json_encode($this->dailyReoprtService->getCarCardDetails());
+    private function getDailyReportCard() {
+        echo json_encode($this->dailyReoprtService->getDailyReportCard());
     }
 
     private function getDailyReports() {
@@ -78,6 +78,23 @@ class DailyReportController {
 
     private function deleteCar() {
         echo json_encode($this->dailyReoprtService->deleteCar($_POST['carId']));
+    }
+
+    private function applyFilter() {
+
+        $filterData = [
+            'days' => $_POST['days'] ?? null,
+            'fromDate' => $_POST['filter-from-date'] ?? null,
+            'toDate' => $_POST['filter-to-date'] ?? null,
+            'car' => $_POST['filter-car'] ?? null,
+            'driver' => $_POST['filter-driver'] ?? null,
+            'company' => $_POST['filter-company'] ?? null,
+            'orderBy' => $_POST['orderBy'] ?? null
+        ];
+        // print_r($filterData);
+        echo json_encode($this->dailyReoprtService->applyFilter($filterData));
+
+        // echo json_encode($_POST);
     }
 }
 

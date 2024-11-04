@@ -1,13 +1,16 @@
 <?php
 
-class CarModel {
+class CarModel
+{
     private $db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
-    public function getFuelType() {
+    public function getFuelType()
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT `id`, `fuel` FROM cms_fuel_type WHERE is_active = :isActive");
         $stmt->bindParam("isActive", $isActive);
@@ -17,7 +20,8 @@ class CarModel {
         return $result ? $result : null;
     }
 
-    public function setCar($companyId, $carNumber, $carModel, $seatingCapacity, $fuelType, $carStatus, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook_path, $insurance_path) {
+    public function setCar($companyId, $carNumber, $carModel, $seatingCapacity, $fuelType, $carStatus, $rcBookNumber, $insuranceNumber, $rcBookExpiry, $insuranceExpiry, $rcBook_path, $insurance_path)
+    {
         $stmt = $this->db->prepare("INSERT INTO `cms_car` (`company_id`, `car_model`, `car_number`, `seating_capacity`, `fuel_type_id`, `rcbook_no`, `rcbook_expiry`, `rcbook_path`, `insurance_no`, `insurance_expiry`, `insurance_path`, `car_status`) VALUES (:companyId, :carModel, :carNumber, :seatingCapacity, :fuelType, :rcBookNumber, :rcBookExpiry, :rcBook_path, :insuranceNumber, :insuranceExpiry, :insurance_path, :carStatus)");
         $stmt->bindParam("companyId", $companyId);
         $stmt->bindParam("carModel", $carModel);
@@ -56,7 +60,8 @@ class CarModel {
         }
     }
 
-    public function setCarSummary($companyId, $carId) {
+    public function setCarSummary($companyId, $carId)
+    {
         $stmt = $this->db->prepare("INSERT INTO `cms_car_summary` (`company_id`, `car_id`) VALUES (:companyId, :carId)");
         $stmt->bindParam("companyId", $companyId);
         $stmt->bindParam("carId", $carId);
@@ -83,14 +88,41 @@ class CarModel {
         }
     }
 
-    public function getCarCardDetails($companyId) {
+    public function getCarCardDetails($companyId)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT
                                     (SELECT COUNT(*) FROM cms_car WHERE company_id=:companyId AND is_active=:isActive) AS 'total_car',
-                                    (SELECT SUM(total_km) FROM cms_car_summary WHERE company_id=:companyId AND is_active=:isActive) AS 'total_km',
-                                    (SELECT AVG(avg_mileage) FROM cms_car_summary WHERE company_id=:companyId AND is_active=:isActive) AS 'avg_mileage',
-                                    (SELECT AVG(cost_per_km) FROM cms_car_summary WHERE company_id=:companyId AND is_active=:isActive) AS 'cost_per_km',
-                                    (SELECT COUNT(*) FROM cms_drivers WHERE licence_expiry<CURRENT_DATE() AND company_id=:companyId AND is_active=:isActive) AS 'expired_licenses'
+                                    (SELECT 
+                                        ABS(
+                                            (SELECT COUNT(*) 
+                                            FROM cms_car 
+                                            WHERE rcbook_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) 
+                                            AND company_id = :companyId 
+                                            AND is_active = :isActive) 
+                                            - 
+                                            (SELECT COUNT(*) 
+                                            FROM cms_car 
+                                            WHERE rcbook_expiry < CURRENT_DATE() 
+                                            AND company_id = :companyId 
+                                            AND is_active = :isActive)
+                                        )) AS 'rc_alert',
+                                    (SELECT 
+                                        ABS(
+                                            (SELECT COUNT(*) 
+                                            FROM cms_car 
+                                            WHERE insurance_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) 
+                                            AND company_id = :companyId 
+                                            AND is_active = :isActive) 
+                                            - 
+                                            (SELECT COUNT(*) 
+                                            FROM cms_car 
+                                            WHERE insurance_expiry < CURRENT_DATE() 
+                                            AND company_id = :companyId 
+                                            AND is_active = :isActive)
+                                        )) AS 'ins_alert',
+                                    (SELECT COUNT(*) FROM cms_car WHERE rcbook_expiry<CURRENT_DATE() AND company_id=:companyId AND is_active=:isActive) AS 'rcbook_expiry',
+                                    (SELECT COUNT(*) FROM cms_car WHERE insurance_expiry<CURRENT_DATE() AND company_id=:companyId AND is_active=:isActive) AS 'insurance_expiry'
                                 ");
         $stmt->bindParam(":companyId", $companyId);
         $stmt->bindParam(":isActive", $isActive);
@@ -100,15 +132,15 @@ class CarModel {
         return $result ? $result : null;
     }
 
-    public function getCares($companyId) {
+    public function getCares($companyId)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT
                                         c.id AS 'car_id',
                                         c.car_number,
                                         ft.fuel AS 'fuel_type',
-                                        COALESCE(cs.total_km, 0) AS 'total_km',
-                                        COALESCE(cs.avg_mileage, 0) AS 'avg_mileage',
-                                        COALESCE(cs.cost_per_km, 0) AS 'cost_per_km',
+                                        c.seating_capacity AS 'seat',
+                                        c.car_model AS 'car_model',
                                         CASE
                                             WHEN c.rcbook_expiry < CURRENT_DATE() THEN 'expired'
                                             WHEN c.rcbook_expiry < DATE_ADD(CURRENT_DATE(), INTERVAL 3 MONTH) THEN 'expires'
@@ -131,7 +163,8 @@ class CarModel {
         return $result ? $result : null;
     }
 
-    function getCar($carId) {
+    function getCar($carId)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT * FROM cms_car WHERE id=:carId AND is_active=:isActive");
         $stmt->bindParam(":carId", $carId);
@@ -142,10 +175,11 @@ class CarModel {
         return $result ? $result : null;
     }
 
-    function updateCar($update_fields, $update_values) {
-        $sql = "UPDATE cms_car SET ". implode(", ", $update_fields) . " WHERE id = :id";
+    function updateCar($update_fields, $update_values)
+    {
+        $sql = "UPDATE cms_car SET " . implode(", ", $update_fields) . " WHERE id = :id";
         $stmt = $this->db->prepare($sql);
-        
+
         if ($stmt->execute($update_values)) {
             return true;
         } else {
@@ -153,7 +187,8 @@ class CarModel {
         }
     }
 
-    function getCarView($carId) {
+    function getCarView($carId)
+    {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT 
                                     c.car_number,
@@ -184,7 +219,8 @@ class CarModel {
         return $result ? $result : null;
     }
 
-    function deletecar($carId) {
+    function deletecar($carId)
+    {
         $stmt = $this->db->prepare("DELETE FROM `cms_car` WHERE `id`=:carId");
         $stmt->bindParam("carId", $carId);
         return $stmt->execute();

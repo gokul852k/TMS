@@ -1,5 +1,6 @@
 <?php
 require_once '../Services/NavbarServices.php';
+require_once '../../../Common/Common file/search_select_cdn.php';
 
 $navbarServices = new NavbarServices();
 

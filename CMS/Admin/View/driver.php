@@ -23,7 +23,7 @@ require_once './navbar.php';
             </div>
             <div class="row-head-div-2">
                 <button class="button-1 head-button3" onclick="popupOpen('driver-add'); getCompanyAndLang()"><i
-                        class="fa-solid fa-user-plus"></i>Add Driver</button>
+                        class="fa-solid fa-user-plus"></i>Add</button>
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
             </div>
         </div>
@@ -208,7 +208,12 @@ require_once './navbar.php';
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                    <select class="input-field" name="car-id" id="car-id">
+                                            <option value="">Select Car</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-8">
                                         <input type="text" class="input-field" name="address" placeholder="Address" />
                                     </div>
                                 </div>

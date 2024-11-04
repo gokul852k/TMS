@@ -1,7 +1,8 @@
-// Get translations labels
-let tlabels;
-getTranslations();
-function getTranslations () {
+getTranslationsajax();
+
+let tlabels2;
+
+function getTranslationsajax () {
     var formData2 = {
         action: 'getTranslations',
         pageId: 4
@@ -13,14 +14,16 @@ function getTranslations () {
         dataType: 'json',
         success: function (response) {
             if (response.status == "success") {
-                tlabels = response.data;
-                console.log(tlabels);
+                tlabels2 = response.data;
+                console.log(tlabels2);
             }else {
-                tlabels = [
-                    {"translation": "Spare Parts"},                                 // 5
-                    {"translation": "Quantity"},                                    // 6
-                    {"translation": "Price"},                                       // 7
-                    {"translation": "Select Spare"},                                // 8
+                tlabels2 = [
+                    {"translation": "Something went wrong while add the Maintenance Report"},  // 0
+                    {"translation": "Something went wrong while add the Spare Part"},          // 1
+                    {"translation": "Maintenance Added Successfully"},                         // 2
+                    {"translation": "Success"},                                                // 3
+                    {"translation": "Oops!"},                                                  // 4
+                    {"translation": "Something went wrong! Please try again."},                // 5
                 ]
             }
             
@@ -42,10 +45,9 @@ function sparePartAjax() {
                 console.log(response);
                 if (response.status === 'success') {
                     sparePart = response.data;
-                    resolve();
-                } else {
-                    reject();
+                    
                 }
+                resolve();
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
@@ -90,27 +92,27 @@ $(document).ready(function () {
                 if (data.status === 'success') {
                     // alert('Success');
                     Swal.fire({
-                        title: "Success",
-                        text: data.message,
+                        title: tlabels2[3]['translation'],
+                        text: tlabels2[2]['translation'],
                         icon: "success"
                     });
                 }
                 else if (data.status === 'errorMain') {
                     Swal.fire({
-                        title: "Oops!",
-                        text: data.message,
+                        title: tlabels2[4]['translation'],
+                        text: tlabels2[0]['translation'],
                         icon: "error"
                     });
                 }else if (data.status === 'errorSub') {
                     Swal.fire({
-                        title: "Oops!",
-                        text: data.message,
+                        title: tlabels2[4]['translation'],
+                        text: tlabels2[1]['translation'],
                         icon: "error"
                     });
                 } else {
                     Swal.fire({
-                        title: "Oops!",
-                        text: data.message,
+                        title: tlabels2[4]['translation'],
+                        text: tlabels2[5]['translation'],
                         icon: "error"
                     });
                 }
@@ -118,8 +120,8 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
                 Swal.fire({
-                    title: "Oops!",
-                    text: "Something went wrong! Please try again.",
+                    title: tlabels2[4]['translation'],
+                    text: tlabels2[5]['translation'],
                     icon: "error"
                 });
             }

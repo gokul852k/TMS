@@ -1,6 +1,7 @@
-// Get translations labels
-let tlabels;
 getTranslations();
+
+let tlabels1;
+
 function getTranslations () {
     var formData2 = {
         action: 'getTranslations',
@@ -13,10 +14,10 @@ function getTranslations () {
         dataType: 'json',
         success: function (response) {
             if (response.status == "success") {
-                tlabels = response.data;
-                console.log(tlabels);
+                tlabels1 = response.data;
+                console.log(tlabels1);
             }else {
-                tlabels = [
+                tlabels1 = [
                     {"translation": "Spare Parts"},                                 // 5
                     {"translation": "Quantity"},                                    // 6
                     {"translation": "Price"},                                       // 7
@@ -46,11 +47,14 @@ $(document).ready(function () {
         // select2.empty();  // Clear existing options
 
         // Add default "Select Spare" option
-        sparePartSelect = '<option value="" selected>' + tlabels[5]['translation'] + '</option>';
-
-        sparePart.forEach((spar_part) => {
-            sparePartSelect += '<option value="' + spar_part.spare_part_id + '">' + spar_part.spare_part_name + '</option>';
-        });
+        sparePartSelect = '<option value="" selected>' + tlabels1[5]['translation'] + '</option>';
+        if (sparePart != undefined) {
+            sparePart.forEach((spar_part) => {
+                sparePartSelect += '<option value="' + spar_part.spare_part_id + '">' + spar_part.spare_part_name + '</option>';
+            });
+        }else{
+            sparePartSelect += '<option value="">No Spare Parts</option>';
+        }
 
 
         sparePartCounter++;
@@ -68,17 +72,17 @@ $(document).ready(function () {
                     <div class="row">
                         <div class="col-sm-4">
                             
-                            <label for="" class="input-label">${tlabels[5]['translation']}</label>
+                            <label for="" class="input-label">${tlabels1[5]['translation']}</label>
                             <select class="input-field" name="spare[${sparePartCounter}][sparePartId]" required>
                                 ${sparePartSelect}
                             </select>
                         </div>
                         <div class="col-sm-4">
-                            <label for="" class="input-label">${tlabels[6]['translation']}</label>
+                            <label for="" class="input-label">${tlabels1[6]['translation']}</label>
                             <input type="text" class="input-field" name="spare[${sparePartCounter}][spareQuantity]" placeholder="" required />
                         </div>
                         <div class="col-sm-4">
-                            <label for="" class="input-label">${tlabels[7]['translation']}</label>
+                            <label for="" class="input-label">${tlabels1[7]['translation']}</label>
                             <input type="text" class="input-field" name="spare[${sparePartCounter}][sparePrice]" placeholder="" required />
                         </div>
                     </div>
@@ -103,6 +107,6 @@ function updateFileName() {
     if (input.files.length > 0) {
         label.innerHTML = `<b>${input.files[0].name}</b>`;
     } else {
-        label.innerHTML = '<b>' + tlabels[11]['translation'] + '</b>';
+        label.innerHTML = '<b>' + tlabels1[11]['translation'] + '</b>';
     }
 }

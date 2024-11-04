@@ -16,7 +16,7 @@ require_once './navbar.php';
             </div>
             <div class="row-head-div-2">
                 <button class="button-1 head-button3" onclick="popupOpen('car-add'); getFuelType()"><i
-                        class="fa-solid fa-car"></i>Add Car</button>
+                        class="fa-solid fa-car"></i>Add</button>
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
             </div>
         </div>
@@ -49,7 +49,7 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Total KM</p>
+                                                <p class="mb-0 text-secondary">RC Alert</p>
                                                 <h4 class="my-1 text-info t-c-5" id="total-km">-</h4>
                                             </div>
                                             <div class="widgets-icons-2 rounded-circle bg-g-5 text-white ms-auto">
@@ -66,7 +66,7 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Avg Mileage</p>
+                                                <p class="mb-0 text-secondary">Ins. Alert</p>
                                                 <h4 class="my-1 text-info t-c-6" id="avg-mileage">-</h4>
                                             </div>
                                             <div class="widgets-icons-2 rounded-circle bg-g-6 text-white ms-auto">
@@ -83,7 +83,7 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Cost per KM</p>
+                                                <p class="mb-0 text-secondary">RC Expired</p>
                                                 <h4 class="my-1 text-info t-c-7" id="cost-per-km">-</h4>
                                             </div>
                                             <div class="widgets-icons-2 rounded-circle  bg-g-7 text-white ms-auto">
@@ -100,7 +100,7 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Expired</p>
+                                                <p class="mb-0 text-secondary">Ins. Expired</p>
                                                 <h4 class="my-1 text-info t-c-3" id="expitations">-</h4>
                                             </div>
                                             <div
@@ -134,9 +134,8 @@ require_once './navbar.php';
                                     <th class="th">S.No</th>
                                     <th class="th">Car Number</th>
                                     <th class="th">Fuel Type</th>
-                                    <th class="th">Total KM</th>
-                                    <th class="th">Avg Mileage</th>
-                                    <th class="th">Cost per KM</th>
+                                    <th class="th">Seating Capacity</th>
+                                    <th class="th">Car Model</th>
                                     <th class="th">RC Book Status</th>
                                     <th class="th">Insurance Status</th>
                                     <th class="th">Action</th>

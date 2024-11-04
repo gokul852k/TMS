@@ -91,15 +91,15 @@ class DailyReportModel
         }
     }
 
-    public function getCarCardDetails($companyId)
+    public function getDailyReportCard($companyId)
     {
         $isActive = true;
         $stmt = $this->db->prepare("SELECT
-                                    (SELECT COUNT(*) FROM cms_car WHERE company_id=:companyId AND is_active=:isActive) AS 'total_car',
-                                    (SELECT SUM(total_km) FROM cms_car_summary WHERE company_id=:companyId AND is_active=:isActive) AS 'total_km',
-                                    (SELECT AVG(avg_mileage) FROM cms_car_summary WHERE company_id=:companyId AND is_active=:isActive) AS 'avg_mileage',
-                                    (SELECT AVG(cost_per_km) FROM cms_car_summary WHERE company_id=:companyId AND is_active=:isActive) AS 'cost_per_km',
-                                    (SELECT COUNT(*) FROM cms_drivers WHERE licence_expiry<CURRENT_DATE() AND company_id=:companyId AND is_active=:isActive) AS 'expired_licenses'
+                                    (SELECT SUM(total_km) FROM cms_drivers_daily_report WHERE company_id=:companyId AND is_active=:isActive) AS 'total_km',
+                                    (SELECT COUNT(*) FROM cms_drivers_daily_report WHERE total_km IS NULL AND company_id=:companyId AND is_active=:isActive) AS 'active_driver',
+                                    (SELECT COUNT(*) FROM cms_drivers WHERE company_id =1 AND is_active = 1) AS 'total_driver',
+                                    (SELECT COUNT(*) FROM cms_cab_company WHERE company_id =1 AND is_active = 1) AS 'total_cab_company',
+                                    (SELECT COUNT(*) FROM cms_car WHERE company_id =1 AND is_active = 1) AS 'total_car'
                                 ");
         $stmt->bindParam(":companyId", $companyId);
         $stmt->bindParam(":isActive", $isActive);
@@ -188,7 +188,8 @@ class DailyReportModel
     //     return $result ? $result : null;
     // }
 
-    function getcarView($carId){
+    function getcarView($carId)
+    {
         $isActive = true;
 
         $stmt = $this->db->prepare("SELECT * FROM cms_drivers_daily_report cddr WHERE cddr.id=:carId AND cddr.is_active = :isActive");
@@ -206,4 +207,136 @@ class DailyReportModel
         $stmt->bindParam("busId", $busId);
         return $stmt->execute();
     }
+
+    function getFilterCardCount($filters, $companyId)
+    {
+        $isActive = true;
+        $sql = "SELECT
+                SUM(cddr.total_km) AS 'total_km',
+                COUNT(CASE WHEN cddr.total_km IS NULL THEN 1 END) AS 'active_driver',
+                (SELECT COUNT(*) FROM cms_drivers WHERE company_id =1 AND is_active = 1) AS 'total_driver',
+                (SELECT COUNT(*) FROM cms_cab_company WHERE company_id =1 AND is_active = 1) AS 'total_cab_company',
+                (SELECT COUNT(*) FROM cms_car WHERE company_id =1 AND is_active = 1) AS 'total_car'
+                    FROM
+                        cms_drivers_daily_report cddr
+                    WHERE
+                        1 = 1 ";
+
+        $params = [];
+
+        if (!empty($filters['fromDate'])) {
+            $sql .= "AND cddr.check_in_date >= :fromDate ";
+            $params[':fromDate'] = $filters['fromDate'];
+        }
+
+        if (!empty($filters['toDate'])) {
+            $sql .= "AND cddr.check_in_date <= :toDate ";
+            $params[':toDate'] = $filters['toDate'];
+        }
+
+        if (!empty($filters['car'])) {
+            $sql .= "AND cddr.car_id = :car ";
+            $params[':car'] = $filters['car'];
+        }
+
+        if (!empty($filters['driver'])) {
+            $sql .= "AND cddr.driver_id = :driver ";
+            $params[':driver'] = $filters['driver'];
+        }
+
+        if (!empty($filters['company'])) {
+            $sql .= "AND cddr.cab_company_id = :company ";
+            $params[':company'] = $filters['company'];
+        }
+
+        $sql .= "AND cddr.company_id = :companyId ";
+        $params[':companyId'] = $companyId;
+
+        $sql .= "AND cddr.is_active = :isActive";
+        $params[':isActive'] = $isActive;
+
+        if (!empty($filters['orderBy'])) {
+            // Ensure that the value is either ASC or DESC
+            if ($filters['orderBy'] === "ASC" || $filters['orderBy'] === "DESC") {
+                $sql .= " ORDER BY cddr.check_in_date " . $filters['orderBy'];
+            }
+        }
+
+        // echo $sql;
+
+        // echo "----------------------------";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    }
+
+    function getFilterFuelReport($filters, $companyId)
+    {
+        $isActive = true;
+        $sql = "SELECT 
+                    cd.fullname,
+                    DATE_FORMAT(cddr.check_in_date, '%d-%m-%Y') AS check_in_date,
+                    cddr.check_in_time AS check_in_time,
+                    cddr.check_in_km AS check_in_km,
+                    DATE_FORMAT(cddr.check_out_date, '%d-%m-%Y') AS check_out_date,
+                    cddr.check_out_time AS check_out_time,
+                    cddr.check_out_km AS check_out_km,
+                    cddr.total_km
+                FROM cms_drivers_daily_report cddr  
+                INNER JOIN cms_drivers cd ON cddr.driver_id = cd.id
+                WHERE 1=1 ";
+        //company_id = :companyId AND is_active = :isActive
+        $params = [];
+
+        if (!empty($filters['fromDate'])) {
+            $sql .= "AND cddr.check_in_date >= :fromDate ";
+            $params[':fromDate'] = $filters['fromDate'];
+        }
+
+        if (!empty($filters['toDate'])) {
+            $sql .= "AND cddr.check_in_date <= :toDate ";
+            $params[':toDate'] = $filters['toDate'];
+        }
+
+        if (!empty($filters['car'])) {
+            $sql .= "AND cddr.car_id = :car ";
+            $params[':car'] = $filters['car'];
+        }
+
+        if (!empty($filters['driver'])) {
+            $sql .= "AND cddr.driver_id = :driver ";
+            $params[':driver'] = $filters['driver'];
+        }
+
+        if (!empty($filters['company'])) {
+            $sql .= "AND cddr.cab_company_id = :company ";
+            $params[':company'] = $filters['company'];
+        }
+
+        $sql .= "AND cddr.company_id = :companyId ";
+        $params[':companyId'] = $companyId;
+
+        $sql .= "AND cddr.is_active = :isActive";
+        $params[':isActive'] = $isActive;
+
+        if (!empty($filters['orderBy'])) {
+            // Ensure that the value is either ASC or DESC
+            if ($filters['orderBy'] === "ASC" || $filters['orderBy'] === "DESC") {
+                $sql .= " ORDER BY cddr.check_in_date " . $filters['orderBy'];
+            }
+        }
+
+        // echo $sql;
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result ? $result : null;
+    }
+
 }

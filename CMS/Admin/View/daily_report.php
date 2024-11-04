@@ -7,6 +7,8 @@ require_once './navbar.php';
 <link rel="stylesheet" href="../../../Common/Common file/header.css">
 <link rel="stylesheet" href="../../../Common/Common file/pop_up.css">
 <link rel="stylesheet" href="./Style/driver.css">
+<link rel="stylesheet" href="./Style/daily_report.css">
+
 
 <div class="register-driver">
     <div class="box-container box-head w3-animate-top">
@@ -15,6 +17,8 @@ require_once './navbar.php';
                 <h4 class="heading">Daily Report Details</h4>
             </div>
             <div class="row-head-div-2">
+                <button class="button-1 head-button2" onclick="popupOpen('filter'), getFilterField()"><i
+                        class="fa-solid fa-filter"></i>Filter</button>
                 <button class="button-1 head-button3" onclick="popupOpen('add'); getDetails()"><i
                         class="fa-solid fa-user-pilot"></i>Add</button>
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
@@ -32,41 +36,7 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Total Drivers</p>
-                                                <h4 class="my-1 text-info t-c-4" id="total-driver">-</h4>
-                                            </div>
-                                            <div class="widgets-icons-2 rounded-circle bg-g-4 text-white ms-auto">
-                                                <i class="fa-solid fa-car"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col card-col-d-r">
-                            <div class="card radius-10 border-start border-0 border-3 border-info">
-                                <a href="#" class="no-underline">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <p class="mb-0 text-secondary">Driver On Duty</p>
-                                                <h4 class="my-1 text-info t-c-5" id="total-duty">-</h4>
-                                            </div>
-                                            <div class="widgets-icons-2 rounded-circle bg-g-5 text-white ms-auto">
-                                                <i class="fa-solid fa-gauge-max"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col card-col-d-r">
-                            <div class="card radius-10 border-start border-0 border-3 border-info">
-                                <a href="#" class="no-underline">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div>
-                                                <p class="mb-0 text-secondary">Avg Mileage</p>
+                                                <p class="mb-0 text-secondary">Total KM</p>
                                                 <h4 class="my-1 text-info t-c-6" id="avg-mileage">-</h4>
                                             </div>
                                             <div class="widgets-icons-2 rounded-circle bg-g-6 text-white ms-auto">
@@ -83,7 +53,59 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Cost per KM</p>
+                                                <p class="mb-0 text-secondary">Active Drivers</p>
+                                                <h4 class="my-1 text-info t-c-5" id="total-duty">-</h4>
+                                            </div>
+                                            <div class="widgets-icons-2 rounded-circle bg-g-5 text-white ms-auto">
+                                                <i class="fa-solid fa-gauge-max"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col card-col-d-r">
+                            <div class="card radius-10 border-start border-0 border-3 border-info">
+                                <a href="#" class="no-underline">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <p class="mb-0 text-secondary">Total Drivers</p>
+                                                <h4 class="my-1 text-info t-c-4" id="total-driver">-</h4>
+                                            </div>
+                                            <div class="widgets-icons-2 rounded-circle bg-g-4 text-white ms-auto">
+                                                <i class="fa-solid fa-car"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- <div class="col card-col-d-r">
+                            <div class="card radius-10 border-start border-0 border-3 border-info">
+                                <a href="#" class="no-underline">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <p class="mb-0 text-secondary">Avg KM Today</p>
+                                                <h4 class="my-1 text-info t-c-6" id="avg-mileage">-</h4>
+                                            </div>
+                                            <div class="widgets-icons-2 rounded-circle bg-g-6 text-white ms-auto">
+                                                <i class="fa-solid fa-gas-pump"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div> -->
+                        <div class="col card-col-d-r">
+                            <div class="card radius-10 border-start border-0 border-3 border-info">
+                                <a href="#" class="no-underline">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <p class="mb-0 text-secondary">Companies</p>
                                                 <h4 class="my-1 text-info t-c-7" id="cost-per-km">-</h4>
                                             </div>
                                             <div class="widgets-icons-2 rounded-circle  bg-g-7 text-white ms-auto">
@@ -100,7 +122,7 @@ require_once './navbar.php';
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <p class="mb-0 text-secondary">Expired</p>
+                                                <p class="mb-0 text-secondary">Total Cars</p>
                                                 <h4 class="my-1 text-info t-c-3" id="expitations">-</h4>
                                             </div>
                                             <div
@@ -267,7 +289,7 @@ require_once './navbar.php';
                 <div class="admin-modal-body">
                     <div>
                         <div class="row p-20">
-                        <input type="text" name="daily_id" id="edit-daily-id">
+                            <input type="text" name="daily_id" id="edit-daily-id">
                             <div class="col-sm-3">
                                 <label for="" class="input-label">Car No</label>
                                 <select class="input-field" name="car-id" id="e-car-no" required>
@@ -288,7 +310,8 @@ require_once './navbar.php';
 
                             <div class="col-sm-3">
                                 <label for="" class="input-label">Date</label>
-                                <input type="date" class="input-field" name="date" id="e-date" placeholder="" required />
+                                <input type="date" class="input-field" name="date" id="e-date" placeholder=""
+                                    required />
                             </div>
                         </div>
                     </div>
@@ -368,100 +391,7 @@ require_once './navbar.php';
                 </div>
                 <div class="container daily-info" style="display: none">
                     <div class="row">
-                        <!-- <div class="col-sm-3 p-r-0 m-b-10">
-                            <div class="driver-info-left box-container-2 h-100">
-                                <div class="row">
-                                    <div class="col-sm-12 info-profile-image-div">
-                                        <img id="d-v-profile-img" src="../../Assets/Developer/image/manager.png"
-                                            alt="profile image" class="info-profile-image">
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="info-div">
-                                            <p class="info-title">Personal information</p>
-                                            <div class="infos">
-                                                <p class="info-heading">Name</p>
-                                                <p class="info-content" id="d-v-name"></p>
-                                            </div>
-                                            <div class="infos">
-                                                <p class="info-heading">Email</p>
-                                                <p class="info-content" id="d-v-mail"></p>
-                                            </div>
-                                            <div class="infos">
-                                                <p class="info-heading">Mobile Number</p>
-                                                <p class="info-content" id="d-v-mobile"></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                         <div class="col-sm-12">
-                            <!-- <div class="driver-info-right box-container-2 m-b-10">
-                                <div class="row row-head">
-                                    <div class="content">
-                                        <div class="container-fluid">
-                                            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 card-row-d-r">
-                                                <div class="col card-col-d-r">
-                                                    <div class="card radius-10 border-start border-0 border-3 border-info">
-                                                        <a href="#" class="no-underline">
-                                                            <div class="card-body">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div>
-                                                                        <p class="mb-0 text-secondary">Total Kilometers</p>
-                                                                        <h4 class="my-1 text-info">20</h4>
-                                                                    </div>
-                                                                    <div
-                                                                        class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
-                                                                        <i class="fa-solid fa-bus"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="col card-col-d-r">
-                                                    <div class="card radius-10 border-start border-0 border-3 border-info">
-                                                        <a href="#" class="no-underline">
-                                                            <div class="card-body">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div>
-                                                                        <p class="mb-0 text-secondary">Fuel Efficiency
-                                                                        </p>
-                                                                        <h4 class="my-1 text-info t-c-2">15</h4>
-                                                                    </div>
-                                                                    <div
-                                                                        class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
-                                                                        <i class="fa-solid fa-gas-pump"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="col card-col-d-r">
-                                                    <div class="card radius-10 border-start border-0 border-3 border-info">
-                                                        <a href="#" class="no-underline">
-                                                            <div class="card-body">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div>
-                                                                        <p class="mb-0 text-secondary">Safety Score
-                                                                        </p>
-                                                                        <h4 class="my-1 text-info t-c-5">-</h4>
-                                                                    </div>
-                                                                    <div
-                                                                        class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto">
-                                                                        <i class="fa-solid fa-shield-check"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                             <div class="driver-info-right box-container-2 m-b-10">
                                 <div class="row">
                                     <p class="info-title">Driver information</p>
@@ -543,72 +473,83 @@ require_once './navbar.php';
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="driver-info-right box-container-2 m-b-10">
-                                <div class="row">
-                                    <p class="info-title">Documents</p>
-                                    <div class="col-sm-3">
-                                        <div class="infos">
-                                            <p class="info-heading">Licence</p>
-                                            <a href="" id="d-v-licence-path" class="document-view d-v-1" target="_blank">
-                                                <i class="fa-duotone fa-file-invoice"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="infos">
-                                            <p class="info-heading">Aadhar card</p>
-                                            <a href="" id="d-v-aadhar-path" class="document-view d-v-2" target="_blank">
-                                                <i class="fa-duotone fa-file-invoice"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="infos">
-                                            <p class="info-heading">PAN card</p>
-                                            <a href="" id="d-v-pan-path" class="document-view  d-v-3" target="_blank">
-                                                <i class="fa-duotone fa-file-invoice"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
+                            
                         </div>
                     </div>
-                    <!-- <div class="row">
-                        <div class="col-sm-12">
-                            <div class="driver-info-bottom box-container-2 m-b-10">
-                                <div class="row">
-                                    <p class="info-title">Location information</p>
-                                    <div class="col-sm-6">
-                                        <div class="infos">
-                                            <p class="info-heading">Address</p>
-                                            <p class="info-content" id="d-v-address"></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="infos">
-                                            <p class="info-heading">District</p>
-                                            <p class="info-content" id="d-v-district"></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="infos">
-                                            <p class="info-heading">State</p>
-                                            <p class="info-content" id="d-v-state"></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="infos">
-                                            <p class="info-heading">Pincode</p>
-                                            <p class="info-content" id="d-v-pincode"></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+                    
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!--Filter Pop ups-->
+<div class="admin-modal model-sm" id="filter">
+    <div class="admin-container">
+        <div class="admin-modal-bg" onclick="popupClose('filter')"></div>
+        <div class="admin-modal-content">
+            <form id="filter-form">
+                <div class="admin-modal-header">
+                    <h5 class="admin-modal-title">Add Filter</h5>
+                    <button type="button" class="admin-modal-close" onclick="popupClose('filter')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="admin-modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 filter-btn-list">
+                            <div class="btn_check">
+                                <input type="radio" id="check1" name="days" value="1" onchange="uncheck()">
+                                <label class="btn btn-default" for="check1">Today</label>
+                            </div>
+                            <div class="btn_check">
+                                <input type="radio" id="check2" name="days" value="7" onchange="uncheck()">
+                                <label class="btn btn-default" for="check2">Last 7 Days</label>
+                            </div>
+                            <div class="btn_check">
+                                <input type="radio" id="check3" name="days" value="30" onchange="uncheck()">
+                                <label class="btn btn-default" for="check3">Last 30 Days</label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <label for="" class="input-label">Date</label>
+                            <div class="form-group filter-date m-b-20" onchange="unSelect()">
+                                <span>From</span>
+                                <input type="date" name="filter-from-date" class="form-field">
+                            </div>
+                            <div class="form-group filter-date m-b-20" onchange="unSelect()">
+                                <input type="date" name="filter-to-date" class="form-field">
+                                <span>To</span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 search-select-1">
+                            <label for="" class="input-label">Car No</label>
+                            <select class="input-field" name="filter-car" id="filter-car">
+
+                            </select>
+                        </div>
+                        <div class="col-sm-12 search-select-1">
+                            <label for="" class="input-label">Driver</label>
+                            <select class="input-field" name="filter-driver" id="filter-driver">
+
+                            </select>
+                        </div>
+                        <div class="col-sm-12 search-select-1">
+                            <label for="" class="input-label">Company</label>
+                            <select class="input-field" name="filter-company" id="filter-company">
+
+                            </select>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="admin-modal-footer">
+                    <button type="submit" class="button-3" onclick="popupClose('filter')">Apply Filter</button>
+                    <button type="reset" class="button-2">Clear</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

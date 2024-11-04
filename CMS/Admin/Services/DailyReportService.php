@@ -46,15 +46,16 @@ class DailyReportService {
             return [
                 'status' => 'error',
                 'message' => 'Total KM is in Negative',
-                'error' => 'Error while insert data in car table.'
+                'error' => 'Error Total KM is in Negative.'
             ];
-        } else if ($endTime >= $startDate){
-            return [
-                'status' => 'error',
-                'message' => 'Something went wrong while Entering Date',
-                'error' => 'Error while insert data in car table.'
-            ];
-        }
+        } 
+        // else if ($endTime >= $startTime){
+        //     return [
+        //         'status' => 'error',
+        //         'message' => 'Something went wrong while Entering Date',
+        //         'error' => 'Error while insert data in daily report table.'
+        //     ];
+        // }
 
         $response1 = $this->modelCMS->setCar($_SESSION['companyId'], $carNumber, $driverName, $cabCompany, $date, $startKM, $startDate, $startTime, $endKM, $endDate, $endTime, $totalKM);
 
@@ -62,13 +63,13 @@ class DailyReportService {
         if ($response1['status'] == 'success') {
             return [
                 "status" => "success",
-                "message" => "The car has created successfully."
+                "message" => "The daily report has created successfully."
             ];
         } else {
             return [
                 'status' => 'error',
-                'message' => 'Something went wrong while creating the car',
-                'error' => 'Error while insert data in car table.'
+                'message' => 'Something went wrong while creating the daily report',
+                'error' => 'Error while insert data in daily report table.'
             ];
         }
     }
@@ -192,8 +193,8 @@ class DailyReportService {
         }
     }
 
-    public function getCarCardDetails() {
-        $response = $this->modelCMS->getCarCardDetails($_SESSION['companyId']);
+    public function getDailyReportCard() {
+        $response = $this->modelCMS->getDailyReportCard($_SESSION['companyId']);
         if (!$response) {
             return [
                 'status' => 'no data',
@@ -291,4 +292,72 @@ class DailyReportService {
             ];
         }
     }
+
+    private function isValidDate($date)
+    {
+        return (bool) strtotime($date);
+    }
+
+    public function applyFilter($filterData) {
+        // Validate and sanitize filters
+        $filters = [];
+
+        if (!empty($filterData['days'])) {
+            if ($filterData['days'] == 1) {
+                $filters['fromDate'] = date("Y-m-d");
+                $filters['toDate'] = date("Y-m-d");
+            } else if ($filterData['days'] == 7) {
+                $filters['fromDate'] = date("Y-m-d", strtotime("-7 days"));
+                $filters['toDate'] = date("Y-m-d");
+            } else if ($filterData['days'] == 30) {
+                $filters['fromDate'] = date("Y-m-d", strtotime("-30 days"));
+                $filters['toDate'] = date("Y-m-d");
+            }
+        }
+
+        if (!empty($filterData['fromDate'])  && $this->isValidDate($filterData['fromDate'])) {
+            $filters['fromDate'] = $filterData['fromDate'];
+        }
+
+        if (!empty($filterData['toDate'])  && $this->isValidDate($filterData['toDate'])) {
+            $filters['toDate'] = $filterData['toDate'];
+        }
+
+        if (!empty($filterData['car'])) {
+            $filters['car'] = $filterData['car'];
+        }
+
+        if (!empty($filterData['driver'])) {
+            $filters['driver'] = $filterData['driver'];
+        }
+
+        if (!empty($filterData['company'])) {
+            $filters['company'] = $filterData['company'];
+        }
+
+        if (empty($filters)) {
+            return [
+                'status' => 'error',
+                'message' => 'No filters are selected.'
+            ];
+        }
+
+        if (!empty($filterData['orderBy'])) {
+            $filters['orderBy'] = $filterData['orderBy'];
+        }
+
+        //Featching card count based on filter
+        $cardCount = $this->modelCMS->getFilterCardCount($filters, $_SESSION['companyId']);
+
+        //Featching FuelReport on filter
+        $dailyReport = $this->modelCMS->getFilterFuelReport($filters, $_SESSION['companyId']);
+
+        return [
+            'status' => 'success',
+            'cardCount' => $cardCount,
+            'dailyReport' => $dailyReport
+        ];
+
+    }
+
 }

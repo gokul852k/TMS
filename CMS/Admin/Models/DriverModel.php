@@ -125,10 +125,11 @@ class DriverModel {
         }
     }
 
-    public function setDriver($userId, $companyId, $name, $mobile, $subcompany, $mail, $address, $state, $district, $pincode, $language, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path) {
-        $stmt = $this->db->prepare("INSERT INTO `cms_drivers` (`user_id`, `company_id`, `cab_company_id`, `fullname`, `mail`, `mobile`, `address`, `state`, `district`, `pincode`, `language`, `driver_image_path`, `licence_no`, `licence_expiry`, `licence_path`, `aadhar_no`, `aadhar_path`, `pan_no`, `pan_path`) VALUES (:userId, :companyId, :subcompany, :name, :mail, :mobile, :address, :state, :district, :pincode, :language, :driverImage_path, :licenceNo, :licenceExpiry, :drivingLicence_path, :aadharNo, :aadharCard_path, :panNo, :panCard_path)");
+    public function setDriver($userId, $companyId, $name, $mobile, $subcompany, $mail, $carId, $address, $state, $district, $pincode, $language, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path) {
+        $stmt = $this->db->prepare("INSERT INTO `cms_drivers` (`user_id`, `company_id`, `car_id`, `cab_company_id`, `fullname`, `mail`, `mobile`, `address`, `state`, `district`, `pincode`, `language`, `driver_image_path`, `licence_no`, `licence_expiry`, `licence_path`, `aadhar_no`, `aadhar_path`, `pan_no`, `pan_path`) VALUES (:userId, :companyId, :carId, :subcompany, :name, :mail, :mobile, :address, :state, :district, :pincode, :language, :driverImage_path, :licenceNo, :licenceExpiry, :drivingLicence_path, :aadharNo, :aadharCard_path, :panNo, :panCard_path)");
         $stmt->bindParam("userId", $userId);
         $stmt->bindParam("companyId", $companyId);
+        $stmt->bindParam("carId", $carId);
         $stmt->bindParam("subcompany", $subcompany);
         $stmt->bindParam("name", $name);
         $stmt->bindParam("mail", $mail);

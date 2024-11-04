@@ -1,11 +1,6 @@
 <?php
 
 require_once '../Services/SessionServices.php';
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 class SessionController {
 
     private $service;
@@ -54,6 +49,11 @@ class SessionController {
     
     private function logout() {
         echo json_encode($this->service->logout());
+    }
+    
+    private function changeLanguage() {
+        $code = $_POST['code'];
+        echo json_encode($this->service->changeLanguage($code));
     }
 }
 

@@ -29,7 +29,7 @@ class DriverService
         $this->mail = new Mail2();
     }
 
-    public function createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $address, $state, $district, $pincode, $language, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo)
+    public function createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $carId, $address, $state, $district, $pincode, $language, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo)
     {
 
         //Check mail ID is already exit
@@ -108,7 +108,7 @@ class DriverService
 
         //Insert Driver details in drivers table in Cms DB
 
-        $response3 = $this->modelCMS->setDriver($userId, $_SESSION['companyId'], $name, $mobile, $subcompany, $mail, $address, $state, $district, $pincode, $language, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path);
+        $response3 = $this->modelCMS->setDriver($userId, $_SESSION['companyId'], $name, $mobile, $subcompany, $mail, $carId, $address, $state, $district, $pincode, $language, $driverImage_path, $licenceNo, $licenceExpiry, $drivingLicence_path, $aadharNo, $aadharCard_path, $panNo, $panCard_path);
 
         if (!$response3) {
             //Delete the user from users table

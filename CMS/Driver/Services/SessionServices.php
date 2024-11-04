@@ -1,11 +1,6 @@
 <?php
 require_once '../../config.php';
 require_once '../Models/SessionModel.php';
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 class SessionServices {
 
     private $modelMA;
@@ -38,13 +33,14 @@ class SessionServices {
         //Storing value in session
         if($response1) {
             $_SESSION['userId'] = $userId;
-            $_SESSION['dirverId'] = $response2['id'];
+            $_SESSION['driverId'] = $response2['id'];
             $_SESSION['cabCompanyId'] = $response2['cab_company_id'];
             $_SESSION['fullName'] = $response2['fullname'];
             $_SESSION['email'] = $response2['mail'];
             $_SESSION['mobile'] = $response2['mobile'];
             $_SESSION['companyId'] = $response2['company_id'];
-            $_SESSION['languageCode'] = 'ta';
+            $_SESSION['languageCode'] = $response2['language'];
+            $_SESSION['carId'] = $response2['car_id'];
             $_SESSION['userRoleId'] = $response4['id'];
 
             //Yokesh you need to store session as per your need.
@@ -59,6 +55,24 @@ class SessionServices {
             "status" => "error",
             "message" => "Session value not stored."
         ];
+    }
+
+    
+    public function changeLanguage($code) {
+        $language = $this->modelCMS->getLanguage($code, $_SESSION['companyId']);
+        if ($language) {
+            $this->modelCMS->updateLanguage($_SESSION['driverId'], $language['code']);
+            $_SESSION['languageCode'] = $language['code'];
+            return [
+                "status" => "success",
+                "message" => "Language changed."
+            ];
+        } else {
+            return [
+                "status" => "error",
+                "message" => "error"
+            ];
+        }
     }
 
     public function isLoggedIn() {

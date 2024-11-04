@@ -24,7 +24,7 @@ $companies = ["Apple", "Google", "Microsoft", "Amazon"];
             </div>
             <div class="row-head-div-2">
                 <button class="button-1 head-button3" onclick="popupOpen('company-add')"><i
-                        class="fa-solid fa-building"></i>Add Company</button>
+                        class="fa-solid fa-building"></i>Add</button>
                 <button class="button-1 head-button2">Download<i class="fa-solid fa-download"></i></button>
             </div>
         </div>

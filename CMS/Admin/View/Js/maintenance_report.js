@@ -3,6 +3,9 @@ let sparePart;
 
 let sparePartSelect;
 
+let driver_opt;
+
+let companies;
 //cars as globel variable
 let cars;
 
@@ -506,6 +509,8 @@ async function getDetails() {
         cars.forEach((car) => {
             select.append('<option value="' + car.id + '">' + car.car_number + '</option>');
         });
+    }else{
+        select.append('<option value="">No car found</option>');
     }
 
     //Spare parts
@@ -522,6 +527,8 @@ async function getDetails() {
         sparePart.forEach((spar_part) => {
             sparePartSelect += '<option value="' + spar_part.spare_part_id + '">' + spar_part.spare_part_name + '</option>';
         });
+    }else{
+        select.append('<option value="">No Spare found found</option>');
     }
 
     select2.append(sparePartSelect);
@@ -540,6 +547,8 @@ async function getDetails() {
         driver_opt.forEach((driver_options) => {
             select3.append('<option value="' + driver_options.id + '">' + driver_options.fullName + '</option>');
         });
+    }else{
+        select3.append('<option value="">No driver found</option>');
     }
 
     // Company
@@ -550,10 +559,12 @@ async function getDetails() {
     select4.empty();
     select4.append('<option value="" disabled selected>Select Company</option>');
 
-    if(companyss != undefined){
-        companyss.forEach(companys => {
+    if(companies != undefined){
+        companies.forEach(companys => {
             select4.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
         });
+    }else{
+        select4.append('<option value="">No company found</option>');
     }
 
 }
@@ -736,7 +747,7 @@ function companyAjax() {
             success: function (response) {
                 console.log(response);
                 if (response.status === 'success') {
-                    companyss = response.data;
+                    companies = response.data;
                     
                 }
                 resolve();
@@ -776,6 +787,8 @@ async function getFilterField() {
         cars.forEach((car) => {
             select.append('<option value="' + car.id + '">' + car.car_number + '</option>');
         });
+    }else{
+        select.append('<option value="" >No car found</option>');
     }
 
     //Spare parts
@@ -792,6 +805,8 @@ async function getFilterField() {
         sparePart.forEach((spar_part) => {
             sparePartSelect += '<option value="' + spar_part.spare_part_id + '">' + spar_part.spare_part_name + '</option>';
         });
+    }else{
+        select2.append('<option value="" >No spare part found</option>');
     }
 
     select2.append(sparePartSelect);
@@ -810,6 +825,8 @@ async function getFilterField() {
         driver_opt.forEach((driver_options) => {
             select3.append('<option value="' + driver_options.id + '">' + driver_options.fullName + '</option>');
         });
+    }else{
+        select3.append('<option value="" >No driver found</option>');
     }
 
     // Company
@@ -820,7 +837,7 @@ async function getFilterField() {
     // select4.empty();
     // select4.append('<option value="" disabled selected>Select Company</option>');
 
-    // companyss.forEach(companys => {
+    // companies.forEach(companys => {
     //     select4.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
     // });
 
@@ -888,7 +905,7 @@ async function displayEdit(data) {
         // Add default "Select Bus" option
         companySelect += '<option value="" selected>Select driver</option>';
 
-        companyss.forEach((company) => {
+        companies.forEach((company) => {
             companySelect += '<option value="' + company.id + '">' + company.company_name + '</option>';
         });
     }

@@ -372,7 +372,7 @@ class MaintenanceReportService
 
     public function getCompany()
     {
-        $response = $this->modelCMS->getCompany();
+        $response = $this->modelCMS->getCompany($_SESSION['companyId']);
 
         if (!$response) {
             return [

@@ -30,7 +30,7 @@ class DailyReportServices
         //Insert cab daily report details in drivers table in Cms DB
         $companyId = $_SESSION['companyId'];
         $cabCompanyId = $_SESSION['cabCompanyId'];
-        $driverId = $_SESSION['dirverId'];
+        $driverId = $_SESSION['driverId'];
 
         $response = $this->modelCMS->startTrip($companyId, $cabCompanyId, $driverId, $currentDate, $currentTime, $checkin_km);
 
@@ -54,7 +54,7 @@ class DailyReportServices
         //Insert cab daily report details in drivers table in Cms DB
         $companyId = $_SESSION['companyId'];
         $cabCompanyId = $_SESSION['cabCompanyId'];
-        $driverId = $_SESSION['dirverId'];
+        $driverId = $_SESSION['driverId'];
 
         $response = $this->modelCMS->endTrip($companyId, $cabCompanyId, $driverId, $currentDate, $currentTime, $checkout_km, $total_km);
 
@@ -226,8 +226,8 @@ class DailyReportServices
 
         $currentDate = date('Y-m-d');
 
-        $driverShift = $this->modelCMS->checkDutyByDriverId($_SESSION['companyId'],$_SESSION['cabCompanyId'], $_SESSION['dirverId']);
-        print_r($driverShift);
+        $driverShift = $this->modelCMS->checkDutyByDriverId($_SESSION['companyId'],$_SESSION['cabCompanyId'], $_SESSION['driverId']);
+        // print_r($driverShift);
         if (!$driverShift) {
             return [
                 'status' => 'success',

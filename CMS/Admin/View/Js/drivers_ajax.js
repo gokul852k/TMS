@@ -3,6 +3,8 @@ let company;
 
 let languages;
 
+let cars;
+
 
 getDrivers();
 
@@ -455,6 +457,8 @@ async function getCompanyAndLang() {
         company.forEach(companys => {
             select.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
         });
+    }else{
+        select.append('<option value="">No company found</option>');
     }
 
     //get language
@@ -474,6 +478,24 @@ async function getCompanyAndLang() {
         languages.forEach((language) => {
             select2.append('<option value="' + language.code + '">' + language.name + '</option>');
         });
+    }else{
+        select2.append('<option value="">No language found</option>');
+    }
+
+    if (!cars) {
+        await carsAjax();
+    }
+
+    let select3 = $('#car-id');
+    select3.empty();
+    select3.append('<option value="" disabled selected>Select Company</option>');
+
+    if(cars != undefined){
+        cars.forEach(car => {
+            select3.append('<option value="' + car.id + '">' + car.car_number + '</option>');
+        });
+    }else{
+        select3.append('<option value="">No car found</option>');
     }
 
 }
@@ -539,4 +561,35 @@ function languageAjax() {
             }
         });
     })  
+}
+
+function carsAjax() {
+    return new Promise((resolve, reject) => {
+        let formData = {
+            action: 'getCars'
+        }
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/MaintenanceReportController.php',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                if (response.status === 'success') {
+                    cars = response.data;
+                    
+                }
+                resolve();
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                reject();
+                // Swal.fire({
+                //     title: "Error",
+                //     text: "Something went wrong! Please try again.",
+                //     icon: "error"
+                // });
+            }
+        });
+    })
 }

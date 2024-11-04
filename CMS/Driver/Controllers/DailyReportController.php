@@ -66,7 +66,7 @@ class DailyReportController {
 
         $companyId = $_SESSION['companyId'];
         $cabCompanyId = $_SESSION['cabCompanyId'];
-        $driverId = $_SESSION['dirverId'];
+        $driverId = $_SESSION['driverId'];
 
         $driverId = $_POST['driver_id'];
         $name = $_POST['fullname'];

@@ -1,40 +1,45 @@
-//Fuel type as  globle variable
-let fuelTypes;
+//Globle variable
 
+let cars;
+let drivers;
+let company;
+let driver_opt;
+let companies;
 //Get driver Table data 
 getDailyReport();
 
 
 
 function getDailyReport() {
-    // let formData1 = {
-    //     action: 'getCarCardDetails'
-    // }
-    // $.ajax({
-    //     type: 'POST',
-    //     url: '../Controllers/DailyReportController.php',
-    //     data: formData1,
-    //     dataType: 'json',
-    //     success: function (response) {
-    //         console.log(response);
-    //         if (response.status === 'success') {
-    //             let cardDetails = response.data;
-    //             document.getElementById("total-car").innerHTML = cardDetails.total_car;
-    //             document.getElementById("total-km").innerHTML = cardDetails.total_km;
-    //             document.getElementById("avg-mileage").innerHTML = cardDetails.avg_mileage;
-    //             document.getElementById("cost-per-km").innerHTML = cardDetails.cost_per_km;
-    //             document.getElementById("expitations").innerHTML = cardDetails.expired_licenses;
-    //         }
-    //     },
-    //     error: function (xhr, status, error) {
-    //         console.error(xhr.responseText);
-    //         // Swal.fire({
-    //         //     title: "Error",
-    //         //     text: "Something went wrong! Please try again.",
-    //         //     icon: "error"
-    //         // });
-    //     }
-    // });
+    let formData1 = {
+        action: 'getDailyReportCard'
+    }
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/DailyReportController.php',
+        data: formData1,
+        dataType: 'json',
+        success: function (response) {
+            console.log(response);
+            if (response.status === 'success') {
+                let cardDetails = response.data;
+                document.getElementById("total-driver").innerHTML = cardDetails.total_driver;
+                document.getElementById("total-duty").innerHTML = cardDetails.active_driver;
+                document.getElementById("avg-mileage").innerHTML = cardDetails.total_km;
+                document.getElementById("cost-per-km").innerHTML = cardDetails.total_cab_company;
+                document.getElementById("expitations").innerHTML = cardDetails.total_car;
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+            // Swal.fire({
+            //     title: "Error",
+            //     text: "Something went wrong! Please try again.",
+            //     icon: "error"
+            // });
+        }
+    });
+    
     let formData2 = {
         action: 'getDailyReports'
     }
@@ -286,10 +291,7 @@ function getCarDetails(carId) {
     });
 }
 
-//Get Driver details for edit
-let cars;
-let drivers;
-let company;
+
 
 
 async function getCarDetailsForEdit(CarId) {
@@ -528,107 +530,282 @@ function deleteBus(busId, busName) {
     });
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function unSelect() {
+    document.querySelectorAll('[name="days"]').forEach(function (radio) {
+        radio.checked = false;
+    });
+}
 
-//Bus ajax
-// function carsAjax() {
-//     return new Promise((resolve, reject) => {
-//         let formData = {
-//             action: 'getCars'
-//         }
-//         $.ajax({
-//             type: 'POST',
-//             url: '../Controllers/MaintenanceReportController.php',
-//             data: formData,
-//             dataType: 'json',
-//             success: function (response) {
-//                 console.log(response);
-//                 if (response.status === 'success') {
-//                     cars = response.data;
-//                     resolve();
-//                 } else {
-//                     reject();
-//                 }
-//             },
-//             error: function (xhr, status, error) {
-//                 console.error(xhr.responseText);
-//                 reject();
-//                 // Swal.fire({
-//                 //     title: "Error",
-//                 //     text: "Something went wrong! Please try again.",
-//                 //     icon: "error"
-//                 // });
-//             }
-//         });
-//     })
-// }
+function uncheck() {
+    document.querySelector('input[name="filter-from-date"]').value = '';
+    document.querySelector('input[name="filter-to-date"]').value = '';
+}
+
+//Get Field for Filter
+async function getFilterField() {
+
+    if (!cars) {
+        await carsAjax();
+    }
+
+    let select = $('#filter-car');
+    select.empty();  // Clear existing options
+
+    // Add default "Select Car" option
+    select.append('<option value="" selected>Select Car</option>');
+    if(cars != undefined){    
+        cars.forEach((car) => {
+            select.append('<option value="' + car.id + '">' + car.car_number + '</option>');
+        });
+    }else{
+        select.append('<option value="" >No car found</option>');
+    }
+
+    //Spare parts
+    if (!drivers) {
+        await driverAjax();
+    }
+    let select3 = $('#filter-driver');
+    select3.empty();  // Clear existing options
+
+    // Add default "Select Spare" option
+    select3.append('<option value="" selected>Select Driver</option>');
+
+    if(driver_opt != undefined){
+        driver_opt.forEach((driver_options) => {
+            select3.append('<option value="' + driver_options.id + '">' + driver_options.fullName + '</option>');
+        });
+    }else{
+        select3.append('<option value="" >No driver found</option>');
+    }
+
+    if (!company) {
+        await companyAjax();
+    }
+    let select4 = $('#filter-company');
+    select4.empty();
+    select4.append('<option value="" disabled selected>Select Company</option>');
+
+    if(companies != undefined){
+        companies.forEach(companys => {
+        select4.append('<option value="' + companys.id + '">' + companys.company_name + '</option>');
+        });
+    }else{
+        select4.append('<option value="">No company found</option>');
+    }
+
+}
+
+$(document).ready(function () {
+    $('#filter-form').on('submit', function (e) {
+        e.preventDefault();
+        //Calling progress bar
+        popupOpen("progress-loader");
+        let array = [["Applying filter..", 4000], ["please wait a moment..", 4000], ["Uploading fuel bill..", 4000]];
+        progressLoader(array);
+        var formData = new FormData(this);
+        formData.append('orderBy', 'ASC');
+        formData.append('action', 'applyFilter');
+
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/DailyReportController.php',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log(response);
+                popupClose("progress-loader");
+                let data = JSON.parse(response);
+                if (data.status === 'success') {
+
+                    //Card
+                    let dailyreportcarddetails = data.cardCount;
+                    document.getElementById("total-driver").innerHTML = dailyreportcarddetails.total_driver;
+                    document.getElementById("total-duty").innerHTML = dailyreportcarddetails.active_driver;
+                    document.getElementById("avg-mileage").innerHTML = dailyreportcarddetails.total_km;
+                    document.getElementById("cost-per-km").innerHTML = dailyreportcarddetails.total_cab_company;
+                    document.getElementById("expitations").innerHTML = dailyreportcarddetails.total_car;
+
+                    // Assuming DataTables is already initialized on '#daily-report-table'
+                    let table = $('#daily-report-table').DataTable(); // Initialize the DataTable
+
+                    // Clear the DataTable
+                    table.clear();
+
+                    // Daily Report Data
+                    let reports = data.dailyReport;
+
+                    // Iterate over reports and add rows to the DataTable
+                    $.each(reports, function (index, report) {
+
+                        let row = [
+                            index + 1, // Add index
+                            report.fullname,
+                            report.check_in_date,
+                            report.check_in_time,
+                            report.check_in_km,
+                            report.check_out_date,
+                            report.check_out_time,
+                            report.check_out_km,
+                            report.total_km,
+
+                            `<div class="th-btn">
+                                <button class="table-btn view" onclick="popupOpen('view'); getCarDetails(`+ report.daily_report_id + `);"><i class="fa-duotone fa-eye"></i></button>
+                                <button class="table-btn edit" onclick="popupOpen('edit'); getCarDetailsForEdit(`+ report.daily_report_id + `);"><i class="fa-duotone fa-pen-to-square"></i></button>
+                                <button class="table-btn delete" onclick="deleteBus(`+ report.daily_report_id + `, '` + report.fullname + `')"><i class="fa-duotone fa-trash"></i></button>
+                            </div>`
+                        ];
+
+                        // Add the new row to the DataTable
+                        table.row.add(row);
+                    });
+
+                    // Redraw the DataTable to show the new data
+                    table.draw();
+
+                }
+                else if (data.status === 'error') {
+                    Swal.fire({
+                        title: "Oops!",
+                        text: data.message,
+                        icon: "error"
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Oops!",
+                        text: data.message,
+                        icon: "error"
+                    });
+                }
+            },
+            error: function (response) {
+                console.error(xhr.responseText);
+                Swal.fire({
+                    title: "Oops!",
+                    text: "Something went wrong! Please try again.",
+                    icon: "error"
+                });
+            }
+        });
+    });
+});
 
 
-// //Driver ajax
-// function driverAjax() {
-//     return new Promise((resolve, reject) => {
-//         let formData = {
-//             action: 'getDriverName'
-//         }
-//         $.ajax({
-//             type: 'POST',
-//             url: '../Controllers/MaintenanceReportController.php',
-//             data: formData,
-//             dataType: 'json',
-//             success: function (response) {
-//                 console.log(response);
-//                 if (response.status === 'success') {
-//                     driver_opt = response.data;
-//                     resolve();
-//                 } else {
-//                     reject();
-//                 }
-//             },
-//             error: function (xhr, status, error) {
-//                 console.error(xhr.responseText);
-//                 reject();
-//                 // Swal.fire({
-//                 //     title: "Error",
-//                 //     text: "Something went wrong! Please try again.",
-//                 //     icon: "error"
-//                 // });
-//             }
-//         });
-//     })
+// -------------------------------------------------
 
-// }
+//Get Daily Report Table data 
+getDailyReports();
 
-// //Fuel type ajax
-// function companyAjax() {
-//     return new Promise((resolve, reject) => {
-//         let formData = {
-//             action: 'getCompany'
-//         }
-//         $.ajax({
-//             type: 'POST',
-//             url: '../Controllers/MaintenanceReportController.php',
-//             data: formData,
-//             dataType: 'json',
-//             success: function (response) {
-//                 console.log(response);
-//                 if (response.status === 'success') {
-//                     companies = response.data;
-//                     resolve();
-//                 } else {
-//                     reject();
-//                 }
-//             },
-//             error: function (xhr, status, error) {
-//                 popupClose('driver-view');
-//                 console.error(xhr.responseText);
-//                 reject();
-//                 // Swal.fire({
-//                 //     title: "Error",
-//                 //     text: "Something went wrong! Please try again.",
-//                 //     icon: "error"
-//                 // });
-//             }
-//         });
-//     })
+function getDailyReports() {
+    
+    let formData1 = {
+        days: 30,
+        fromDate: '',
+        toDate: '',
+        bus: '',
+        collectionFrom: '',
+        collectionTo: '',
+        profitFrom: '',
+        profitTo: '',
+        kmFrom: '',
+        kmTo: '',
+        orderBy: 'DESC',
+        action: 'applyFilter'
+    }
+    //We want to get the filer data to Excel download & store in localhost
+    localStorage.setItem("filter", JSON.stringify(formData1));
+    
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/DailyReportController.php',
+        data: formData1,
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            // let data = JSON.parse(response);
+            if (data.status === 'success') {
+                //Card
+                let cardDetails = data.cardCount;
+                document.getElementById("c-total-km").innerHTML = cardDetails.totalKm ? cardDetails.totalKm : '-';
+                document.getElementById("c-fuel-usage").innerHTML = cardDetails.fuelUsage ? cardDetails.fuelUsage : '-';
+                document.getElementById("c-passangers").innerHTML = cardDetails.passengers ? cardDetails.passengers : '-';
+                document.getElementById("c-collection").innerHTML = cardDetails.collection ? '₹'+cardDetails.collection : '-';
+                document.getElementById("c-expense").innerHTML = cardDetails.expenses ? '₹'+cardDetails.expenses : '-';
+                document.getElementById("c-fuel-amount").innerHTML = cardDetails.fuelAmount ? '₹'+cardDetails.fuelAmount : '-';
+                document.getElementById("c-salary").innerHTML = cardDetails.salary ? '₹'+cardDetails.salary : '-';
+                document.getElementById("c-commission").innerHTML = cardDetails.commission ? '₹'+cardDetails.commission : '-';
+                document.getElementById("c-loss").innerHTML = cardDetails.loss ? '₹'+cardDetails.loss : '-';
+                document.getElementById("c-profit").innerHTML = cardDetails.profit ? '₹'+cardDetails.profit : '-';
 
-// }   
+
+                // Assuming DataTables is already initialized on '#daily-report-table'
+                let table = $('#daily-report-table').DataTable(); // Initialize the DataTable
+
+                // Clear the DataTable
+                table.clear(); 
+
+                // Daily Report Data
+                let reports = data.dailyReport;
+
+                // Iterate over reports and add rows to the DataTable
+                $.each(reports, function (index, report) {
+                    let row = [
+                        index + 1, // Add index
+                        report.date,
+                        report.busNumber,
+                        report.km,
+                        report.fuelUsage,
+                        report.avgMilage,
+                        report.passenger,
+                        report.collection,
+                        report.expenses,
+                        report.fuelAmount,
+                        report.salary,
+                        report.commission,
+                        report.profit,
+                        `<div class="th-btn">
+                            <button class="table-btn view" onclick="popupOpen('view'); getDailyReportDetails(${report.reportId});" title="View">
+                                <i class="fa-duotone fa-eye"></i>
+                            </button>
+                            <button class="table-btn edit" onclick="popupOpen('edit'); getDailyReportForEdit(${report.reportId});" title="Edit">
+                                <i class="fa-duotone fa-pen-to-square"></i>
+                            </button>
+                            <button class="table-btn delete" onclick="deleteDailyReport(${report.reportId}, '${report.busNumber}', '${report.date}')" title="Delete">
+                                <i class="fa-duotone fa-trash"></i>
+                            </button>
+                        </div>`
+                    ];
+
+                    // Add the new row to the DataTable
+                    table.row.add(row);
+                });
+
+                // Redraw the DataTable to show the new data
+                table.draw();
+
+            }
+            else if (data.status === 'error') {
+                Swal.fire({
+                    title: "Oops!",
+                    text: data.message,
+                    icon: "error"
+                });
+            } else {
+                Swal.fire({
+                    title: "Oops!",
+                    text: data.message,
+                    icon: "error"
+                });
+            }
+        },
+        error: function (response) {
+            console.error(xhr.responseText);
+            Swal.fire({
+                title: "Oops!",
+                text: "Something went wrong! Please try again.",
+                icon: "error"
+            });
+        }
+    });
+}

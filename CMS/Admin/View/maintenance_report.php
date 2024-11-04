@@ -11,7 +11,7 @@ require_once '../Services/MaintenanceReportService.php';
 <link rel="stylesheet" href="../../../Common/Common file/pop_up.css">
 <link rel="stylesheet" href="../../../Common/Common file/search_select.css">
 <link rel="stylesheet" href="./Style/driver.css">
-<link rel="stylesheet" href="./Style/daily_report.css">
+<link rel="stylesheet" href="./Style/daily_report.css"> 
 <link rel="stylesheet" href="./Style/chart.css">
 
 

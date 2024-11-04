@@ -30,6 +30,7 @@ class DriverController {
         $subcompany = $_POST['subcompany'];
         $mail = $_POST['email'];
         $password = $_POST['password'];
+        $carId = $_POST['car-id'];
         $address = $_POST['address'];
         $state = $_POST['state'];
         $district = $_POST['district'];
@@ -43,7 +44,7 @@ class DriverController {
         $panCard = $_FILES['pan-card'];
         $panNo = $_POST['pan-no'];
 
-        echo json_encode($this->service->createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $address, $state, $district, $pincode, $language, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
+        echo json_encode($this->service->createDriver($driverImage, $name, $mobile, $subcompany, $mail, $password, $carId, $address, $state, $district, $pincode, $language, $drivingLicence, $licenceNo, $licenceExpiry, $aadharCard, $aadharNo, $panCard, $panNo));
     }
 
     private function getDriver() {
